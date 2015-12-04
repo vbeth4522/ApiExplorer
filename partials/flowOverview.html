@@ -1,0 +1,23 @@
+<div class="col-md-12">
+  <h3>{{flow.name}}</h3>
+  <dl>
+    <dt>Version</dt>
+    <dd>{{flow.version}}</dd>
+  </dl>
+</div>
+<div class="col-md-6">
+  <h4>Fields</h4>
+  <ul>
+    <li ng-repeat="field in flowFields">
+      <a ui-sref="fieldOverview({ flow: flow.name, field: field })">{{field}}</a>
+    </li>
+  </ul>
+</div>
+<div class="col-md-6">
+  <h4>Forms</h4>
+  <ul>
+    <li ng-repeat="form in flowForms">
+      <a ui-sref="formOverview({ flow: flow.name, form: form })">{{form}}</a>
+    </li>
+  </ul>
+</div>

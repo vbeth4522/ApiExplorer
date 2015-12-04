@@ -1,24 +1,25 @@
 var angular = require('angular');
-var _ = require('lodash');
 
-angular.module('capi-ui', [])
-.controller('FlowListController', function($scope, $http) {
+angular.module('capi-ui', [require('angular-ui-router')])
 
-  $scope.loadFlows = function() {
-    if (!($scope.clientId && $scope.clientSecret)) {
-      console.log("gimme creds!")
-      return
-    }
-    $http({
-      method: 'GET',
-      headers: {
-        'Authorization': 'Basic ' + btoa($scope.clientId + ':' + $scope.clientSecret)
-      },
-      url: '/beta/config/' + $scope.appId + '/flows/'
-    }).then(function(resp) {
-      console.log(resp)
-      $scope.flowNames = _.pluck(resp.data, 'name')
-      console.log($scope.flowNames)
-    });
-  }
-});
+.config(function($stateProvider) {
+  $stateProvider
+    // This is just a placeholder, probably do something with this in the
+    // future.
+    .state('auth', {
+      url: '',
+    })
+    .state('listFlows', {
+      url: '/flows',
+      templateUrl: '/public/partials/flowList.html',
+      controller: 'FlowListCtrl'
+    })
+    .state('flowOverview', {
+      url: '/flows/:flow',
+      templateUrl: '/public/partials/flowOverview.html',
+      controller: 'FlowOverviewCtrl',
+    })
+})
+
+require('./src/services')
+require('./src/controllers')
