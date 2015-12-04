@@ -1,0 +1,19 @@
+{
+  "name": "capi-ui",
+  "version": "1.0.0",
+  "description": "UI for CAPI.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify main.js -o bundle.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.4.8",
+    "angular-resource": "^1.4.8",
+    "bootstrap": "^3.3.6",
+    "browserify": "^12.0.1",
+    "lodash": "^3.10.1"
+  }
+}

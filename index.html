@@ -1,0 +1,32 @@
+<!doctype html>
+<html ng-app="capi-ui">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/public/bundle.js"></script>
+    <link rel="stylesheet" href="/public/node_modules/bootstrap/dist/css/bootstrap.css">
+  </head>
+  <body>
+    <ng-include src="'/public/partials/navbar.html'"></ng-include>
+    <div ng-controller="FlowListController" class="container">
+      <form class="form-inline">
+        <div class="form-group">
+          <label>Application ID</label>
+          <input ng-model="appId" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Client ID</label>
+          <input ng-model="clientId" class="form-control">
+        </div>
+        <div class="form-group">
+          <label>Client Secret</label>
+          <input type="password" ng-model="clientSecret" class="form-control">
+        </div>
+        <button ng-click="loadFlows()" class="btn btn-primary">Load flows!</button>
+      </form>
+      <h3>List of flows</h3>
+      <select ng-model="selectedFlow" ng-options="f for f in flowNames"></select>
+    </div>
+  </body>
+</html>
