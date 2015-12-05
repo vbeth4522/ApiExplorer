@@ -3,7 +3,7 @@
 module.exports = function($scope, $state, CredentialSvc) {
   $scope.load = function() {
     CredentialSvc.set($scope.appId, $scope.clientId, $scope.clientSecret)
-    $state.go('listFlows', {}, { reload: true })
+    $state.go('flows', {}, { reload: true })
   }
 
   var creds = CredentialSvc.get();

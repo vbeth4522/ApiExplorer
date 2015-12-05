@@ -1,6 +1,7 @@
 var angular = require('angular');
+require('angular-breadcrumb')
 
-angular.module('capi-ui', [require('angular-ui-router')])
+angular.module('capi-ui', [require('angular-ui-router'), 'ncy-angular-breadcrumb'])
 
 .config(function($stateProvider) {
   $stateProvider
@@ -9,15 +10,31 @@ angular.module('capi-ui', [require('angular-ui-router')])
     .state('auth', {
       url: '',
     })
-    .state('listFlows', {
+    .state('flows', {
       url: '/flows',
       templateUrl: '/public/partials/flowList.html',
-      controller: 'FlowListCtrl'
+      controller: 'FlowListCtrl',
+      ncyBreadcrumb: {
+        label: 'Flows'
+      }
     })
     .state('flowOverview', {
       url: '/flows/:flow',
       templateUrl: '/public/partials/flowOverview.html',
       controller: 'FlowOverviewCtrl',
+      ncyBreadcrumb: {
+        label: 'Flow Overview',
+        parent: 'flows'
+      }
+    })
+    .state('fieldOverview', {
+      url: '/flows/:flow/:field',
+      templateUrl: '/public/partials/fieldOverview.html',
+      controller: 'FieldOverviewCtrl',
+      ncyBreadcrumb: {
+        label: 'Field',
+        parent: 'flowOverview'
+      }
     })
 })
 

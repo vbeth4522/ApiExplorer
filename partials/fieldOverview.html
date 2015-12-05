@@ -1,0 +1,71 @@
+<div class="col-sm-6">
+<h3>{{field.name}}</h3>
+<form>
+  <div class="form-group">
+    <label for="schemaAttr">Schema Attribute</label>
+    <input id="schemaAttr" class="form-control" ng-model="field.schemaAttribute">
+  </div>
+  <div class="form-group" ng-if="field.engageData">
+    <label for="engageData">Social Profile Data</label>
+    <input id="engageData" class="form-control" ng-model="field.engageData">
+  </div>
+  <div class="form-group" ng-if="field.label">
+    <label for="label">Label</label>
+    <input id="label" class="form-control" ng-model="field.label.values[selectedLocale]">
+  </div>
+  <div class="form-group" ng-if="field.placeholder">
+    <label for="placeholder">Placeholder</label>
+    <input id="placeholder" class="form-control" ng-model="field.placeholder.values[selectedLocale]">
+  </div>
+  <div class="form-group" ng-if="field.tip">
+    <label for="tip">Tip</label>
+    <input id="tip" class="form-control" ng-model="field.tip.values[selectedLocale]">
+  </div>
+  <div ng-if="field.options">
+    <h4>Options:</h4>
+    <ul>
+      <li ng-repeat="o in field.options">
+        <label>Label</label>
+        <input class="form-control" ng-model="o.label.values[selectedLocale]">
+        <label>Value</label>
+        <input class="form-control" ng-model="o.value">
+        <label>Selected</label>
+        <input type="radio" name="selectedOption" ng-value="true" ng-model="o.selected">
+        <label>Disabled</label>
+        <input type="checkbox" name="disabledOption" ng-value="true" ng-model="o.disabled">
+      </li>
+    </ul>
+  </div>
+  <div ng-if="field.validation">
+    <h4>Validations:</h4>
+    <ul>
+      <li ng-repeat="v in field.validation">
+        <h4>{{v.rule}}</h4>
+        <label>Value</label>
+        <input class="form-control" ng-model="v.value">
+        <label>Error Message</label>
+        <input class="form-control" ng-model="v.message.values[selectedLocale]">
+      </li>
+    </ul>
+  </div>
+</form>
+</div>
+<div class="col-sm-6">
+  <h3>Widget Preview</h3>
+  <div class="widget-preview" ng-switch on="field.type">
+    <div class="field-preview">
+      <label>{{field.label.values[selectedLocale]}}</label>
+      <div ng-switch-when="select">
+        <select ng-model="emptyValue" ng-options="o.value as o.label.values[selectedLocale] for o in field.options" ng-disabled="o.disabled"></select>
+      </div>
+      <div ng-switch-default>
+        <input ng-model="emptyValue" placeholder="{{field.placeholder.values[selectedLocale]}}">
+      </div>
+      <div ng-if="field.tip.values[selectedLocale]" class="field-tip">{{field.tip.values[selectedLocale]}}</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="locale">Language</label>
+    <select ng-model="selectedLocale" ng-options="locale for locale in locales" class="form-control"></select>
+  </div>
+</div>

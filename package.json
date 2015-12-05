@@ -5,16 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "browserify main.js -o bundle.js"
+    "buildjs": "browserify main.js -o bundle.js",
+    "buildcss": "lessc styles.less styles.css",
+    "build": "npm run buildjs && npm run buildcss"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "angular": "^1.4.8",
+    "angular-breadcrumb": "^0.4.1",
     "angular-resource": "^1.4.8",
     "angular-ui-router": "^0.2.15",
     "bootstrap": "^3.3.6",
     "browserify": "^12.0.1",
+    "less": "^2.5.3",
     "lodash": "^3.10.1"
   }
 }

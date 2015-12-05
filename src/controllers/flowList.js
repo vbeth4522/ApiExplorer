@@ -10,9 +10,7 @@ module.exports = function($scope, $http, CredentialSvc) {
     },
     url: '/beta/config/' + creds.appId + '/flows/'
   }).then(function(resp) {
-    console.log(resp)
     $scope.flowNames = pluck(resp.data, 'name')
-    console.log($scope.flowNames)
   });
 
 }
