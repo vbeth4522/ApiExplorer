@@ -1,5 +1,5 @@
 <div class="col-sm-6">
-<h3>{{field.name}}</h3>
+<h3>{{field.name}}<span class="label label-info pull-right">{{field.type}}</span></h3>
 <form>
   <div class="form-group">
     <label for="schemaAttr">Schema Attribute</label>
@@ -57,6 +57,9 @@
       <label>{{field.label.values[selectedLocale]}}</label>
       <div ng-switch-when="select">
         <select ng-model="emptyValue" ng-options="o.value as o.label.values[selectedLocale] for o in field.options" ng-disabled="o.disabled"></select>
+      </div>
+      <div ng-switch-when="textarea">
+        <textarea ng-model="emptyValue" rows="5" placeholder="{{field.placeholder.values[selectedLocale]}}"></textarea>
       </div>
       <div ng-switch-default>
         <input ng-model="emptyValue" placeholder="{{field.placeholder.values[selectedLocale]}}">

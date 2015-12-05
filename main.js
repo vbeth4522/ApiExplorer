@@ -1,7 +1,7 @@
 var angular = require('angular');
-require('angular-breadcrumb')
+require('angular-breadcrumb');
 
-angular.module('capi-ui', [require('angular-ui-router'), 'ncy-angular-breadcrumb'])
+angular.module('capi-ui', [require('angular-ui-router'), 'ncy-angular-breadcrumb', require('angular-loading-bar')])
 
 .config(function($stateProvider) {
   $stateProvider
