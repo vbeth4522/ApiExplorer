@@ -2,7 +2,7 @@
   <h3>{{field.name}}<span class="label label-info pull-right">{{field.type}}</span></h3>
   <div ng-class="['form-group', {'has-error': errors.schemaAttribute}]">
     <label for="schemaAttr">Schema Attribute</label>
-    <input id="schemaAttr" class="form-control" ng-model="field.schemaAttribute">
+    <select ng-model="field.schemaAttribute" ng-options="x for x in schemaAttributes" class="form-control"></select>
   </div>
   <div class="form-group" ng-if="field.engageData">
     <label for="engageData">Social Profile Data</label>
@@ -41,7 +41,19 @@
       <li ng-repeat="v in field.validation">
         <h4>{{v.rule}}</h4>
         <label>Value</label>
-        <input class="form-control" ng-model="v.value">
+        <div ng-if="v.rule === 'required' || v.rule === 'unique'">
+          <label>True <input type="radio" ng-model="v.value" ng-value="true"></label>
+          <label>False <input type="radio" ng-model="v.value" ng-value="false"></label>
+        </div>
+        <div ng-if="v.rule === 'minLength' || v.rule === 'maxLength'">
+          <input type="number" class="form-control" ng-model="v.value">
+        </div>
+        <div ng-if="v.rule === 'format'">
+          <select class="form-control" ng-model="v.value" ng-options="x for x in validationFormats"></select>
+        </div>
+        <div ng-if="v.rule === 'match'">
+          <select class="form-control" ng-model="v.value" ng-options="x for x in allFields"></select>
+        </div>
         <label>Error Message</label>
         <input class="form-control" ng-model="v.message.values[selectedLocale]">
       </li>

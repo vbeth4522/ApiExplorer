@@ -9,6 +9,24 @@ var has = require('lodash/object/has');
 var partial = require('lodash/function/partial');
 var first = require('lodash/array/first');
 
+// Would be neat to be able to request these values from the API.
+var validationFormats = [
+  'alpha',
+  'alphaExtended',
+  'alphaExtendedSpaces',
+  'alphaNumeric',
+  'alphaNumericExtended',
+  'email',
+  'i18nAlphaNumeric',
+  'noWhitespace',
+  'numeric',
+  'numericReal',
+  'phone',
+  'phoneInternational',
+  'zipCode',
+  'zipCode+4'
+]
+
 function isReference(item) {
   return has(item, '_self');
 }
@@ -26,16 +44,26 @@ function unpackTranslations(locale, field) {
   return copy;
 }
 
-module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc) {
+module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, SchemaSvc) {
   var flow = $stateParams.flow
   var field = $stateParams.field
-  // I should get the schema attributes as well, then schema attrs should just
-  // be a dropdown. Advanced mode: Disable the options that are taken by other
-  // fields.
+  // This will have to get more sophisticated once we know what schemas the flow
+  // is compatible with.
+  SchemaSvc
+    .get('user')
+    .then(function(resp) {
+      $scope.schemaAttributes = pluck(resp.data, 'schemaAttribute')
+    });
+  // Advanced mode: Disable the options that are taken by other fields.
   LocaleSvc
     .getAll(flow)
     .then(function(resp) {
       $scope.locales = pluck(resp.data, 'name')
+    });
+  FieldSvc
+    .getAll(flow)
+    .then(function(resp) {
+      $scope.allFields = pluck(resp.data, 'name')
     });
   FieldSvc
     .get(flow, field)
@@ -47,6 +75,7 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc) {
   $scope.locales = ['en-US']
   $scope.selectedLocale = first($scope.locales)
   $scope.errors = {}
+  $scope.validationFormats = validationFormats
 
   function idleSaveButton() {
     $scope.saveButtonText = "Save Field"
