@@ -17,5 +17,9 @@ module.exports = function(CredentialSvc, HttpSvc) {
     return HttpSvc.get(basePath.concat([flow, 'fields', field]))
   }
 
+  this.saveLocalized = function(flow, locale, field, field_def) {
+    return HttpSvc.put(basePath.concat([flow, 'locales', locale, 'fields', field]), field_def)
+  }
+
   return this;
 }
