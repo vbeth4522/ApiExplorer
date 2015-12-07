@@ -17,6 +17,11 @@ angular.module(
     // future.
     .state('auth', {
       url: '',
+      templateUrl: '/public/partials/home.html',
+      controller: function() {},
+      ncyBreadcrumb: {
+        label: 'Welcome'
+      }
     })
     .state('flows', {
       url: '/flows',
