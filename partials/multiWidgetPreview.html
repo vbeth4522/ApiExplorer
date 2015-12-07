@@ -1,0 +1,12 @@
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">Widget Preview</h4>
+  </div>
+  <div class="panel-body widget-preview">
+    <div class="field-preview">
+      <div ng-repeat="field in formFields">
+        <ng-include src="'/public/partials/fieldPreview.html'"></ng-include>
+      </div>
+    </div>
+  </div>
+</div>

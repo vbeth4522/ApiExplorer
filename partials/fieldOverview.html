@@ -37,49 +37,37 @@
   </div>
   <div ng-if="field.validation">
     <h4>Validations:</h4>
-    <ul>
-      <li ng-repeat="v in field.validation">
-        <h4>{{v.rule}}</h4>
-        <label>Value</label>
-        <div ng-if="v.rule === 'required' || v.rule === 'unique'">
-          <label>True <input type="radio" ng-model="v.value" ng-value="true"></label>
-          <label>False <input type="radio" ng-model="v.value" ng-value="false"></label>
-        </div>
-        <div ng-if="v.rule === 'minLength' || v.rule === 'maxLength'">
-          <input type="number" class="form-control" ng-model="v.value">
-        </div>
-        <div ng-if="v.rule === 'format'">
-          <select class="form-control" ng-model="v.value" ng-options="x for x in validationFormats"></select>
-        </div>
-        <div ng-if="v.rule === 'match'">
-          <select class="form-control" ng-model="v.value" ng-options="x for x in allFields"></select>
-        </div>
-        <label>Error Message</label>
-        <input class="form-control" ng-model="v.message.values[selectedLocale]">
-      </li>
-    </ul>
+    <uib-accordion close-others="false">
+      <uib-accordion-group ng-repeat="v in field.validation">
+        <uib-accordion-heading>
+          {{v.rule}}
+          <span ng-click="removeValidation($index, $event)" class="glyphicon glyphicon-remove pull-right" title="Remove"></span>
+        </uib-accordion-heading>
+        <validation model="v" validation-formats="validationFormats" all-fields="allFields" translatable="true" selected-locale="selectedLocale"></validation>
+      </uib-accordion-group>
+    </uib-accordion>
   </div>
 </div>
 <div class="col-sm-6">
-  <h3>Widget Preview</h3>
-  <div class="widget-preview" ng-switch on="field.type">
-    <div class="field-preview">
-      <label>{{field.label.values[selectedLocale]}}</label>
-      <div ng-switch-when="select">
-        <select ng-model="emptyValue" ng-options="o.value as o.label.values[selectedLocale] for o in field.options" ng-disabled="o.disabled"></select>
-      </div>
-      <div ng-switch-when="textarea">
-        <textarea ng-model="emptyValue" rows="5" placeholder="{{field.placeholder.values[selectedLocale]}}"></textarea>
-      </div>
-      <div ng-switch-default>
-        <input ng-model="emptyValue" placeholder="{{field.placeholder.values[selectedLocale]}}">
-      </div>
-      <div ng-if="field.tip.values[selectedLocale]" class="field-tip">{{field.tip.values[selectedLocale]}}</div>
-    </div>
-  </div>
   <div class="form-group">
     <label for="locale">Language</label>
     <select ng-model="selectedLocale" ng-options="locale for locale in locales" class="form-control"></select>
+  </div>
+  <ng-include src="'/public/partials/singleWidgetPreview.html'"></ng-include>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">Add Validation</h4>
+    </div>
+    <div class="panel-body">
+      <div class="form-group">
+        <label>Rule</label>
+        <select ng-model="newValidation.rule" ng-options="x for x in getAllowedValidations()" class="form-control"></select>
+      </div>
+      <div ng-if="newValidation.rule">
+        <validation model="newValidation" validation-formats="validationFormats" all-fields="allFields"></validation>
+        <button ng-click="addValidation()" class="btn btn-primary pull-right">Add</button>
+      </div>
+    </div>
   </div>
   <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
 </div>

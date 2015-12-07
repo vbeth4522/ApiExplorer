@@ -8,6 +8,8 @@ var forOwn = require('lodash/object/forOwn');
 var has = require('lodash/object/has');
 var partial = require('lodash/function/partial');
 var first = require('lodash/array/first');
+var isEmpty = require('lodash/lang/isEmpty');
+var difference = require('lodash/array/difference');
 
 // Would be neat to be able to request these values from the API.
 var validationFormats = [
@@ -25,6 +27,17 @@ var validationFormats = [
   'phoneInternational',
   'zipCode',
   'zipCode+4'
+]
+
+var validations = [
+  'blacklist',
+  'format',
+  'match',
+  'maxLength',
+  'minLength',
+  'required',
+  'unique',
+  'whitelist'
 ]
 
 function isReference(item) {
@@ -76,6 +89,12 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
   $scope.selectedLocale = first($scope.locales)
   $scope.errors = {}
   $scope.validationFormats = validationFormats
+  // $scope.validations = validations
+  $scope.newValidation = {
+    rule: '',
+    value: null,
+    message: ''
+  }
 
   function idleSaveButton() {
     $scope.saveButtonText = "Save Field"
@@ -124,6 +143,39 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
         idleSaveButton();
       });
   }
+
+  $scope.getAllowedValidations = function() {
+    if (!$scope.field) return
+    return difference(validations, pluck($scope.field.validation || [], 'rule'))
+  }
+
+  $scope.addValidation = function() {
+    var newValidation = assign({}, $scope.newValidation);
+    // This is a little hacky, but now the message will smell like a reference.
+    newValidation.message = {
+      _self: null,
+      values: {}
+    };
+    newValidation.message.values[$scope.selectedLocale] = $scope.newValidation.message;
+    $scope.field.validation.push(newValidation)
+    $scope.newValidation = {
+      rule: '',
+      value: null,
+      message: ''
+    }
+  }
+
+  $scope.removeValidation = function($index, $event) {
+    // This is so that the close button doesn't close the accordion/activate the
+    // a tag.
+    $event.stopPropagation();
+    $event.preventDefault();
+    console.log('Removing:', $index);
+    $scope.field.validation.splice($index, 1);
+    if (isEmpty($scope.field.validation)) {
+      delete $scope.field.validation;
+    }
+  };
 
   idleSaveButton();
 }

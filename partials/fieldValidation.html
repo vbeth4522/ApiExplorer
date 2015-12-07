@@ -1,0 +1,22 @@
+<div class="form-group">
+    <label>Value</label>
+    <div ng-if="model.rule === 'required' || model.rule === 'unique'">
+      <label>True <input type="radio" ng-model="model.value" ng-value="true"></label>
+      <label>False <input type="radio" ng-model="model.value" ng-value="false"></label>
+    </div>
+    <div ng-if="model.rule === 'minLength' || model.rule === 'maxLength'">
+      <input type="number" class="form-control" ng-model="model.value">
+    </div>
+    <div ng-if="model.rule === 'format'">
+      <select class="form-control" ng-model="model.value" ng-options="x for x in modelFormats"></select>
+    </div>
+    <div ng-if="model.rule === 'match'">
+      <select class="form-control" ng-model="model.value" ng-options="x for x in allFields"></select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label>Error Message</label>
+    <input ng-if="translatable" class="form-control" ng-model="model.message.values[selectedLocale]">
+    <input ng-if="!translatable" class="form-control" ng-model="model.message">
+  </div>
+</div>

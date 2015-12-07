@@ -36,7 +36,7 @@ angular.module(
       }
     })
     .state('fieldOverview', {
-      url: '/flows/:flow/:field',
+      url: '/flows/:flow/fields/:field',
       templateUrl: '/public/partials/fieldOverview.html',
       controller: 'FieldOverviewCtrl',
       ncyBreadcrumb: {
@@ -44,7 +44,17 @@ angular.module(
         parent: 'flowOverview'
       }
     })
+    .state('formOverview', {
+      url: '/flows/:flow/forms/:form',
+      templateUrl: '/public/partials/formOverview.html',
+      controller: 'FormOverviewCtrl',
+      ncyBreadcrumb: {
+        label: 'Form',
+        parent: 'flowOverview'
+      }
+    })
 })
 
 require('./src/services')
 require('./src/controllers')
+require('./src/directives')
