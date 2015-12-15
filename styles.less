@@ -27,6 +27,30 @@
 }
 
 .field-modify {
+  .add-option {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .field-options {
+    list-style: none;
+    padding-left: 0;
+    &, & > li {
+      position: relative;
+    }
+    .handle {
+      cursor: move;
+      padding-right: 9px;
+    }
+    .dndDraggingSource {
+      display: none;
+    }
+    .dndPlaceholder {
+      display: block;
+      background-color: #ddd;
+      min-height: 42px;
+    }
+  }
+
   .accordion-toggle {
     &:hover {
       text-decoration: none;

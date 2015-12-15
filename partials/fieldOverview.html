@@ -24,27 +24,58 @@
         <input id="tip" class="form-control" ng-model="field.tip.values[selectedLocale]">
       </div>
       <div ng-if="fieldSupports('options')">
+        <div class="panel panel-default add-option">
+          <div class="panel-heading">
+            <h4 class="panel-title">Add Option</h4>
+          </div>
+          <div class="panel-body">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Label</label>
+                <input class="form-control" ng-model="newOption.label">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Value</label>
+                <input class="form-control" ng-model="newOption.value">
+              </div>
+            </div>
+            <div class="col-md-12">
+              <button ng-click="addOption()" class="btn btn-primary btn-xs btn-block">Add</button>
+            </div>
+          </div>
+        </div>
         <h4>Options:</h4>
         <uib-accordion close-others="false">
-          <uib-accordion-group ng-repeat="o in field.options">
-            <uib-accordion-heading>
-              {{o.label.values[selectedLocale]}}
-              <span class="option-value" ng-if='o.label.values[selectedLocale] !== o.value'>value: {{o.value}}</span>
-              <span class="option-selected" ng-if="o.value == selectedOption.value">selected</span>
-              <span class="option-disabled" ng-if="o.disabled">disabled</span>
-              <span ng-click="removeOption($index, $event)" class="glyphicon glyphicon-remove pull-right" title="Remove"></span>
-            </uib-accordion-heading>
-            <div>
-              <label>Label</label>
-              <input class="form-control" ng-model="o.label.values[selectedLocale]">
-              <label>Value</label>
-              <input class="form-control" ng-model="o.value">
-              <label>Selected</label>
-              <input type="radio" value="{{o.value}}" ng-model="selectedOption.value">
-              <label>Disabled</label>
-              <input type="checkbox" ng-value="true" ng-model="o.disabled">
-            </div>
-          </uib-accordion-group>
+          <ul dnd-list="field.options" class="field-options">
+            <li ng-repeat="o in field.options" dnd-draggable="o" dnd-moved="field.options.splice($index, 1)">
+              <uib-accordion-group>
+                <uib-accordion-heading>
+                  <span class="handle glyphicon glyphicon-align-justify"></span>
+                  {{o.label.values[selectedLocale]}}
+                  <span class="option-value" ng-if='o.label.values[selectedLocale] !== o.value'>value: {{o.value}}</span>
+                  <span class="option-selected" ng-if="o.value == selectedOption.value">selected</span>
+                  <span class="option-disabled" ng-if="o.disabled">disabled</span>
+                  <span ng-click="removeOption($index, $event)" class="glyphicon glyphicon-remove pull-right" title="Remove"></span>
+                </uib-accordion-heading>
+                <div>
+                  <div class="form-group">
+                    <label>Label</label>
+                    <input class="form-control" ng-model="o.label.values[selectedLocale]">
+                  </div>
+                  <div class="form-group">
+                    <label>Value</label>
+                    <input class="form-control" ng-model="o.value">
+                  </div>
+                  <label>Selected</label>
+                  <input type="radio" value="{{o.value}}" ng-model="selectedOption.value" ng-disabled="o.disabled">
+                  <label>Disabled</label>
+                  <input type="checkbox" ng-value="true" ng-model="o.disabled" ng-disabled="o.value == selectedOption.value">
+                </div>
+              </uib-accordion-group>
+            </li>
+          </ul>
         </uib-accordion>
       </div>
     </uib-tab>

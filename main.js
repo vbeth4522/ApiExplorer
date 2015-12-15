@@ -1,11 +1,13 @@
 var angular = require('angular');
 require('angular-breadcrumb');
+require('angular-drag-and-drop-lists')
 
 angular.module(
   'capi-ui',
   [
     require('angular-ui-router'),
     'ncy-angular-breadcrumb',
+    'dndLists',
     require('angular-loading-bar'),
     require('angular-ui-bootstrap')
   ]

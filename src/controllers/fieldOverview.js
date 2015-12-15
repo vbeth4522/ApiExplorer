@@ -117,6 +117,10 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, FieldMetaSvc
     value: null,
     message: ''
   }
+  $scope.newOption = {
+    label: '',
+    value: ''
+  }
 
   function idleSaveButton() {
     $scope.saveButtonText = "Save Field"
@@ -174,35 +178,50 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, FieldMetaSvc
     return difference(validations, pluck($scope.field.validation || [], 'rule'))
   }
 
-  $scope.addValidation = function() {
-    var newValidation = assign({}, $scope.newValidation);
-    // This is a little hacky, but now the message will smell like a reference.
-    newValidation.message = {
+  function addOptionOrValidation(scopeProp, translatableProp, fieldProp, newItem) {
+    var newThing = assign({}, $scope[scopeProp]);
+    newThing[translatableProp] = {
       _self: null,
       values: {}
     };
-    newValidation.message.values[$scope.selectedLocale] = $scope.newValidation.message;
-    if (!$scope.field.validation) {
-      $scope.field.validation = []
+    newThing[translatableProp].values[$scope.selectedLocale] = $scope[scopeProp][translatableProp];
+    if (!$scope.field[fieldProp]) {
+      $scope.field[fieldProp] = []
     }
-    $scope.field.validation.push(newValidation)
-    $scope.newValidation = {
-      rule: '',
-      value: null,
-      message: ''
-    }
+    $scope.field[fieldProp].push(newThing)
+    $scope[scopeProp] = newItem
+    console.log($scope)
   }
 
-  $scope.removeValidation = function($index, $event) {
+  function removeOptionOrValidation(fieldProp, $index, $event) {
     // This is so that the close button doesn't close the accordion/activate the
     // a tag.
     $event.stopPropagation();
     $event.preventDefault();
-    $scope.field.validation.splice($index, 1);
-    if (isEmpty($scope.field.validation)) {
-      delete $scope.field.validation;
+    $scope.field[fieldProp].splice($index, 1);
+    if (isEmpty($scope.field[fieldProp])) {
+      delete $scope.field[fieldProp];
     }
-  };
+  }
+
+  $scope.addOption = partial(
+    addOptionOrValidation,
+    'newOption',
+    'label',
+    'options',
+    { label: '', value: '' }
+  )
+
+  $scope.addValidation = partial(
+    addOptionOrValidation,
+    'newValidation',
+    'message',
+    'validation',
+    { rule: '', value: null, message: ''}
+  )
+
+  $scope.removeOption = partial(removeOptionOrValidation, 'options')
+  $scope.removeValidation = partial(removeOptionOrValidation, 'validation')
 
   idleSaveButton();
 }
