@@ -1,13 +1,19 @@
 <div ng-switch on="field.type">
   <label>{{field.label.values[selectedLocale]}}</label>
   <div ng-switch-when="select">
-    <select ng-model="emptyValue" ng-options="o.value as o.label.values[selectedLocale] for o in field.options" ng-disabled="o.disabled"></select>
+    <select ng-model="emptyValue" ng-options="o.value as o.label.values[selectedLocale] disable when o.disabled for o in field.options"></select>
   </div>
   <div ng-switch-when="textarea">
     <textarea ng-model="emptyValue" rows="5" placeholder="{{field.placeholder.values[selectedLocale]}}"></textarea>
   </div>
+  <div ng-switch-when="radio">
+    <label ng-repeat="(key, o) in field.options">
+      {{o.label.values[selectedLocale]}}
+      <input name="{{field.name}}" type="radio" ng-model="emptyValue" ng-value="o.value" ng-disabled="o.disabled">
+    </label>
+  </div>
   <div ng-switch-default>
-    <input ng-model="emptyValue" placeholder="{{field.placeholder.values[selectedLocale]}}">
+    <span>This field type hasn't been implemented yet, check back later!</span>
   </div>
   <div ng-if="field.tip.values[selectedLocale]" class="field-tip">{{field.tip.values[selectedLocale]}}</div>
 </div>

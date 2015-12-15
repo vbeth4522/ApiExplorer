@@ -1,73 +1,90 @@
-<div class="col-sm-6">
-  <h3>{{field.name}}<span class="label label-info pull-right">{{field.type}}</span></h3>
-  <div ng-class="['form-group', {'has-error': errors.schemaAttribute}]">
-    <label for="schemaAttr">Schema Attribute</label>
-    <select ng-model="field.schemaAttribute" ng-options="x for x in schemaAttributes" class="form-control"></select>
-  </div>
-  <div class="form-group" ng-if="field.engageData">
-    <label for="engageData">Social Profile Data</label>
-    <input id="engageData" class="form-control" ng-model="field.engageData">
-  </div>
-  <div class="form-group" ng-if="field.label">
-    <label for="label">Label</label>
-    <input id="label" class="form-control" ng-model="field.label.values[selectedLocale]">
-  </div>
-  <div class="form-group" ng-if="field.placeholder">
-    <label for="placeholder">Placeholder</label>
-    <input id="placeholder" class="form-control" ng-model="field.placeholder.values[selectedLocale]">
-  </div>
-  <div class="form-group" ng-if="field.tip">
-    <label for="tip">Tip</label>
-    <input id="tip" class="form-control" ng-model="field.tip.values[selectedLocale]">
-  </div>
-  <div ng-if="field.options">
-    <h4>Options:</h4>
-    <ul>
-      <li ng-repeat="o in field.options">
-        <label>Label</label>
-        <input class="form-control" ng-model="o.label.values[selectedLocale]">
-        <label>Value</label>
-        <input class="form-control" ng-model="o.value">
-        <label>Selected</label>
-        <input type="radio" name="selectedOption" ng-value="true" ng-model="o.selected">
-        <label>Disabled</label>
-        <input type="checkbox" name="disabledOption" ng-value="true" ng-model="o.disabled">
-      </li>
-    </ul>
-  </div>
-  <div ng-if="field.validation">
-    <h4>Validations:</h4>
-    <uib-accordion close-others="false">
-      <uib-accordion-group ng-repeat="v in field.validation">
-        <uib-accordion-heading>
-          {{v.rule}}
-          <span ng-click="removeValidation($index, $event)" class="glyphicon glyphicon-remove pull-right" title="Remove"></span>
-        </uib-accordion-heading>
-        <validation model="v" validation-formats="validationFormats" all-fields="allFields" translatable="true" selected-locale="selectedLocale"></validation>
-      </uib-accordion-group>
-    </uib-accordion>
-  </div>
+<h3>{{field.name}}<span class="label label-info pull-right">{{field.type}}</span></h3>
+<div class="field-modify">
+<div class="edit col-md-7">
+  <uib-tabset justified="true">
+    <uib-tab heading="Field">
+      <div ng-if="fieldSupports('schemaAttribute')" ng-class="['form-group', {'has-error': errors.schemaAttribute}]">
+        <label for="schemaAttr">Schema Attribute</label>
+        <select ng-model="field.schemaAttribute" ng-options="x for x in schemaAttributes" class="form-control"></select>
+      </div>
+      <div class="form-group" ng-if="fieldSupports('socialProfileData')">
+        <label for="socialProfileData">Social Profile Data</label>
+        <input id="socialProfileData" class="form-control" ng-model="field.socialProfileData">
+      </div>
+      <div class="form-group" ng-if="fieldSupports('label')">
+        <label for="label">Label</label>
+        <input id="label" class="form-control" ng-model="field.label.values[selectedLocale]">
+      </div>
+      <div class="form-group" ng-if="fieldSupports('placeholder')">
+        <label for="placeholder">Placeholder</label>
+        <input id="placeholder" class="form-control" ng-model="field.placeholder.values[selectedLocale]">
+      </div>
+      <div class="form-group" ng-if="fieldSupports('tip')">
+        <label for="tip">Tip</label>
+        <input id="tip" class="form-control" ng-model="field.tip.values[selectedLocale]">
+      </div>
+      <div ng-if="fieldSupports('options')">
+        <h4>Options:</h4>
+        <uib-accordion close-others="false">
+          <uib-accordion-group ng-repeat="o in field.options">
+            <uib-accordion-heading>
+              {{o.label.values[selectedLocale]}}
+              <span class="option-value" ng-if='o.label.values[selectedLocale] !== o.value'>value: {{o.value}}</span>
+              <span class="option-selected" ng-if="o.value == selectedOption.value">selected</span>
+              <span class="option-disabled" ng-if="o.disabled">disabled</span>
+              <span ng-click="removeOption($index, $event)" class="glyphicon glyphicon-remove pull-right" title="Remove"></span>
+            </uib-accordion-heading>
+            <div>
+              <label>Label</label>
+              <input class="form-control" ng-model="o.label.values[selectedLocale]">
+              <label>Value</label>
+              <input class="form-control" ng-model="o.value">
+              <label>Selected</label>
+              <input type="radio" value="{{o.value}}" ng-model="selectedOption.value">
+              <label>Disabled</label>
+              <input type="checkbox" ng-value="true" ng-model="o.disabled">
+            </div>
+          </uib-accordion-group>
+        </uib-accordion>
+      </div>
+    </uib-tab>
+    <uib-tab heading="Validation" ng-if="fieldSupports('validation')">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">Add Validation</h4>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>Rule</label>
+            <select ng-model="newValidation.rule" ng-options="x for x in getAllowedValidations()" class="form-control"></select>
+          </div>
+          <div ng-if="newValidation.rule">
+            <validation model="newValidation" validation-formats="validationFormats" all-fields="allFields"></validation>
+            <button ng-click="addValidation()" class="btn btn-primary pull-right">Add</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4>Validations:</h4>
+        <uib-accordion close-others="false">
+          <uib-accordion-group ng-repeat="v in field.validation">
+            <uib-accordion-heading>
+              {{v.rule}}
+              <span ng-click="removeValidation($index, $event)" class="glyphicon glyphicon-remove pull-right" title="Remove"></span>
+            </uib-accordion-heading>
+            <validation model="v" validation-formats="validationFormats" all-fields="allFields" translatable="true" selected-locale="selectedLocale"></validation>
+          </uib-accordion-group>
+        </uib-accordion>
+      </div>
+    </uib-tab>
+  </uib-tabset>
 </div>
-<div class="col-sm-6">
+<div class="preview col-md-5">
   <div class="form-group">
     <label for="locale">Language</label>
     <select ng-model="selectedLocale" ng-options="locale for locale in locales" class="form-control"></select>
   </div>
   <ng-include src="'/public/partials/singleWidgetPreview.html'"></ng-include>
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">Add Validation</h4>
-    </div>
-    <div class="panel-body">
-      <div class="form-group">
-        <label>Rule</label>
-        <select ng-model="newValidation.rule" ng-options="x for x in getAllowedValidations()" class="form-control"></select>
-      </div>
-      <div ng-if="newValidation.rule">
-        <validation model="newValidation" validation-formats="validationFormats" all-fields="allFields"></validation>
-        <button ng-click="addValidation()" class="btn btn-primary pull-right">Add</button>
-      </div>
-    </div>
-  </div>
   <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
+</div>
 </div>

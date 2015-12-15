@@ -1,6 +1,7 @@
 'use strict';
 var pluck = require('lodash/collection/pluck');
 var map = require('lodash/collection/map');
+var includes = require('lodash/collection/includes');
 var assign = require('lodash/object/assign');
 var isObject = require('lodash/lang/isObject');
 var isArray = require('lodash/lang/isArray');
@@ -57,7 +58,15 @@ function unpackTranslations(locale, field) {
   return copy;
 }
 
-module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, SchemaSvc) {
+function getSelectedOption(field) {
+  if (!field.options) return;
+  var i = 0;
+  for (; i < field.options.length; i++) {
+    if (field.options[i].selected) return field.options[i].value
+  }
+}
+
+module.exports = function($scope, $stateParams, $timeout, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc) {
   var flow = $stateParams.flow
   var field = $stateParams.field
   // This will have to get more sophisticated once we know what schemas the flow
@@ -82,7 +91,20 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
     .get(flow, field)
     .then(function(resp) {
       $scope.field = resp.data
+      // Needs to be an object because of Angular :P
+      $scope.selectedOption = {
+        value: getSelectedOption($scope.field)
+      }
+      return $scope.field.type
+    })
+    .then(FieldMetaSvc.getFieldTypeAttributes)
+    .then(function(resp) {
+      $scope.fieldAttributes = resp.data
     });
+
+  $scope.fieldSupports = function(attr) {
+    return includes($scope.fieldAttributes, attr)
+  }
 
   $scope.emptyValue = ""
   $scope.locales = ['en-US']
@@ -102,7 +124,8 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
     $scope.saveButtonClasses = [
       'btn',
       'btn-primary',
-      'btn-lg'
+      'btn-lg',
+      'btn-block'
     ]
   }
 
@@ -112,7 +135,8 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
     $scope.saveButtonClasses = [
       'btn',
       'btn-primary',
-      'btn-lg'
+      'btn-lg',
+      'btn-block'
     ]
   }
 
@@ -122,7 +146,8 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
     $scope.saveButtonClasses = [
       'btn',
       'btn-success',
-      'btn-lg'
+      'btn-lg',
+      'btn-block'
     ]
     $timeout(idleSaveButton, 2000);
   }
@@ -157,6 +182,9 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
       values: {}
     };
     newValidation.message.values[$scope.selectedLocale] = $scope.newValidation.message;
+    if (!$scope.field.validation) {
+      $scope.field.validation = []
+    }
     $scope.field.validation.push(newValidation)
     $scope.newValidation = {
       rule: '',
@@ -170,7 +198,6 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, LocaleSvc, S
     // a tag.
     $event.stopPropagation();
     $event.preventDefault();
-    console.log('Removing:', $index);
     $scope.field.validation.splice($index, 1);
     if (isEmpty($scope.field.validation)) {
       delete $scope.field.validation;
