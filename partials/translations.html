@@ -1,0 +1,39 @@
+<div class="col-md-6">
+  <div class="form-group">
+    <label for="locale">Reference Language</label>
+    <select ng-model="referenceLocale" ng-options="locale for locale in locales" class="form-control"></select>
+  </div>
+</div>
+<div class="col-md-6">
+  <div class="form-group">
+    <label for="locale">Language</label>
+    <select ng-model="selectedLocale" ng-options="locale for locale in locales" class="form-control"></select>
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="form-group">
+    <label>Filter by path or key:</label>
+    <input ng-model="trFilter" class="form-control">
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="form-group">
+    <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
+  </div>
+  <div class="panel panel-default translation" ng-repeat="t in translations" ng-show="matchesSearch(t.path || t.key)">
+    <div class="panel-heading">
+      <h4 class="panel-title">{{t.path || t.key}}</h4>
+    </div>
+    <div class="panel-body">
+      <div class="col-md-6 reference">
+        <input ng-model="t.values[referenceLocale]" class="form-control" disabled>
+      </div>
+      <div class="col-md-6">
+        <input ng-model="t.values[selectedLocale]" class="form-control">
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
+  </div>
+</div>

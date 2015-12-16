@@ -22,5 +22,15 @@ module.exports = function($http, CredentialSvc, UtilsSvc, CapiBaseDomain) {
     )
     return $http.put(url, data, putConfig)
   }
+
+  this.patch = function(path, data) {
+    var url = UtilsSvc.urlize([CapiBaseDomain].concat(path))
+    var putConfig = extend(
+      { headers: { 'Content-Type': 'application/json' } },
+      config
+    )
+    return $http.patch(url, data, putConfig)
+  }
+
   return this;
 }

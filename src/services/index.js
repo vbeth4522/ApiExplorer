@@ -1,13 +1,14 @@
 'use strict';
 
 require('angular').module('capi-ui')
-.service('CredentialSvc', require('./credentials'))
 .constant('CapiBaseDomain', require('./capiBaseDomain'))
-.service('FlowSvc', require('./flows'))
-.service('FieldSvc', require('./fields'))
+.service('CredentialSvc', require('./credentials'))
 .service('FieldMetaSvc', require('./fieldMeta'))
+.service('FieldSvc', require('./fields'))
+.service('FlowSvc', require('./flows'))
 .service('FormSvc', require('./forms'))
+.service('HttpSvc', require('./http'))
 .service('LocaleSvc', require('./locales'))
 .service('SchemaSvc', require('./schemas'))
-.service('HttpSvc', require('./http'))
+.service('TranslationSvc', require('./translations'))
 .service('UtilsSvc', require('./utils'))

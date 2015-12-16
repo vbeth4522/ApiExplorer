@@ -1,9 +1,14 @@
 <div class="col-md-12">
   <h3>{{flow.name}}</h3>
-  <dl>
-    <dt>Version</dt>
-    <dd>{{flow.version}}</dd>
-  </dl>
+  <div class="col-md-6">
+    <dl>
+      <dt>Version</dt>
+      <dd>{{flow.version}}</dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <a ui-sref="translations({ flow: flow.name })">Translations</a>
+  </div>
 </div>
 <div class="col-md-6">
   <h4>Fields</h4>
@@ -21,3 +26,11 @@
     </li>
   </ul>
 </div>
+<!-- <div class="col-md-4">
+  <h4>Translations</h4>
+  <ul>
+    <li ng-repeat="form in flowForms">
+      <a ui-sref="formOverview({ flow: flow.name, form: form })">{{form}}</a>
+    </li>
+  </ul>
+</div> -->

@@ -60,6 +60,15 @@ angular.module(
         parent: 'flowOverview'
       }
     })
+    .state('translations', {
+      url: '/flows/:flow/translations',
+      templateUrl: '/public/partials/translations.html',
+      controller: 'TranslationsCtrl',
+      ncyBreadcrumb: {
+        label: 'Translations',
+        parent: 'flowOverview'
+      }
+    })
 })
 
 require('./src/services')
