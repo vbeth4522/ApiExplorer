@@ -17,5 +17,9 @@ module.exports = function(CredentialSvc, HttpSvc) {
     return HttpSvc.get(basePath.concat([flow, 'forms', form]))
   }
 
+  this.save = function(flow, form, data) {
+    return HttpSvc.put(basePath.concat([flow, 'forms', form]), data)
+  }
+
   return this;
 }

@@ -115,6 +115,14 @@
     <label for="locale">Language</label>
     <select ng-model="selectedLocale" ng-options="locale for locale in locales" class="form-control"></select>
   </div>
+  <div class="panel panel-default jtl-preview">
+    <div class="panel-heading">
+      <h4 class="panel-title">JTL</h4>
+    </div>
+    <div class="panel-body">
+      <code>{* {{field.name}} *}</code>
+    </div>
+  </div>
   <ng-include src="'/public/partials/singleWidgetPreview.html'"></ng-include>
   <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
 </div>
