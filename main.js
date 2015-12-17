@@ -5,11 +5,12 @@ require('angular-drag-and-drop-lists')
 angular.module(
   'capi-ui',
   [
-    require('angular-ui-router'),
     'ncy-angular-breadcrumb',
     'dndLists',
     require('angular-loading-bar'),
-    require('angular-ui-bootstrap')
+    require('angular-sanitize'),
+    require('angular-ui-bootstrap'),
+    require('angular-ui-router')
   ]
 )
 
@@ -66,6 +67,15 @@ angular.module(
       controller: 'TranslationsCtrl',
       ncyBreadcrumb: {
         label: 'Translations',
+        parent: 'flowOverview'
+      }
+    })
+    .state('mailTemplateOverview', {
+      url: '/flows/:flow/mailTemplates/:template',
+      templateUrl: '/public/partials/mailTemplateOverview.html',
+      controller: 'MailTemplateCtrl',
+      ncyBreadcrumb: {
+        label: 'Mail Template',
         parent: 'flowOverview'
       }
     })

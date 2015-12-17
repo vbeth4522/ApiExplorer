@@ -1,0 +1,53 @@
+<div class="col-md-12">
+  <h3>{{mailTemplate.name}}</h3>
+  <div class="col-md-6 mail-template-edit">
+    <div class="form-group">
+      <label>Subject</label>
+      <input ng-model="mailTemplate.subject" class="form-control">
+    </div>
+    <div class="form-group text-body">
+      <label>Text Version</label>
+      <textarea ng-model="mailTemplate.textBody" rows="10" class="form-control"></textarea>
+    </div>
+    <div ng-class="['form-group', 'html-body', {'has-warning': !isSafeHtml()}]">
+      <label>HTML Version</label>
+      <textarea ng-model="mailTemplate.htmlBody" rows="10" class="form-control"></textarea>
+    </div>
+    <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="locale">Language</label>
+      <select ng-model="selectedLocale" ng-options="locale for locale in locales" ng-change="getMailTemplate()" class="form-control"></select>
+    </div>
+    <div ng-if="!isSafeHtml()" class="alert alert-warning" role="alert">Invalid HTML</div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">HTML Preview</h4>
+        <span>Note: This is just an approximation, almost all email clients render HTML differently.</span>
+      </div>
+      <div class="panel-body">
+        <div class="mail-template-preview">
+          <h4>{{mailTemplate.subject}}</h4>
+          <div class="from">
+            <div class="user">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            </div>
+            <div class="address">
+              <span class="name">Janrain</span><span class="detail">&lt;noreply@janrain.com&gt;</span>
+            </div>
+            <div class="recipient">
+              <span class="detail">to me</span>
+            </div>
+          </div>
+          <div ng-if="isSafeHtml()">
+            <div class="html-body" ng-bind-html="mailTemplate.htmlBody"></div>
+          </div>
+          <div ng-if="!isSafeHtml()">
+            <div class="html-body invalid">{{mailTemplate.htmlBody}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

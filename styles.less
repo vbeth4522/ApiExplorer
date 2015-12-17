@@ -37,6 +37,57 @@
   background: #F0EEE8;
 }
 
+.mail-template-edit {
+  .html-body {
+    textarea {
+      font-family: monospace;
+    }
+  }
+}
+
+.mail-template-preview {
+  & > h4 {
+    border-bottom: 1px solid #aaa;
+    padding-bottom: 10px;
+  }
+  .from {
+    height: 29px;
+    margin-top: 10px;
+    padding: 0px 0px 3px 27px;
+    position: relative;
+    .address, .recipient {
+      padding-left: 8px;
+      line-height: 12px;
+      .detail {
+        color: #aaa;
+        font-size: 12px;
+      }
+    }
+    .address {
+      .name {
+        font-weight: bold;
+        padding-right:6px
+      }
+    }
+  }
+  .user {
+    position: absolute;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    color: #aaa;
+    padding: 6px 7px 6px 8px;
+    left: 0;
+    top: 0;
+    font-size: 9px;
+  }
+  .html-body {
+    padding-top: 5px;
+    padding-left: 36px;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
 .form-fields {
   padding-left: 0;
   > li {
