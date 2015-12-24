@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(UtilsSvc, $http) {
+module.exports = function(UtilSvc, $http) {
   var basePath = [
     'beta',
     'meta',
@@ -8,11 +8,11 @@ module.exports = function(UtilsSvc, $http) {
   ]
 
   this.getFieldTypes = function() {
-    return $http.get(UtilsSvc.urlize(basePath))
+    return $http.get(UtilSvc.urlize(basePath))
   }
 
   this.getFieldTypeAttributes = function(type) {
-    return $http.get(UtilsSvc.urlize(basePath.concat([type])))
+    return $http.get(UtilSvc.urlize(basePath.concat([type])))
   }
 
   return this;

@@ -66,117 +66,10 @@ function getSelectedOption(field) {
   }
 }
 
-module.exports = function($scope, $stateParams, $timeout, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc) {
+module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc) {
+  var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
   var field = $stateParams.field
-  // This will have to get more sophisticated once we know what schemas the flow
-  // is compatible with.
-  SchemaSvc
-    .get('user')
-    .then(function(resp) {
-      $scope.schemaAttributes = pluck(resp.data, 'schemaAttribute')
-    });
-  // Advanced mode: Disable the options that are taken by other fields.
-  LocaleSvc
-    .getAll(flow)
-    .then(function(resp) {
-      $scope.locales = pluck(resp.data, 'name')
-    });
-  FieldSvc
-    .getAll(flow)
-    .then(function(resp) {
-      $scope.allFields = pluck(resp.data, 'name')
-    });
-  FieldSvc
-    .get(flow, field)
-    .then(function(resp) {
-      $scope.field = resp.data
-      // Needs to be an object because of Angular :P
-      $scope.selectedOption = {
-        value: getSelectedOption($scope.field)
-      }
-      return $scope.field.type
-    })
-    .then(FieldMetaSvc.getFieldTypeAttributes)
-    .then(function(resp) {
-      $scope.fieldAttributes = resp.data
-    });
-
-  $scope.fieldSupports = function(attr) {
-    return includes($scope.fieldAttributes, attr)
-  }
-
-  $scope.emptyValue = ""
-  $scope.locales = ['en-US']
-  $scope.selectedLocale = first($scope.locales)
-  $scope.errors = {}
-  $scope.validationFormats = validationFormats
-  // $scope.validations = validations
-  $scope.newValidation = {
-    rule: '',
-    value: null,
-    message: ''
-  }
-  $scope.newOption = {
-    label: '',
-    value: ''
-  }
-
-  function idleSaveButton() {
-    $scope.saveButtonText = "Save Field"
-    $scope.saveButtonDisabled = false;
-    $scope.saveButtonClasses = [
-      'btn',
-      'btn-primary',
-      'btn-lg',
-      'btn-block'
-    ]
-  }
-
-  function workingSaveButton() {
-    $scope.saveButtonText = "Saving..."
-    $scope.saveButtonDisabled = true;
-    $scope.saveButtonClasses = [
-      'btn',
-      'btn-primary',
-      'btn-lg',
-      'btn-block'
-    ]
-  }
-
-  function successSaveButton() {
-    $scope.saveButtonText = "Success!"
-    $scope.saveButtonDisabled = false;
-    $scope.saveButtonClasses = [
-      'btn',
-      'btn-success',
-      'btn-lg',
-      'btn-block'
-    ]
-    $timeout(idleSaveButton, 2000);
-  }
-
-  $scope.save = function() {
-    $scope.errors = {};
-    workingSaveButton();
-    FieldSvc
-      .saveLocalized(
-        flow,
-        $scope.selectedLocale,
-        field,
-        unpackTranslations($scope.selectedLocale, $scope.field))
-      .then(successSaveButton)
-      .catch(function(resp) {
-        // There's much that can be done with these :)
-        $scope.errors = resp.data.errors;
-        idleSaveButton();
-      });
-  }
-
-  $scope.getAllowedValidations = function() {
-    if (!$scope.field) return
-    return difference(validations, pluck($scope.field.validation || [], 'rule'))
-  }
 
   function addOptionOrValidation(scopeProp, translatableProp, fieldProp, newItem) {
     var newThing = assign({}, $scope[scopeProp]);
@@ -204,6 +97,60 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, FieldMetaSvc
     }
   }
 
+  $scope.emptyValue = ""
+  $scope.locales = ['en-US']
+  $scope.selectedLocale = first($scope.locales)
+  $scope.errors = {}
+  $scope.validationFormats = validationFormats
+  // $scope.validations = validations
+  $scope.newValidation = { rule: '', value: null, message: '' }
+  $scope.newOption = { label: '', value: '' }
+  // This will have to get more sophisticated once we know what schemas the flow
+  // is compatible with.
+  SchemaSvc
+    .get('user')
+    .then(sFn.pluckPropToScope('schemaAttribute', 'schemaAttributes'))
+  LocaleSvc
+    .getAll(flow)
+    .then(sFn.pluckNameToScope('locales'));
+  FieldSvc
+    .getAll(flow)
+    .then(sFn.pluckNameToScope('allFields'));
+  FieldSvc
+    .get(flow, field)
+    .then(function(resp) {
+      $scope.field = resp.data
+      // Needs to be an object because of Angular :P
+      $scope.selectedOption = {
+        value: getSelectedOption($scope.field)
+      }
+      return $scope.field.type
+    })
+    .then(FieldMetaSvc.getFieldTypeAttributes)
+    .then(function(resp) {
+      $scope.fieldAttributes = resp.data
+    });
+
+  $scope.fieldSupports = function(attr) {
+    return includes($scope.fieldAttributes, attr)
+  }
+
+  $scope.save = function() {
+    $scope.errors = {};
+    return FieldSvc
+      .saveLocalized(
+        flow,
+        $scope.selectedLocale,
+        field,
+        unpackTranslations($scope.selectedLocale, $scope.field))
+      .catch(sFn.grabErrorsAndReject)
+  }
+
+  $scope.getAllowedValidations = function() {
+    if (!$scope.field) return
+    return difference(validations, pluck($scope.field.validation || [], 'rule'))
+  }
+
   $scope.addOption = partial(
     addOptionOrValidation,
     'newOption',
@@ -222,6 +169,4 @@ module.exports = function($scope, $stateParams, $timeout, FieldSvc, FieldMetaSvc
 
   $scope.removeOption = partial(removeOptionOrValidation, 'options')
   $scope.removeValidation = partial(removeOptionOrValidation, 'validation')
-
-  idleSaveButton();
 }

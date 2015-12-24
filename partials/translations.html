@@ -18,7 +18,7 @@
 </div>
 <div class="col-md-12">
   <div class="form-group">
-    <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
+    <save-button save-fn="save()" idle-text="Save Translations"></save-button>
   </div>
   <div class="panel panel-default translation" ng-repeat="t in translations" ng-show="matchesSearch(t.path || t.key)">
     <div class="panel-heading">
@@ -34,6 +34,6 @@
     </div>
   </div>
   <div class="form-group">
-    <input ng-click="save()" type="submit" value="{{saveButtonText}}" ng-disabled="saveButtonDisabled" ng-class="saveButtonClasses">
+    <save-button save-fn="save()" idle-text="Save Translations"></save-button>
   </div>
 </div>

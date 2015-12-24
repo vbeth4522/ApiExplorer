@@ -1,21 +1,21 @@
 'use strict';
 var extend = require('lodash/object/extend');
 
-module.exports = function($http, CredentialSvc, UtilsSvc, CapiBaseDomain) {
+module.exports = function($http, CredentialSvc, UtilSvc, CapiBaseDomain) {
   var creds = CredentialSvc.get()
   var config = {
     headers: {
-      Authorization: UtilsSvc.makeAuthHeader(creds)
+      Authorization: UtilSvc.makeAuthHeader(creds)
     }
   };
 
   this.get = function(path) {
-    var url = UtilsSvc.urlize([CapiBaseDomain].concat(path))
+    var url = UtilSvc.urlize([CapiBaseDomain].concat(path))
     return $http.get(url, config)
   }
 
   this.put = function(path, data) {
-    var url = UtilsSvc.urlize([CapiBaseDomain].concat(path))
+    var url = UtilSvc.urlize([CapiBaseDomain].concat(path))
     var putConfig = extend(
       { headers: { 'Content-Type': 'application/json' } },
       config
@@ -24,7 +24,7 @@ module.exports = function($http, CredentialSvc, UtilsSvc, CapiBaseDomain) {
   }
 
   this.patch = function(path, data) {
-    var url = UtilsSvc.urlize([CapiBaseDomain].concat(path))
+    var url = UtilSvc.urlize([CapiBaseDomain].concat(path))
     var putConfig = extend(
       { headers: { 'Content-Type': 'application/json' } },
       config
