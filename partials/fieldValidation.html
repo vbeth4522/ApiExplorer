@@ -8,7 +8,7 @@
       <input type="number" class="form-control" ng-model="model.value">
     </div>
     <div ng-if="model.rule === 'format'">
-      <select class="form-control" ng-model="model.value" ng-options="x for x in modelFormats"></select>
+      <select class="form-control" ng-model="model.value" ng-options="x for x in validationFormats"></select>
     </div>
     <div ng-if="model.rule === 'match'">
       <select class="form-control" ng-model="model.value" ng-options="x for x in allFields"></select>

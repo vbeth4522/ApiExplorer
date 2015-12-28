@@ -5,12 +5,14 @@
       <h4 class="panel-title">Add Field</h4>
     </div>
     <div class="panel-body">
-      <select ng-model="fieldToAdd" ng-options="field for field in addableFields()" class="form-control"></select>
+      <div class="form-group">
+        <select ng-model="fieldToAdd" ng-options="field for field in addableFields()" class="form-control"></select>
+      </div>
       <button ng-click="addField()" class="btn btn-primary btn-xs btn-block">Add</button>
     </div>
   </div>
-  <ul class="form-fields" dnd-list="formFields">
-    <li ng-repeat="field in formFields" dnd-draggable="o" dnd-moved="formFields.splice($index, 1)">
+  <ul class="form-fields">
+    <li ng-repeat="field in formFields">
       {{field}}
       <span ng-click="removeField($index)" class="glyphicon glyphicon-remove pull-right remove" title="Remove"></span>
     </li>
