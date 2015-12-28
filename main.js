@@ -14,7 +14,7 @@ angular.module(
   ]
 )
 
-.config(function($stateProvider) {
+.config(function($stateProvider, $httpProvider) {
   $stateProvider
     // This is just a placeholder, probably do something with this in the
     // future.
@@ -79,6 +79,21 @@ angular.module(
         parent: 'flowOverview'
       }
     })
+    .state('addField', {
+      url: '/flows/:flow/addField',
+      templateUrl: '/public/partials/fieldOverview.html',
+      controller: 'AddFieldCtrl',
+      ncyBreadcrumb: {
+        label: 'Add Field',
+        parent: 'flowOverview'
+      }
+    })
+
+  var commonPutAndPostHeaders = {
+    'Content-Type': 'application/json'
+  }
+  $httpProvider.defaults.headers.post = commonPutAndPostHeaders
+  $httpProvider.defaults.headers.put = commonPutAndPostHeaders
 })
 
 require('./src/services')

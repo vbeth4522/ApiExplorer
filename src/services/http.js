@@ -1,36 +1,25 @@
 'use strict';
 var extend = require('lodash/object/extend');
+var flow = require('lodash/function/flow');
+var partial = require('lodash/function/partial');
 
 module.exports = function($http, CredentialSvc, UtilSvc, CapiBaseDomain) {
   var creds = CredentialSvc.get()
-  var config = {
-    headers: {
-      Authorization: UtilSvc.makeAuthHeader(creds)
-    }
-  };
+  $http.defaults.headers.common.Authorization = UtilSvc.makeAuthHeader(creds)
 
-  this.get = function(path) {
-    var url = UtilSvc.urlize([CapiBaseDomain].concat(path))
-    return $http.get(url, config)
+  function toUrl(path) {
+    return UtilSvc.urlize([CapiBaseDomain].concat(path))
   }
 
-  this.put = function(path, data) {
-    var url = UtilSvc.urlize([CapiBaseDomain].concat(path))
-    var putConfig = extend(
-      { headers: { 'Content-Type': 'application/json' } },
-      config
-    )
-    return $http.put(url, data, putConfig)
+  function sendDataVia(method, path, data) {
+    return $http[method](toUrl(path), data)
   }
 
-  this.patch = function(path, data) {
-    var url = UtilSvc.urlize([CapiBaseDomain].concat(path))
-    var putConfig = extend(
-      { headers: { 'Content-Type': 'application/json' } },
-      config
-    )
-    return $http.patch(url, data, putConfig)
-  }
+  this.get = flow(toUrl, $http.get)
+  this.delete = flow(toUrl, $http.delete)
+  this.post = partial(sendDataVia, 'post')
+  this.put = partial(sendDataVia, 'put')
+  this.patch = partial(sendDataVia, 'patch')
 
   return this;
 }

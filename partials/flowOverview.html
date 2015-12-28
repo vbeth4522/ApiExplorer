@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="col-md-3">
-  <h4>Fields</h4>
+  <h4>Fields<a ui-sref="addField({ flow: flow.name })" class="pull-right">Add Field</a></h4>
   <ul>
     <li ng-repeat="field in flowFields">
       <a ui-sref="fieldOverview({ flow: flow.name, field: field })">{{field}}</a>

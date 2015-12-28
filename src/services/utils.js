@@ -1,7 +1,27 @@
 'use strict';
 
+var assign = require('lodash/object/assign');
+var forOwn = require('lodash/object/forOwn');
+var getPath = require('lodash/object/get');
+var has = require('lodash/object/has');
+var isArray = require('lodash/lang/isArray');
+var isObject = require('lodash/lang/isObject');
+var map = require('lodash/collection/map');
 var partial = require('lodash/function/partial');
 var pluck = require('lodash/collection/pluck');
+
+function unpackTranslations(locale, field) {
+  var copy = assign({}, field);
+  forOwn(copy, function(v, k) {
+    if (isObject(v) && has(v, 'values')) {
+      copy[k] = getPath(v, 'values.' + locale, '')
+    }
+    if (isArray(v)) {
+      copy[k] = map(v, partial(unpackTranslations, locale))
+    }
+  });
+  return copy;
+}
 
 module.exports = function($q) {
   this.makeAuthHeader = function(creds) {
@@ -11,6 +31,8 @@ module.exports = function($q) {
   this.urlize = function(arr) {
     return arr.join('/');
   }
+
+  this.unpackTranslations = unpackTranslations
 
   this.scopeHelpers = function($scope) {
     var h = {}

@@ -21,5 +21,9 @@ module.exports = function(CredentialSvc, HttpSvc) {
     return HttpSvc.put(basePath.concat([flow, 'locales', locale, 'fields', field]), field_def)
   }
 
+  this.addLocalized = function(flow, locale, field_def) {
+    return HttpSvc.post(basePath.concat([flow, 'locales', locale, 'fields']), field_def)
+  }
+
   return this;
 }

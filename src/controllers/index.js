@@ -1,6 +1,7 @@
 'use strict';
 
 require('angular').module('capi-ui')
+.controller('AddFieldCtrl', require('./addField'))
 .controller('CredentialsCtrl', require('./credentials'))
 .controller('FieldOverviewCtrl', require('./fieldOverview'))
 .controller('FlowListCtrl', require('./flowList'))

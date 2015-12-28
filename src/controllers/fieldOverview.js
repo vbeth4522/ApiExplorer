@@ -3,10 +3,6 @@ var pluck = require('lodash/collection/pluck');
 var map = require('lodash/collection/map');
 var includes = require('lodash/collection/includes');
 var assign = require('lodash/object/assign');
-var isObject = require('lodash/lang/isObject');
-var isArray = require('lodash/lang/isArray');
-var forOwn = require('lodash/object/forOwn');
-var has = require('lodash/object/has');
 var partial = require('lodash/function/partial');
 var first = require('lodash/array/first');
 var isEmpty = require('lodash/lang/isEmpty');
@@ -40,23 +36,6 @@ var validations = [
   'unique',
   'whitelist'
 ]
-
-function isReference(item) {
-  return has(item, '_self');
-}
-
-function unpackTranslations(locale, field) {
-  var copy = assign({}, field);
-  forOwn(copy, function(v, k) {
-    if (isObject(v) && isReference(v)) {
-      copy[k] = v.values[locale];
-    }
-    if (isArray(v)) {
-      copy[k] = map(v, partial(unpackTranslations, locale))
-    }
-  });
-  return copy;
-}
 
 function getSelectedOption(field) {
   if (!field.options) return;
@@ -142,7 +121,7 @@ module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc,
         flow,
         $scope.selectedLocale,
         field,
-        unpackTranslations($scope.selectedLocale, $scope.field))
+        UtilSvc.unpackTranslations($scope.selectedLocale, $scope.field))
       .catch(sFn.grabErrorsAndReject)
   }
 
