@@ -6,6 +6,9 @@
   <div ng-switch-when="email">
     <input name="{{field.name}}" ng-model="emptyValue" ng-disabled="o.disabled">
   </div>
+  <div ng-switch-when="password">
+    <input name="{{field.name}}" type="password" ng-model="emptyValue" ng-disabled="o.disabled">
+  </div>
   <div ng-switch-when="select">
     <select ng-model="emptyValue" ng-options="o.value as o.label.values[selectedLocale] disable when o.disabled for o in field.options"></select>
   </div>

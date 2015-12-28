@@ -48,6 +48,7 @@ function getSelectedOption(field) {
 module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc) {
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
+  var form = $stateParams.form
   var field = $stateParams.field
 
   function addOptionOrValidation(scopeProp, translatableProp, fieldProp, newItem) {
@@ -76,6 +77,8 @@ module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc,
     }
   }
 
+  $scope.form = form
+  $scope.fieldName = field
   $scope.emptyValue = ""
   $scope.locales = ['en-US']
   $scope.selectedLocale = first($scope.locales)

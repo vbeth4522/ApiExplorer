@@ -28,6 +28,7 @@ module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FormSvc, Loca
     };
   }
 
+  $scope.flow = flow
   $scope.form = form
   $scope.formFields = []
   $scope.allFields = []

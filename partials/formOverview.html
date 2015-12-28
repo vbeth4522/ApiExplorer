@@ -13,7 +13,7 @@
   </div>
   <ul class="form-fields">
     <li ng-repeat="field in formFields">
-      {{field}}
+      <a ui-sref="fieldOverveiwFromForm({ flow: flow, form: form, field: field })">{{field}}</a>
       <span ng-click="removeField($index)" class="glyphicon glyphicon-remove pull-right remove" title="Remove"></span>
     </li>
   </ul>

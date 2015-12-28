@@ -48,7 +48,7 @@ angular.module(
       templateUrl: '/public/partials/fieldOverview.html',
       controller: 'FieldOverviewCtrl',
       ncyBreadcrumb: {
-        label: 'Field',
+        label: 'Field: {{fieldName}}',
         parent: 'flowOverview'
       }
     })
@@ -57,8 +57,17 @@ angular.module(
       templateUrl: '/public/partials/formOverview.html',
       controller: 'FormOverviewCtrl',
       ncyBreadcrumb: {
-        label: 'Form',
+        label: 'Form: {{form}}',
         parent: 'flowOverview'
+      }
+    })
+    .state('fieldOverveiwFromForm', {
+      url: '/flows/:flow/forms/:form/fields/:field',
+      templateUrl: '/public/partials/fieldOverview.html',
+      controller: 'FieldOverviewCtrl',
+      ncyBreadcrumb: {
+        label: 'Field: {{fieldName}}',
+        parent: 'formOverview'
       }
     })
     .state('translations', {
