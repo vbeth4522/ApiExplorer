@@ -1,12 +1,10 @@
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-default" ng-controller="CredentialsCtrl">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">Janrain Config API</a>
     </div>
-    <div>
-      <ng-include src="'/public/partials/credentials.html'"></ng-include>
-    </div>
     <ul class="nav navbar-nav navbar-right">
+      <li><button type="button" class="btn btn-default navbar-btn" ng-if="hasCreds()" ng-click="clear()">Log out</button></li>
       <li><a href="/public/docs.html">REST API Documentation</a></li>
     </ul>
   </div>

@@ -1,18 +1,22 @@
-module.exports = function() {
-  var storeKey = 'capi-creds';
-  var credentials = {
-    appId: null,
-    clientId: null,
-    clientSecret: null
-  }
+'use strict';
 
-  try {
-    stored_creds = JSON.parse(window.sessionStorage.getItem(storeKey));
+var constant = require('lodash/utility/constant');
+var blankCreds = constant({
+  appId: null,
+  clientId: null,
+  clientSecret: null
+})
+
+module.exports = function($rootScope) {
+  var storeKey = 'capi-creds';
+  var credentials = blankCreds()
+
+  function loadCredsFromSession() {
+    var stored_creds = JSON.parse(window.sessionStorage.getItem(storeKey));
     if (stored_creds) {
       credentials = stored_creds
+      $rootScope.$broadcast('credentialsUpdated', credentials)
     }
-  } catch(e) {
-    // No creds, this is fine.
   }
 
   this.get = function() {
@@ -23,8 +27,16 @@ module.exports = function() {
     credentials.appId = appId;
     credentials.clientId = clientId;
     credentials.clientSecret = clientSecret;
+    $rootScope.$broadcast('credentialsUpdated', credentials)
     window.sessionStorage.setItem(storeKey, JSON.stringify(credentials))
   }
 
-  return this
+  this.clear = function() {
+    window.sessionStorage.removeItem(storeKey)
+    credentials = blankCreds()
+    $rootScope.$broadcast('credentialsUpdated', credentials)
+    return credentials
+  }
+
+  loadCredsFromSession()
 }
