@@ -105,6 +105,6 @@ angular.module(
   $httpProvider.defaults.headers.put = commonPutAndPostHeaders
 })
 
-require('./src/services')
-require('./src/controllers')
-require('./src/directives')
+require('./services')
+require('./controllers')
+require('./directives')

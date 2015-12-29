@@ -6,7 +6,6 @@ var partial = require('lodash/function/partial');
 var commonClasses = constant(['btn', 'btn-lg', 'btn-block'])
 
 module.exports = function($scope, $timeout) {
-  window.btnsc = $scope
   function state(text, disabled, klass) {
     $scope.text = text
     $scope.disabled = disabled;

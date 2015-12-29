@@ -7,12 +7,12 @@ var blankCreds = constant({
   clientSecret: null
 })
 
-module.exports = function($rootScope) {
+module.exports = function($rootScope, $window) {
   var storeKey = 'capi-creds';
   var credentials = blankCreds()
 
   function loadCredsFromSession() {
-    var stored_creds = JSON.parse(window.sessionStorage.getItem(storeKey));
+    var stored_creds = JSON.parse($window.sessionStorage.getItem(storeKey));
     if (stored_creds) {
       credentials = stored_creds
       $rootScope.$broadcast('credentialsUpdated', credentials)
@@ -28,11 +28,11 @@ module.exports = function($rootScope) {
     credentials.clientId = clientId;
     credentials.clientSecret = clientSecret;
     $rootScope.$broadcast('credentialsUpdated', credentials)
-    window.sessionStorage.setItem(storeKey, JSON.stringify(credentials))
+    $window.sessionStorage.setItem(storeKey, JSON.stringify(credentials))
   }
 
   this.clear = function() {
-    window.sessionStorage.removeItem(storeKey)
+    $window.sessionStorage.removeItem(storeKey)
     credentials = blankCreds()
     $rootScope.$broadcast('credentialsUpdated', credentials)
     return credentials
