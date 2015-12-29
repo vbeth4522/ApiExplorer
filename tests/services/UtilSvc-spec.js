@@ -109,6 +109,7 @@ describe('UtilSvc', function() {
         sFn.grabErrorsAndReject(response).catch(function(resp) {
           expected = resp
         });
+        sinon.assert.calledOnce($q.reject)
         $rootScope.$apply()
         assert.deepEqual(response, expected)
         assert.strictEqual(scope.errors, response.data.errors)

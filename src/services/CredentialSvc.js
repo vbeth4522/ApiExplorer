@@ -1,11 +1,15 @@
 'use strict';
 
-var constant = require('lodash/utility/constant');
-var blankCreds = constant({
-  appId: null,
-  clientId: null,
-  clientSecret: null
-})
+var partial = require('lodash/function/partial');
+var clone = require('lodash/lang/clone');
+var blankCreds = partial(
+  clone,
+  {
+    appId: null,
+    clientId: null,
+    clientSecret: null
+  }
+)
 
 module.exports = function($rootScope, $window) {
   var storeKey = 'capi-creds';

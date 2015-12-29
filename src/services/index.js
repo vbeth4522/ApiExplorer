@@ -2,7 +2,7 @@
 
 require('angular').module('capi-ui')
 .constant('CapiBaseDomain', require('./capiBaseDomain'))
-.service('CredentialSvc', require('./credentials'))
+.service('CredentialSvc', require('./CredentialSvc'))
 .service('FieldMetaSvc', require('./fieldMeta'))
 .service('FieldSvc', require('./fields'))
 .service('FlowSvc', require('./flows'))
