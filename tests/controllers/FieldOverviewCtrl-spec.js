@@ -3,10 +3,8 @@
 require('angular-mocks')
 var angular = require('angular');
 var sinon = require('sinon');
-var fieldsList = require('../fixtures/fieldCollection')
 var fieldDef = require('../fixtures/fieldDefinition')
-var schemaAttributes = require('../fixtures/schemaAttributes')
-var locales = require('../fixtures/localeCollection')
+var h = require('../helpers')
 
 function stub(returnVal) {
   return sinon.stub().returns(returnVal)
@@ -33,20 +31,12 @@ describe('FieldOverviewCtrl', function() {
         form: 'myform',
         field: 'myfield'
       }
-      FieldSvc = {
-        get: apiStub(fieldDef),
-        getAll: apiStub(fieldsList),
-        saveLocalized: apiStub()
-      }
-      SchemaSvc = {
-        get: apiStub(schemaAttributes)
-      }
+      FieldSvc = h.makeFieldSvcStub($q)
+      SchemaSvc = h.makeSchemaSvcStub($q)
       FieldMetaSvc = {
         getFieldTypeAttributes: apiStub(['foo', 'bar'])
       }
-      LocaleSvc = {
-        getAll: apiStub(locales)
-      }
+      LocaleSvc = h.makeLocaleSvcStub($q)
       $controller(
         'FieldOverviewCtrl',
         {
