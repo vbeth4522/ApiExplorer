@@ -45,7 +45,15 @@ function getSelectedOption(field) {
   }
 }
 
-module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc) {
+module.exports = function(
+  $scope,
+  $stateParams,
+  UtilSvc,
+  FieldSvc,
+  FieldMetaSvc,
+  LocaleSvc,
+  SchemaSvc
+) {
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
   var form = $stateParams.form
@@ -63,7 +71,6 @@ module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc,
     }
     $scope.field[fieldProp].push(newThing)
     $scope[scopeProp] = newItem
-    console.log($scope)
   }
 
   function removeOptionOrValidation(fieldProp, $index, $event) {
@@ -84,7 +91,6 @@ module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc,
   $scope.selectedLocale = first($scope.locales)
   $scope.errors = {}
   $scope.validationFormats = validationFormats
-  // $scope.validations = validations
   $scope.newValidation = { rule: '', value: null, message: '' }
   $scope.newOption = { label: '', value: '' }
   // This will have to get more sophisticated once we know what schemas the flow

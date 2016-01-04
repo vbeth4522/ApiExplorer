@@ -3,7 +3,7 @@
 require('angular').module('capi-ui')
 .controller('AddFieldCtrl', require('./AddFieldCtrl'))
 .controller('CredentialsCtrl', require('./CredentialsCtrl'))
-.controller('FieldOverviewCtrl', require('./fieldOverview'))
+.controller('FieldOverviewCtrl', require('./FieldOverviewCtrl'))
 .controller('FlowListCtrl', require('./flowList'))
 .controller('FlowOverviewCtrl', require('./flowOverview'))
 .controller('FormOverviewCtrl', require('./formOverview'))
