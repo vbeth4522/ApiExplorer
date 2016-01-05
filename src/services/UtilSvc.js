@@ -24,6 +24,8 @@ function unpackTranslations(locale, field) {
 }
 
 module.exports = function($q) {
+  'ngInject';
+
   this.makeAuthHeader = function(creds) {
     return 'Basic ' + btoa(creds.clientId + ':' + creds.clientSecret);
   }

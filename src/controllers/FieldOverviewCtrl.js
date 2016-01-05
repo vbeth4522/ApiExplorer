@@ -54,6 +54,8 @@ module.exports = function(
   LocaleSvc,
   SchemaSvc
 ) {
+  'ngInject';
+
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
   var form = $stateParams.form

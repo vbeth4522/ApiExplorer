@@ -12,6 +12,8 @@ var blankCreds = partial(
 )
 
 module.exports = function($rootScope, $window) {
+  'ngInject';
+
   var storeKey = 'capi-creds';
   var credentials = blankCreds()
 

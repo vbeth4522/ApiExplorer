@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function($http, CredentialSvc, HttpSvc) {
+  'ngInject';
+
   var creds = CredentialSvc.get()
   var basePath = [
     'beta',

@@ -3,6 +3,8 @@ var pluck = require('lodash/collection/pluck');
 var includes = require('lodash/collection/includes');
 
 module.exports = function($scope, $stateParams, UtilSvc, LocaleSvc, TranslationSvc) {
+  'ngInject';
+
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
   $scope.referenceLocale = 'en-US'

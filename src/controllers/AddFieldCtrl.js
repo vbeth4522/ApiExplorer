@@ -4,6 +4,8 @@ var first = require('lodash/array/first');
 var includes = require('lodash/collection/includes');
 
 module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc) {
+  'ngInject';
+
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
 

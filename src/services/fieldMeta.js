@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function(UtilSvc, $http) {
+  'ngInject';
+
   var basePath = [
     'beta',
     'meta',

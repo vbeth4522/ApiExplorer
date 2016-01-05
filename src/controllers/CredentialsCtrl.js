@@ -1,6 +1,8 @@
 'use strict';
 
 module.exports = function($scope, $state, CredentialSvc) {
+  'ngInject';
+
   function updateScopeCredentials(creds) {
     $scope.appId = creds.appId;
     $scope.clientId = creds.clientId;

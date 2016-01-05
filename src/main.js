@@ -1,4 +1,5 @@
 var angular = require('angular');
+var flowOverviewResolvers = require('./resolvers/FlowOverviewResolvers')
 require('angular-breadcrumb');
 require('angular-drag-and-drop-lists')
 
@@ -15,6 +16,8 @@ angular.module(
 )
 
 .config(function($stateProvider, $httpProvider) {
+  'ngInject';
+
   $stateProvider
     // This is just a placeholder, probably do something with this in the
     // future.
@@ -38,6 +41,7 @@ angular.module(
       url: '/flows/:flow',
       templateUrl: '/public/partials/flowOverview.html',
       controller: 'FlowOverviewCtrl',
+      resolve: flowOverviewResolvers,
       ncyBreadcrumb: {
         label: 'Flow Overview',
         parent: 'flows'
@@ -105,6 +109,6 @@ angular.module(
   $httpProvider.defaults.headers.put = commonPutAndPostHeaders
 })
 
-require('./services')
 require('./controllers')
 require('./directives')
+require('./services')

@@ -2,6 +2,8 @@
 var sortBy = require('lodash/collection/sortBy');
 
 module.exports = function(CredentialSvc, HttpSvc) {
+  'ngInject';
+
   var creds = CredentialSvc.get()
   var basePath = [
     'beta',

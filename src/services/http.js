@@ -4,6 +4,8 @@ var flow = require('lodash/function/flow');
 var partial = require('lodash/function/partial');
 
 module.exports = function($http, CredentialSvc, UtilSvc, CapiBaseDomain) {
+  'ngInject';
+
   var creds = CredentialSvc.get()
   $http.defaults.headers.common.Authorization = UtilSvc.makeAuthHeader(creds)
 

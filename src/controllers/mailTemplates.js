@@ -2,6 +2,8 @@
 var pluck = require('lodash/collection/pluck');
 
 module.exports = function($scope, $stateParams, $sce, LocaleSvc, MailTemplateSvc) {
+  'ngInject';
+
   var flow = $stateParams.flow
   var template = $stateParams.template
   $scope.selectedLocale = 'en-US';

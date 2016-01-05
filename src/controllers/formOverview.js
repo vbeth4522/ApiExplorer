@@ -6,6 +6,8 @@ var difference = require('lodash/array/difference');
 var map = require('lodash/collection/map');
 
 module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FormSvc, LocaleSvc) {
+  'ngInject';
+
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
   var form = $stateParams.form
