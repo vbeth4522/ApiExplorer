@@ -7,7 +7,7 @@
     "watchtest": "karma start --browsers PhantomJS",
     "test": "karma start --browsers PhantomJS --singleRun true",
     "buildjs": "browserify -t [ browserify-ngannotate --add ] src/main.js | sed \"s/[\\\"']ngInject[\\\"'];*//g\" > bundle.js",
-    "compilejs": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js bundle.js --js_output_file bundle-min.js",
+    "compilejs": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js bundle.js --js_output_file bundle-min.js --jscomp_off=misplacedTypeAnnotation",
     "buildcss": "lessc styles.less styles.css",
     "build": "npm run buildjs && npm run compilejs && npm run buildcss"
   },
