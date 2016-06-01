@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function($http, CredentialSvc, HttpSvc) {
+module.exports = function(CredentialSvc, HttpSvc) {
   'ngInject';
 
   var creds = CredentialSvc.get()
