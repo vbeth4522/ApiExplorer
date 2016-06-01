@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(UtilSvc, $http) {
+module.exports = function(UtilSvc, HttpSvc) {
   'ngInject';
 
   var basePath = [
@@ -9,11 +9,11 @@ module.exports = function(UtilSvc, $http) {
   ]
 
   this.getFieldTypes = function() {
-    return $http.get(UtilSvc.urlize(basePath))
+    return HttpSvc.get(basePath)
   }
 
   this.getFieldTypeAttributes = function(type) {
-    return $http.get(UtilSvc.urlize(basePath.concat([type])))
+    return HttpSvc.get(basePath.concat([type]))
   }
 
   return this;
