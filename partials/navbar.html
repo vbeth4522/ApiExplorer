@@ -1,10 +1,16 @@
-<nav class="navbar navbar-default" ng-controller="CredentialsCtrl">
+<nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
       <a class="navbar-brand" href="#">Janrain Config API</a>
     </div>
-    <ul class="nav navbar-nav navbar-right">
-      <li><button type="button" class="btn btn-default navbar-btn" ng-if="hasCreds()" ng-click="clear()">Log out</button></li>
+    <ul class="nav navbar-nav navbar-right" ng-controller="RegionsCtrl">
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Region: {{ region }}<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li ng-repeat="region in regions"><a ng-click="setRegion(region)">{{ region }}</a></li>
+        </ul>
+      </li>
+      <li ng-controller="CredentialsCtrl"><button type="button" class="btn btn-default navbar-btn" ng-if="hasCreds()" ng-click="clear()">Log out</button></li>
       <li><a href="/docs/index.html">REST API Documentation</a></li>
     </ul>
   </div>
