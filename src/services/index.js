@@ -1,7 +1,6 @@
 'use strict';
 
 require('angular').module('capi-ui')
-.constant('CapiBaseDomain', require('./capiBaseDomain'))
 .constant('RegionMap', require('./RegionMapCnst'))
 .service('CredentialSvc', require('./CredentialSvc'))
 .service('FieldMetaSvc', require('./fieldMetaSvc'))
