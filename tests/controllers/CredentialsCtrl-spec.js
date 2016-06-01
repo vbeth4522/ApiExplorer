@@ -35,7 +35,7 @@ describe('CredentialsCtrl', function() {
 
   describe('initial state', function() {
     it('should set the scope credentials', function() {
-      sinon.assert.calledOnce(CredentialSvc.get)
+      sinon.assert.called(CredentialSvc.get)
       assert.isNull($scope.appId)
       assert.isNull($scope.clientId)
       assert.isNull($scope.clientSecret)
