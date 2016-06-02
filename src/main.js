@@ -1,5 +1,7 @@
 var angular = require('angular');
 var flowOverviewResolvers = require('./resolvers/FlowOverviewResolvers')
+window.jQuery = require('jquery')
+require('bootstrap')
 require('angular-breadcrumb');
 require('angular-drag-and-drop-lists')
 

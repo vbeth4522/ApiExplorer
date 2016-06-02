@@ -37,7 +37,7 @@ describe('CredentialSvc', function() {
       sinon.assert.calledWith($rootScope.$broadcast, 'credentialsUpdated', expected)
       assert.strictEqual(
         window.sessionStorage.getItem('capi-creds'),
-        JSON.stringify(setCreds)
+        JSON.stringify({ "us": setCreds })
       )
     });
   });
@@ -61,7 +61,7 @@ describe('CredentialSvc with state', function() {
   var $rootScope
 
   beforeEach(function() {
-    window.sessionStorage.setItem('capi-creds', JSON.stringify(setCreds))
+    window.sessionStorage.setItem('capi-creds', JSON.stringify({ "us": setCreds }))
     angular.mock.module('capi-ui')
     angular.mock.inject(function(_$rootScope_) {
       $rootScope = _$rootScope_

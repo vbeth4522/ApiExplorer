@@ -9,7 +9,7 @@ var fieldDef = require('../fixtures/fieldDefinition')
 describe('FieldSvc', function() {
   var FieldSvc
   var $httpBackend
-  var baseUrl = '/config/myappid/flows/myflow'
+  var baseUrl = 'https://v1.api.janrain.us/config/myappid/flows/myflow'
   var fieldsUrl = baseUrl + '/fields'
   var fieldUrl = fieldsUrl + '/myfield'
   var localizedAddUrl = baseUrl + '/locales/en-US/fields'
