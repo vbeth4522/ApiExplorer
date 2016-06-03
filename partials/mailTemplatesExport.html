@@ -1,0 +1,41 @@
+<div>
+  <div class="col-sm-6">
+    <div class="panel panel-default add-option">
+      <div class="panel-heading">
+        <h4 class="panel-title">Add Mail Template</h4>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <select class="form-control" ng-model="mailTemplaeToAdd" ng-options="index as mailTemplate for (index, mailTemplate) in addableMailTemplates" ng-disabled="!addableMailTemplates.length"></select>
+        </div>
+        <button class="btn btn-primary btn-xs btn-block" ng-click="addMailTemplate(mailTemplaeToAdd)" ng-disabled="mailTemplaeToAdd === undefined">Add</button>
+      </div>
+    </div>
+    <ul class="form-fields">
+      <li ng-repeat="template in mailTemplates">
+        {{template}}
+        <span ng-click="removeMailTemplate($index)" class="glyphicon glyphicon-remove pull-right remove" title="Remove"></span>
+      </li>
+    </ul>
+  </div>
+  <div class="col-sm-6">
+    <div class="panel panel-default add-option">
+      <div class="panel-heading">
+        <h4 class="panel-title">Add Local</h4>
+      </div>
+      <div class="panel-body">
+        <div class="form-group">
+          <select class="form-control" ng-model="localeToAdd" ng-options="index as locale for (index, locale) in addableLocales" ng-disabled="!addableLocales.length"></select>
+        </div>
+        <button class="btn btn-primary btn-xs btn-block" ng-click="addLocale(localeToAdd)" ng-disabled="localeToAdd === undefined">Add</button>
+      </div>
+    </div>
+    <ul class="form-fields">
+      <li ng-repeat="locale in locales">
+        {{locale}}
+        <span ng-click="removeLocale($index)" class="glyphicon glyphicon-remove pull-right remove" title="Remove"></span>
+      </li>
+    </ul>
+  </div>
+  <save-button save-fn="export()" idle-text="Export"></save-button>
+</div>
