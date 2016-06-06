@@ -23,5 +23,11 @@ module.exports = function($http, CredentialSvc, UtilSvc, RegionSvc) {
   this.put = partial(sendDataVia, 'put')
   this.patch = partial(sendDataVia, 'patch')
 
+  this.serialGet = flow(toUrl, $http.get)
+  this.serialDelete = flow(toUrl, $http.delete)
+  this.serialPost = partial(sendDataVia, 'post')
+  this.serialPut = partial(sendDataVia, 'put')
+  this.serialPatch = partial(sendDataVia, 'patch')
+
   return this;
 }
