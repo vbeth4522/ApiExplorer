@@ -13,7 +13,8 @@ angular.module(
     require('angular-loading-bar'),
     require('angular-sanitize'),
     require('angular-ui-bootstrap'),
-    require('angular-ui-router')
+    require('angular-ui-router'),
+    require('ng-file-upload'),
   ]
 )
 
