@@ -94,6 +94,26 @@ angular.module(
         parent: 'flowOverview'
       }
     })
+    .state('mailTemplatesImport', {
+      url: '/flows/:flow/importMailTemplates',
+      templateUrl: '/partials/mailTemplatesImport.html',
+      controller: 'MailTemplatesImportCtrl',
+      resolve: flowOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Import Mail Templates',
+        parent: 'flowOverview'
+      }
+    })
+    .state('mailTemplatesExport', {
+      url: '/flows/:flow/exportMailTemplates',
+      templateUrl: '/partials/mailTemplatesExport.html',
+      controller: 'MailTemplatesExportCtrl',
+      resolve: flowOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Export Mail Templates',
+        parent: 'flowOverview'
+      }
+    })
     .state('addField', {
       url: '/flows/:flow/addField',
       templateUrl: '/partials/fieldOverview.html',
