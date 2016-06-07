@@ -24,7 +24,7 @@ module.exports = function(CredentialSvc, HttpSvc) {
   }
 
   this.serialSave = function(flow, locale, template, data) {
-    return HttpSvc.put(basePath.concat([flow, 'locales', locale, 'mailTemplates', template]), data)
+    return HttpSvc.serialPut(basePath.concat([flow, 'locales', locale, 'mailTemplates', template]), data)
   }
 
   return this;

@@ -17,17 +17,36 @@ module.exports = function($http, CredentialSvc, UtilSvc, RegionSvc) {
     return $http[method](toUrl(path), data)
   }
 
+  var promise = null;
+
+  function serialize(newPromise) {
+    if (!promise) {
+      promise = newPromise();
+    } else {
+      promise = promise.then(function() { return newPromise() });
+    }
+    promise.catch(function() { console.log("failed") });
+    return promise;
+  }
+
+  function runAsSerialize(func) {
+    return function() {
+      var args = Array.prototype.slice.call(arguments);
+      return serialize(func.bind.apply(func, [null].concat(args)))
+    }
+  }
+
   this.get = flow(toUrl, $http.get)
   this.delete = flow(toUrl, $http.delete)
   this.post = partial(sendDataVia, 'post')
   this.put = partial(sendDataVia, 'put')
   this.patch = partial(sendDataVia, 'patch')
 
-  this.serialGet = flow(toUrl, $http.get)
-  this.serialDelete = flow(toUrl, $http.delete)
-  this.serialPost = partial(sendDataVia, 'post')
-  this.serialPut = partial(sendDataVia, 'put')
-  this.serialPatch = partial(sendDataVia, 'patch')
+  this.serialGet = runAsSerialize(this.get)
+  this.serialDelete = runAsSerialize(this.delete)
+  this.serialPost = runAsSerialize(this.post)
+  this.serialPut = runAsSerialize(this.put)
+  this.serialPatch = runAsSerialize(this.patch)
 
   return this;
 }
