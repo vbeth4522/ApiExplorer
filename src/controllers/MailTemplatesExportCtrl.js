@@ -22,33 +22,17 @@ module.exports = function($scope, $stateParams, $q, UtilSvc, MailTemplateSvc, Lo
       .then(sFn.pluckNameToScope('locales'));
   }
 
-  $scope.addMailTemplate = function(index) {
+  $scope.move = function(index, source, target) {
     if (index >= 0) {
-      var removed = $scope.addableMailTemplates.splice(index, 1)[0];
-      $scope.mailTemplates.push(removed);
+      var removed = $scope[source].splice(index, 1)[0];
+      $scope[target].push(removed);
     }
   }
 
-  $scope.removeMailTemplate = function(index) {
-    if (index >= 0) {
-      var removed = $scope.mailTemplates.splice(index, 1)[0];
-      $scope.addableMailTemplates.push(removed);
-    }
-  }
-
-  $scope.addLocale = function(index) {
-    if (index >= 0) {
-      var removed = $scope.addableLocales.splice(index, 1)[0];
-      $scope.locales.push(removed);
-    }
-  }
-
-  $scope.removeLocale = function(index) {
-    if (index >= 0) {
-      var removed = $scope.locales.splice(index, 1)[0];
-      $scope.addableLocales.push(removed);
-    }
-  }
+  $scope.addMailTemplate = partialRight($scope.move, 'addableMailTemplates', 'mailTemplates');
+  $scope.removeMailTemplate = partialRight($scope.move, 'mailTemplates', 'addableMailTemplates');
+  $scope.addLocale = partialRight($scope.move, 'addableLocales', 'locales');
+  $scope.removeLocale = partialRight($scope.move, 'locales', 'addableLocales');
 
   $scope.export = function() {
     var promises = [];
