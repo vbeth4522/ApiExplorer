@@ -52,6 +52,12 @@ describe('MailTemplatesImportCtrl', function() {
       assert.deepEqual($scope.results, []);
     });
   });
+  describe('printResult', function() {
+    it('should import file', function() {
+      var result = { locale: "en-US", name: "name" }
+      assert.equal($scope.printResult(result), "en-US name");
+    });
+  });
   describe('import', function() {
     it('should import file', function() {
       $scope.file = file

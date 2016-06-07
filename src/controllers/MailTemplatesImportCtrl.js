@@ -10,6 +10,10 @@ module.exports = function($scope, $stateParams, MailTemplateSvc, FileReaderSvc, 
     $scope.results = [];
   }
 
+  $scope.printResult = function(result) {
+    return result.locale + " " + result.name;
+  }
+
   $scope.import = function() {
     return FileReaderSvc.readAsArrayBuffer($scope.file)
       .then(partialRight(ZipSvc.unzipMailTemplates, uploadMailTemplates));
