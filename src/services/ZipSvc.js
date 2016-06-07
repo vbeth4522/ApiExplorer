@@ -81,22 +81,26 @@ module.exports = function($q) {
     var promises = [];
     _.forEach(zipData, function(mailTemplates, locale) {
       _.forEach(mailTemplates, function(files, name) {
-        var promise = $q.all([
-          files.subject.async('string'),
-          files.text.async('string'),
-          files.html.async('string')
-        ])
-        .then(function(result) {
-          return {
-            subject: result[0],
-            textBody: result[1],
-            htmlBody: result[2]
-          }
-        })
-        .then(function(mailTemplate) {
-          return handler(locale, name, mailTemplate);
-        });
-        promises.push(promise);
+        try {
+          var promise = $q.all([
+            files.subject.async('string'),
+            files.text.async('string'),
+            files.html.async('string')
+          ])
+          .then(function(result) {
+            return {
+              subject: result[0],
+              textBody: result[1],
+              htmlBody: result[2]
+            }
+          })
+          .then(function(mailTemplate) {
+            return handler(locale, name, mailTemplate);
+          });
+          promises.push(promise);
+        } catch(exception){
+          console.warn("Skipping malformated data in zip file.")
+        }
       })
     })
     return $q.all(promises);
