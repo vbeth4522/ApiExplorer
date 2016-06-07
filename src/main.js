@@ -25,7 +25,7 @@ angular.module(
     // future.
     .state('auth', {
       url: '',
-      templateUrl: '/partials/home.html',
+      templateUrl: 'partials/home.html',
       controller: function() {},
       ncyBreadcrumb: {
         label: 'Welcome'
@@ -33,7 +33,7 @@ angular.module(
     })
     .state('flows', {
       url: '/flows',
-      templateUrl: '/partials/flowList.html',
+      templateUrl: 'partials/flowList.html',
       controller: 'FlowListCtrl',
       ncyBreadcrumb: {
         label: 'Flows'
@@ -41,7 +41,7 @@ angular.module(
     })
     .state('flowOverview', {
       url: '/flows/:flow',
-      templateUrl: '/partials/flowOverview.html',
+      templateUrl: 'partials/flowOverview.html',
       controller: 'FlowOverviewCtrl',
       resolve: flowOverviewResolvers,
       ncyBreadcrumb: {
@@ -51,7 +51,7 @@ angular.module(
     })
     .state('fieldOverview', {
       url: '/flows/:flow/fields/:field',
-      templateUrl: '/partials/fieldOverview.html',
+      templateUrl: 'partials/fieldOverview.html',
       controller: 'FieldOverviewCtrl',
       ncyBreadcrumb: {
         label: 'Field: {{fieldName}}',
@@ -60,7 +60,7 @@ angular.module(
     })
     .state('formOverview', {
       url: '/flows/:flow/forms/:form',
-      templateUrl: '/partials/formOverview.html',
+      templateUrl: 'partials/formOverview.html',
       controller: 'FormOverviewCtrl',
       ncyBreadcrumb: {
         label: 'Form: {{form}}',
@@ -69,7 +69,7 @@ angular.module(
     })
     .state('fieldOverveiwFromForm', {
       url: '/flows/:flow/forms/:form/fields/:field',
-      templateUrl: '/partials/fieldOverview.html',
+      templateUrl: 'partials/fieldOverview.html',
       controller: 'FieldOverviewCtrl',
       ncyBreadcrumb: {
         label: 'Field: {{fieldName}}',
@@ -78,7 +78,7 @@ angular.module(
     })
     .state('translations', {
       url: '/flows/:flow/translations',
-      templateUrl: '/partials/translations.html',
+      templateUrl: 'partials/translations.html',
       controller: 'TranslationsCtrl',
       ncyBreadcrumb: {
         label: 'Translations',
@@ -87,7 +87,7 @@ angular.module(
     })
     .state('mailTemplateOverview', {
       url: '/flows/:flow/mailTemplates/:template',
-      templateUrl: '/partials/mailTemplateOverview.html',
+      templateUrl: 'partials/mailTemplateOverview.html',
       controller: 'MailTemplateCtrl',
       ncyBreadcrumb: {
         label: 'Mail Template',
@@ -96,7 +96,7 @@ angular.module(
     })
     .state('addField', {
       url: '/flows/:flow/addField',
-      templateUrl: '/partials/fieldOverview.html',
+      templateUrl: 'partials/fieldOverview.html',
       controller: 'AddFieldCtrl',
       ncyBreadcrumb: {
         label: 'Add Field',
