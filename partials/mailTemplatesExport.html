@@ -6,9 +6,9 @@
       </div>
       <div class="panel-body">
         <div class="form-group">
-          <select class="form-control" ng-model="mailTemplaeToAdd" ng-options="index as mailTemplate for (index, mailTemplate) in addableMailTemplates" ng-disabled="!addableMailTemplates.length"></select>
+          <select class="form-control" ng-model="mailTemplateToAdd" ng-options="index as mailTemplate for (index, mailTemplate) in addableMailTemplates" ng-disabled="!addableMailTemplates.length"></select>
         </div>
-        <button class="btn btn-primary btn-xs btn-block" ng-click="addMailTemplate(mailTemplaeToAdd)" ng-disabled="mailTemplaeToAdd === undefined">Add</button>
+        <button class="btn btn-primary btn-xs btn-block" ng-click="addMailTemplate(mailTemplateToAdd)" ng-disabled="!mailTemplateToAdd">Add</button>
       </div>
     </div>
     <ul class="form-fields">
@@ -27,7 +27,7 @@
         <div class="form-group">
           <select class="form-control" ng-model="localeToAdd" ng-options="index as locale for (index, locale) in addableLocales" ng-disabled="!addableLocales.length"></select>
         </div>
-        <button class="btn btn-primary btn-xs btn-block" ng-click="addLocale(localeToAdd)" ng-disabled="localeToAdd === undefined">Add</button>
+        <button class="btn btn-primary btn-xs btn-block" ng-click="addLocale(localeToAdd)" ng-disabled="!localeToAdd">Add</button>
       </div>
     </div>
     <ul class="form-fields">
