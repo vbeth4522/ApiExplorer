@@ -5,6 +5,7 @@ var angular = require('angular');
 var sinon = require('sinon');
 
 var flow = "testFlow"
+var version = "testVersion"
 
 describe('MailTemplatesExportCtrl', function() {
   var MailTemplatesExportCtrl;
@@ -16,6 +17,7 @@ describe('MailTemplatesExportCtrl', function() {
   var MailTemplateSvc;
   var LocaleSvc;
   var ZipSvc;
+  var Flow;
 
   beforeEach(function() {
     angular.mock.module('capi-ui')
@@ -42,6 +44,9 @@ describe('MailTemplatesExportCtrl', function() {
         zipMailTemplates: sinon.stub().returns($q.when({})),
         dump: sinon.stub().returns($q.when({}))
       }
+      Flow = {
+        version: version
+      }
       $controller(
         'MailTemplatesExportCtrl',
         {
@@ -50,7 +55,8 @@ describe('MailTemplatesExportCtrl', function() {
           UtilSvc: UtilSvc,
           MailTemplateSvc: MailTemplateSvc,
           LocaleSvc: LocaleSvc,
-          ZipSvc: ZipSvc
+          ZipSvc: ZipSvc,
+          Flow: Flow
         }
       )
     });

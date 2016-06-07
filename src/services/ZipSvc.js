@@ -21,9 +21,9 @@ module.exports = function($q) {
       .then(_.partialRight(loadMailTemplatesZipFiles, handler));
   }
 
-  this.zipMailTemplates = function(mailTemplates) {
+  this.zipMailTemplates = function(mailTemplates, fileName) {
     var zip = new Zip();
-    var rootFolder = zip.folder('mailTemplates')
+    var rootFolder = zip.folder(fileName)
     var groupedMailTemplates = _.groupBy(mailTemplates, _.first)
     _.forEach(groupedMailTemplates, function(mailTemplates, locale) {
       var folder = rootFolder.folder(locale);

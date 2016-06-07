@@ -40,7 +40,7 @@ describe('ZipSvc', function() {
         ['en-US', {name: 'name2', subject: "subject2", textBody: "textBody2", htmlBody: "htmlBody2"}],
         ['en-EU', {name: 'name3', subject: "subject3", textBody: "textBody3", htmlBody: "htmlBody3"}]
       ]
-      var zipped = ZipSvc.zipMailTemplates(mailTemplates);
+      var zipped = ZipSvc.zipMailTemplates(mailTemplates, 'mailTemplates');
       assert.deepEqual(_.keys(zipped.files), [
         'mailTemplates/',
         'mailTemplates/en-US/',

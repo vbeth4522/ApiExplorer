@@ -2,11 +2,12 @@
 var partialRight = require('lodash/function/partialRight');
 var saveAs = require('file-saver').saveAs;
 
-module.exports = function($scope, $stateParams, $q, UtilSvc, MailTemplateSvc, LocaleSvc, ZipSvc) {
+module.exports = function($scope, $stateParams, $q, Flow, UtilSvc, MailTemplateSvc, LocaleSvc, ZipSvc) {
   'ngInject';
 
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow
+  var version = Flow.version
 
   function init() {
     $scope.locales = [];
@@ -41,10 +42,11 @@ module.exports = function($scope, $stateParams, $q, UtilSvc, MailTemplateSvc, Lo
         promises.push(getMailTemplate(flow, locale, mailTemplate));
       });
     })
+    var fileName = createFileName(flow, version)
     return $q.all(promises)
-      .then(ZipSvc.zipMailTemplates)
+      .then(partialRight(ZipSvc.zipMailTemplates, fileName))
       .then(ZipSvc.dump)
-      .then(partialRight(saveAs, 'mailTemplates.zip'))
+      .then(partialRight(saveAs, fileName+'.zip'))
   }
 
   function getMailTemplate(flow, locale, mailTemplate) {
@@ -53,6 +55,10 @@ module.exports = function($scope, $stateParams, $q, UtilSvc, MailTemplateSvc, Lo
       .then(function(response) {
         return [locale, response.data];
       })
+  }
+
+  function createFileName(flowName, flowVersion ) {
+    return 'mailTemplates-'+flowName+'-'+flowVersion
   }
 
   init();
