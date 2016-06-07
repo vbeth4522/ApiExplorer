@@ -18,6 +18,13 @@ function createWindow () {
   // Open the DevTools.
   mainWindow.webContents.openDevTools()
 
+  // Make external links open in the system browser instead of electron.
+  // This only works for links with target="_blank".
+  mainWindow.webContents.on('new-window', function(evt, url) {
+    evt.preventDefault()
+    electron.shell.openExternal(url)
+  })
+
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
     // Dereference the window object, usually you would store windows
