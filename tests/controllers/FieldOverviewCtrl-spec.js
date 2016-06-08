@@ -4,51 +4,32 @@ require('angular-mocks')
 var angular = require('angular');
 var sinon = require('sinon');
 var fieldDef = require('../fixtures/fieldDefinition')
-var h = require('../helpers')
+var helpers = require('../helpers')
 
 function stub(returnVal) {
   return sinon.stub().returns(returnVal)
 }
 
 describe('FieldOverviewCtrl', function() {
-  var $scope
-  var $stateParams
-  var FieldSvc
-  var FieldMetaSvc
-  var LocaleSvc
-  var SchemaSvc
   var $event
+  var locals
 
   beforeEach(function() {
     angular.mock.module('capi-ui')
     angular.mock.inject(function($rootScope, $controller, $q, UtilSvc) {
-      function apiStub(response) {
-        return stub($q.when({ data: response }))
+      locals = {
+        $scope: $rootScope.$new(),
+        $stateParams: {
+          flow: 'myflow',
+          form: 'myform',
+          field: 'myfield'
+        },
+        FieldSvc: helpers.makeFieldSvcStub($q),
+        SchemaSvc: helpers.makeSchemaSvcStub($q),
+        FieldMetaSvc: helpers.makeFieldMetaSvcStub($q),
+        LocaleSvc: helpers.makeLocaleSvcStub($q)
       }
-      $scope = $rootScope.$new()
-      $stateParams = {
-        flow: 'myflow',
-        form: 'myform',
-        field: 'myfield'
-      }
-      FieldSvc = h.makeFieldSvcStub($q)
-      SchemaSvc = h.makeSchemaSvcStub($q)
-      FieldMetaSvc = {
-        getFieldTypeAttributes: apiStub(['foo', 'bar'])
-      }
-      LocaleSvc = h.makeLocaleSvcStub($q)
-      $controller(
-        'FieldOverviewCtrl',
-        {
-          $scope: $scope,
-          $stateParams: $stateParams,
-          UtilSvc: UtilSvc,
-          FieldSvc: FieldSvc,
-          FieldMetaSvc: FieldMetaSvc,
-          LocaleSvc: LocaleSvc,
-          SchemaSvc: SchemaSvc
-        }
-      )
+      $controller('FieldOverviewCtrl', locals);
       $event = {
         stopPropagation: sinon.spy(),
         preventDefault: sinon.spy()
@@ -57,14 +38,14 @@ describe('FieldOverviewCtrl', function() {
   });
   describe('initial state', function() {
     it('should have the correct properties', function() {
-      assert.strictEqual($scope.form, $stateParams.form)
-      assert.strictEqual($scope.fieldName, $stateParams.field)
-      assert.strictEqual($scope.emptyValue, '')
-      assert.sameMembers($scope.locales, ['en-US'])
-      assert.strictEqual($scope.selectedLocale, 'en-US')
-      assert.deepEqual($scope.errors, {})
+      assert.strictEqual(locals.$scope.form, locals.$stateParams.form)
+      assert.strictEqual(locals.$scope.fieldName, locals.$stateParams.field)
+      assert.strictEqual(locals.$scope.emptyValue, '')
+      assert.sameMembers(locals.$scope.locales, ['en-US'])
+      assert.strictEqual(locals.$scope.selectedLocale, 'en-US')
+      assert.deepEqual(locals.$scope.errors, {})
       assert.sameMembers(
-        $scope.validationFormats,
+        locals.$scope.validationFormats,
         [
           'alpha',
           'alphaExtended',
@@ -82,23 +63,23 @@ describe('FieldOverviewCtrl', function() {
           'zipCode+4'
         ]
       )
-      assert.deepEqual($scope.newValidation, { rule: '', value: null, message: '' })
-      assert.deepEqual($scope.newOption, { label: '', value: '' })
-      $scope.$apply()
-      assert.deepEqual($scope.field, fieldDef)
-      assert.sameMembers($scope.schemaAttributes, ['birthday', 'primaryAddress.mobile'])
-      assert.sameMembers($scope.fieldAttributes, ['foo', 'bar'])
-      assert.sameMembers($scope.locales, ['en-US', 'it-IT'])
-      assert.sameMembers($scope.allFields, ['signInEmailAddress', 'currentPassword'])
+      assert.deepEqual(locals.$scope.newValidation, { rule: '', value: null, message: '' })
+      assert.deepEqual(locals.$scope.newOption, { label: '', value: '' })
+      locals.$scope.$apply()
+      assert.deepEqual(locals.$scope.field, fieldDef)
+      assert.sameMembers(locals.$scope.schemaAttributes, ['birthday', 'primaryAddress.mobile'])
+      assert.sameMembers(locals.$scope.fieldAttributes, ['foo', 'bar'])
+      assert.sameMembers(locals.$scope.locales, ['en-US', 'it-IT'])
+      assert.sameMembers(locals.$scope.allFields, ['signInEmailAddress', 'currentPassword'])
     });
   });
   describe('fieldSupports', function() {
-    it('should return false if passed a value not in $scope.fieldAttributes', function() {
-      assert.isFalse($scope.fieldSupports('no way'))
+    it('should return false if passed a value not in locals.$scope.fieldAttributes', function() {
+      assert.isFalse(locals.$scope.fieldSupports('no way'))
     });
-    it('should return true if passed a value in $scope.fieldAttributes', function() {
-      $scope.fieldAttributes = ['some', 'cool', 'attrs']
-      assert.isTrue($scope.fieldSupports('cool'))
+    it('should return true if passed a value in locals.$scope.fieldAttributes', function() {
+      locals.$scope.fieldAttributes = ['some', 'cool', 'attrs']
+      assert.isTrue(locals.$scope.fieldSupports('cool'))
     });
   });
   describe('getAllowedValidations', function() {
@@ -110,14 +91,14 @@ describe('FieldOverviewCtrl', function() {
         'unique',
         'whitelist'
       ]
-      $scope.field = {
+      locals.$scope.field = {
         validation: [
           { rule: 'maxLength' },
           { rule: 'minLength' },
           { rule: 'required' }
         ]
       }
-      assert.sameMembers($scope.getAllowedValidations(), expected)
+      assert.sameMembers(locals.$scope.getAllowedValidations(), expected)
     });
     it('should work even if validations are undefined', function() {
       var expected = [
@@ -130,14 +111,14 @@ describe('FieldOverviewCtrl', function() {
         'unique',
         'whitelist'
       ]
-      $scope.field = {}
-      assert.sameMembers($scope.getAllowedValidations(), expected)
+      locals.$scope.field = {}
+      assert.sameMembers(locals.$scope.getAllowedValidations(), expected)
     });
   });
   describe('save', function() {
     it('should call saveLocalized', function() {
-      $scope.save()
-      sinon.assert.called(FieldSvc.saveLocalized)
+      locals.$scope.save()
+      sinon.assert.called(locals.FieldSvc.saveLocalized)
     });
   });
   describe('addOption', function() {
@@ -153,7 +134,7 @@ describe('FieldOverviewCtrl', function() {
           }
         ]
       }
-      $scope.field = {
+      locals.$scope.field = {
         options: [
           {
             label: { values: { 'en-US': 'Foo' } },
@@ -161,13 +142,13 @@ describe('FieldOverviewCtrl', function() {
           }
         ]
       }
-      $scope.newOption = {
+      locals.$scope.newOption = {
         label: 'Bar',
         value: 'barval'
       }
-      $scope.addOption()
-      assert.deepEqual($scope.field, expected)
-      assert.deepEqual($scope.newOption, { label: '', value: '' })
+      locals.$scope.addOption()
+      assert.deepEqual(locals.$scope.field, expected)
+      assert.deepEqual(locals.$scope.newOption, { label: '', value: '' })
     });
     it("should add the options prop if it doesn't exist", function() {
       var expected = {
@@ -178,13 +159,13 @@ describe('FieldOverviewCtrl', function() {
           }
         ]
       }
-      $scope.field = {}
-      $scope.newOption = {
+      locals.$scope.field = {}
+      locals.$scope.newOption = {
         label: 'Bar',
         value: 'barval'
       }
-      $scope.addOption()
-      assert.deepEqual($scope.field, expected)
+      locals.$scope.addOption()
+      assert.deepEqual(locals.$scope.field, expected)
     });
   });
   describe('addValidation', function() {
@@ -202,7 +183,7 @@ describe('FieldOverviewCtrl', function() {
           }
         ]
       }
-      $scope.field = {
+      locals.$scope.field = {
         validation: [
           {
             message: { values: { 'en-US': 'This is required.' } },
@@ -211,14 +192,14 @@ describe('FieldOverviewCtrl', function() {
           }
         ]
       }
-      $scope.newValidation = {
+      locals.$scope.newValidation = {
         message: 'Min length of 10.',
         rule: 'minLength',
         value: 10
       }
-      $scope.addValidation()
-      assert.deepEqual($scope.field, expected)
-      assert.deepEqual($scope.newValidation, { rule: '', message: '', value: null })
+      locals.$scope.addValidation()
+      assert.deepEqual(locals.$scope.field, expected)
+      assert.deepEqual(locals.$scope.newValidation, { rule: '', message: '', value: null })
     });
     it("should add the validation prop if it doesn't exist", function() {
       var expected = {
@@ -230,50 +211,50 @@ describe('FieldOverviewCtrl', function() {
           }
         ]
       }
-      $scope.field = {}
-      $scope.newValidation = {
+      locals.$scope.field = {}
+      locals.$scope.newValidation = {
         message: 'This is required.',
         rule: 'required',
         value: true
       }
-      $scope.addValidation()
-      assert.deepEqual($scope.field, expected)
+      locals.$scope.addValidation()
+      assert.deepEqual(locals.$scope.field, expected)
     });
   });
   describe('removeOption', function() {
     it('should stop all further click event propegation', function() {
-      $scope.field = { options: [1, 2, 3, 4] }
-      $scope.removeOption(2, $event)
+      locals.$scope.field = { options: [1, 2, 3, 4] }
+      locals.$scope.removeOption(2, $event)
       sinon.assert.called($event.stopPropagation)
       sinon.assert.called($event.preventDefault)
     });
     it('should remove an element from the field options array', function() {
-      $scope.field = { options: [1, 2, 3, 4] }
-      $scope.removeOption(2, $event)
-      assert.sameMembers($scope.field.options, [1, 2, 4])
+      locals.$scope.field = { options: [1, 2, 3, 4] }
+      locals.$scope.removeOption(2, $event)
+      assert.sameMembers(locals.$scope.field.options, [1, 2, 4])
     });
     it('should delete the options property if the last option is removed', function() {
-      $scope.field = { options: [1] }
-      $scope.removeOption(0, $event)
-      assert.isUndefined($scope.field.options)
+      locals.$scope.field = { options: [1] }
+      locals.$scope.removeOption(0, $event)
+      assert.isUndefined(locals.$scope.field.options)
     });
   });
   describe('removeValidation', function() {
     it('should stop all further click event propegation', function() {
-      $scope.field = { validation: [1, 2, 3, 4] }
-      $scope.removeValidation(2, $event)
+      locals.$scope.field = { validation: [1, 2, 3, 4] }
+      locals.$scope.removeValidation(2, $event)
       sinon.assert.called($event.stopPropagation)
       sinon.assert.called($event.preventDefault)
     });
     it('should remove an element from the field validation array', function() {
-      $scope.field = { validation: [1, 2, 3, 4] }
-      $scope.removeValidation(2, $event)
-      assert.sameMembers($scope.field.validation, [1, 2, 4])
+      locals.$scope.field = { validation: [1, 2, 3, 4] }
+      locals.$scope.removeValidation(2, $event)
+      assert.sameMembers(locals.$scope.field.validation, [1, 2, 4])
     });
     it('should delete the validation property if the last validation is removed', function() {
-      $scope.field = { validation: [1] }
-      $scope.removeValidation(0, $event)
-      assert.isUndefined($scope.field.validation)
+      locals.$scope.field = { validation: [1] }
+      locals.$scope.removeValidation(0, $event)
+      assert.isUndefined(locals.$scope.field.validation)
     });
   });
 });

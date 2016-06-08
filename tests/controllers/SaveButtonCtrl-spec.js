@@ -29,48 +29,46 @@ function assertErrorState($scope) {
 }
 
 describe('SaveButtonCtrl', function() {
-  var SaveButtonCtrl
-  var $scope
-  var $timeout
-  var $q
+  var $scope;
+  var $timeout;
+  var $q;
+  var locals;
 
   beforeEach(function() {
     angular.mock.module('capi-ui')
     angular.mock.inject(function($rootScope, $controller, _$q_, _$timeout_) {
-      $scope = $rootScope.$new()
-      $timeout = _$timeout_
-      $q = _$q_
+      var $scope = $rootScope.$new()
       $scope.idleText = 'idle text'
       $scope.saveFn = sinon.stub()
-      $controller(
-        'SaveButtonCtrl',
-        {
-          $scope: $scope,
-          $timeout: $timeout
-        }
-      )
+      $timeout = _$timeout_
+      $q = _$q_
+      locals = {
+        $scope: $scope,
+        $timeout: $timeout
+      }
+      $controller('SaveButtonCtrl', locals)
     })
   })
   describe('save', function() {
     it('should show a successful save when saveFn returns a resolved promise', function() {
-      $scope.saveFn.returns($q.when())
-      assertIdleState($scope)
-      $scope.save()
-      assertWorkingState($scope)
-      $scope.$apply()
-      assertSuccessState($scope)
-      $timeout.flush(2000)
-      assertIdleState($scope)
+      locals.$scope.saveFn.returns($q.when())
+      assertIdleState(locals.$scope)
+      locals.$scope.save()
+      assertWorkingState(locals.$scope)
+      locals.$scope.$apply()
+      assertSuccessState(locals.$scope)
+      locals.$timeout.flush(2000)
+      assertIdleState(locals.$scope)
     });
     it('should show an error when saveFn returns a rejected promise', function() {
-      $scope.saveFn.returns($q.reject())
-      assertIdleState($scope)
-      $scope.save()
-      assertWorkingState($scope)
-      $scope.$apply()
-      assertErrorState($scope)
-      $timeout.flush(2000)
-      assertIdleState($scope)
+      locals.$scope.saveFn.returns($q.reject())
+      assertIdleState(locals.$scope)
+      locals.$scope.save()
+      assertWorkingState(locals.$scope)
+      locals.$scope.$apply()
+      assertErrorState(locals.$scope)
+      locals.$timeout.flush(2000)
+      assertIdleState(locals.$scope)
     });
   });
 });

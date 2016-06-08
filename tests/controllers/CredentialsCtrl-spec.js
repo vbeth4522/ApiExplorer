@@ -3,58 +3,46 @@
 require('angular-mocks')
 var angular = require('angular');
 var sinon = require('sinon');
+var helpers = require('../helpers')
+var emptyCreds = require('../fixtures/emptyCreds')
 
 describe('CredentialsCtrl', function() {
-  var $scope
-  var $state
-  var CredentialSvc
+  var locals
 
   beforeEach(function() {
     angular.mock.module('capi-ui')
     angular.mock.inject(function($rootScope, $controller) {
-      var emptyCreds = { appId: null, clientId: null, clientSecret: null }
-      $scope = $rootScope.$new()
-      $state = {
-        go: sinon.spy()
+      locals = {
+        $scope: $rootScope.$new(),
+        $state: helpers.make$StateStub(),
+        CredentialSvc: helpers.makeCredentialSvcStub()
       }
-      CredentialSvc = {
-        clear: sinon.spy(),
-        get: sinon.stub().returns(emptyCreds),
-        set: sinon.spy()
-      }
-      $controller(
-        'CredentialsCtrl',
-        {
-          $scope: $scope,
-          $state: $state,
-          CredentialSvc: CredentialSvc
-        }
-      )
+      $controller('CredentialsCtrl', locals);
     });
   });
 
   describe('initial state', function() {
     it('should set the scope credentials', function() {
-      sinon.assert.called(CredentialSvc.get)
-      assert.isNull($scope.appId)
-      assert.isNull($scope.clientId)
-      assert.isNull($scope.clientSecret)
+      sinon.assert.called(locals.CredentialSvc.get)
+      assert.isNull(locals.$scope.appId)
+      assert.isNull(locals.$scope.clientId)
+      assert.isNull(locals.$scope.clientSecret)
     });
   });
   describe('load', function() {
     it('should save the scope creds and navigate to the "flows" state', function() {
-      $scope.appId = 'someappid'
-      $scope.clientId = 'someclientid'
-      $scope.clientSecret = 'somesecret'
-      $scope.load()
+      locals.$scope.appId = 'someappid'
+      locals.$scope.clientId = 'someclientid'
+      locals.$scope.clientSecret = 'somesecret'
+      locals.$scope.load()
       sinon.assert.calledWithExactly(
-        CredentialSvc.set,
+        locals.CredentialSvc.set,
         'someappid',
         'someclientid',
         'somesecret'
       )
       sinon.assert.calledWithExactly(
-        $state.go,
+        locals.$state.go,
         'flows',
         {},
         { reload: true }
@@ -63,10 +51,10 @@ describe('CredentialsCtrl', function() {
   });
   describe('clear', function() {
     it('should clear the creds and navigate to the auth state', function() {
-      $scope.clear()
-      sinon.assert.calledWithExactly(CredentialSvc.clear)
+      locals.$scope.clear()
+      sinon.assert.calledWithExactly(locals.CredentialSvc.clear)
       sinon.assert.calledWithExactly(
-        $state.go,
+        locals.$state.go,
         'auth',
         {},
         { reload: true }
@@ -75,11 +63,11 @@ describe('CredentialsCtrl', function() {
   });
   describe('hasCreds', function() {
     it('should return false unless all credentials exist', function() {
-      assert.notOk($scope.hasCreds())
-      CredentialSvc.get.returns({ appId: 'someappid', clientId: null, clientSecret: null })
-      assert.notOk($scope.hasCreds())
-      CredentialSvc.get.returns({ appId: 'someappid', clientId: 'someclientid', clientSecret: null })
-      assert.notOk($scope.hasCreds())
+      assert.notOk(locals.$scope.hasCreds())
+      locals.CredentialSvc.get.returns({ appId: 'someappid', clientId: null, clientSecret: null })
+      assert.notOk(locals.$scope.hasCreds())
+      locals.CredentialSvc.get.returns({ appId: 'someappid', clientId: 'someclientid', clientSecret: null })
+      assert.notOk(locals.$scope.hasCreds())
     });
   });
 });
