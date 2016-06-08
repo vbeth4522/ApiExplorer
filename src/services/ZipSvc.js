@@ -1,8 +1,8 @@
 'use strict';
-var Zip = require('jszip');
+window.Zip = require('jszip');
 var _ = require('lodash');
 
-module.exports = function($q) {
+module.exports = function($q, $window) {
   'ngInject';
 
   var self = this;
@@ -12,7 +12,7 @@ module.exports = function($q) {
   }
 
   this.load = function(data) {
-    return (new Zip).loadAsync(data);
+    return (new $window.Zip).loadAsync(data);
   }
 
   this.unzipMailTemplates = function(data, handler) {
@@ -22,7 +22,7 @@ module.exports = function($q) {
   }
 
   this.zipMailTemplates = function(mailTemplates, fileName) {
-    var zip = new Zip();
+    var zip = new $window.Zip;
     var rootFolder = zip.folder(fileName)
     var groupedMailTemplates = _.groupBy(mailTemplates, _.first)
     _.forEach(groupedMailTemplates, function(mailTemplates, locale) {
