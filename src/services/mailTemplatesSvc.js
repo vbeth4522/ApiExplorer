@@ -5,7 +5,7 @@ module.exports = function(CredentialSvc, HttpSvc) {
 
   var creds = CredentialSvc.get()
   var basePath = [
-        'config',
+    'config',
     creds.appId,
     'flows'
   ]
@@ -21,6 +21,10 @@ module.exports = function(CredentialSvc, HttpSvc) {
 
   this.save = function(flow, locale, template, data) {
     return HttpSvc.put(basePath.concat([flow, 'locales', locale, 'mailTemplates', template]), data)
+  }
+
+  this.serialSave = function(flow, locale, template, data) {
+    return HttpSvc.serialPut(basePath.concat([flow, 'locales', locale, 'mailTemplates', template]), data)
   }
 
   return this;

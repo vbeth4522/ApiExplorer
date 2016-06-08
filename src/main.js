@@ -13,7 +13,8 @@ angular.module(
     require('angular-loading-bar'),
     require('angular-sanitize'),
     require('angular-ui-bootstrap'),
-    require('angular-ui-router')
+    require('angular-ui-router'),
+    require('ng-file-upload'),
   ]
 )
 
@@ -91,6 +92,26 @@ angular.module(
       controller: 'MailTemplateCtrl',
       ncyBreadcrumb: {
         label: 'Mail Template',
+        parent: 'flowOverview'
+      }
+    })
+    .state('mailTemplatesImport', {
+      url: '/flows/:flow/importMailTemplates',
+      templateUrl: '/partials/mailTemplatesImport.html',
+      controller: 'MailTemplatesImportCtrl',
+      resolve: flowOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Import Mail Templates',
+        parent: 'flowOverview'
+      }
+    })
+    .state('mailTemplatesExport', {
+      url: '/flows/:flow/exportMailTemplates',
+      templateUrl: '/partials/mailTemplatesExport.html',
+      controller: 'MailTemplatesExportCtrl',
+      resolve: flowOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Export Mail Templates',
         parent: 'flowOverview'
       }
     })

@@ -24,7 +24,7 @@
   </ul>
 </div>
 <div class="col-md-3">
-  <h4>Mail Templates</h4>
+  <h4>Mail Templates<a ui-sref="mailTemplatesImport({ flow: flow.name })" class="pull-right">Import</a><span class="pull-right">/</span><a ui-sref="mailTemplatesExport({ flow: flow.name })" class="pull-right">Export</a></h4>
   <ul>
     <li ng-repeat="template in mailTemplates">
       <a ui-sref="mailTemplateOverview({ flow: flow.name, template: template })">{{template}}</a>
