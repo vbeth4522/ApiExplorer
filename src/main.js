@@ -1,5 +1,6 @@
 var angular = require('angular');
 var flowOverviewResolvers = require('./resolvers/FlowOverviewResolvers')
+var homeResolvers = require('./resolvers/HomeResolvers')
 window.jQuery = require('jquery')
 require('bootstrap')
 require('angular-breadcrumb');
@@ -26,18 +27,19 @@ angular.module(
     // future.
     .state('auth', {
       url: '',
-      templateUrl: '/partials/home.html',
+      templateUrl: '/partials/login.html',
       controller: function() {},
       ncyBreadcrumb: {
         label: 'Welcome'
       }
     })
-    .state('flows', {
-      url: '/flows',
-      templateUrl: '/partials/flowList.html',
-      controller: 'FlowListCtrl',
+    .state('home', {
+      url: '/home',
+      templateUrl: '/partials/home.html',
+      controller: 'HomeCtrl',
+      resolve: homeResolvers,
       ncyBreadcrumb: {
-        label: 'Flows'
+        label: 'Home'
       }
     })
     .state('flowOverview', {
@@ -47,7 +49,7 @@ angular.module(
       resolve: flowOverviewResolvers,
       ncyBreadcrumb: {
         label: 'Flow Overview',
-        parent: 'flows'
+        parent: 'home'
       }
     })
     .state('fieldOverview', {
