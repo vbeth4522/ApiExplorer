@@ -1,6 +1,7 @@
 var angular = require('angular');
 var flowOverviewResolvers = require('./resolvers/FlowOverviewResolvers')
 var homeResolvers = require('./resolvers/HomeResolvers')
+var schemaOverviewResolvers = require('./resolvers/SchemaOverviewResolvers')
 window.jQuery = require('jquery')
 require('bootstrap')
 require('angular-breadcrumb');
@@ -77,6 +78,16 @@ angular.module(
       ncyBreadcrumb: {
         label: 'Field: {{fieldName}}',
         parent: 'formOverview'
+      }
+    })
+    .state('schemaOverview', {
+      url: '/schema/:schema',
+      templateUrl: '/partials/schemaOverview.html',
+      controller: 'SchemaOverviewCtrl',
+      resolve: schemaOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Schema: {{schema}}',
+        parent: 'home'
       }
     })
     .state('translations', {

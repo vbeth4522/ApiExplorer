@@ -11,7 +11,7 @@
     <h3>Choose a Schema:</h3>
     <ul>
       <li ng-repeat="schema in schemas">
-        {{schema}}
+        <a ui-sref="schemaOverview({ schema: schema })">{{schema}}</a>
       </li>
     </ul>
   </div>
