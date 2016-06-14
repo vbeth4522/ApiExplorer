@@ -4,7 +4,7 @@
     <h4>Attributes</h4>
     <ul>
       <li ng-repeat="attribute in attributes">
-        {{attribute}}
+        <a ui-sref="attributeOverview({ schema: schema, attribute: attribute })">{{attribute}}</a>
       </li>
     </ul>
   </div>

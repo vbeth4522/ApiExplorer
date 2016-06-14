@@ -2,6 +2,7 @@ var angular = require('angular');
 var flowOverviewResolvers = require('./resolvers/FlowOverviewResolvers')
 var homeResolvers = require('./resolvers/HomeResolvers')
 var schemaOverviewResolvers = require('./resolvers/SchemaOverviewResolvers')
+var attributeOverviewResolvers = require('./resolvers/AttributeOverviewResolvers')
 window.jQuery = require('jquery')
 require('bootstrap')
 require('angular-breadcrumb');
@@ -88,6 +89,16 @@ angular.module(
       ncyBreadcrumb: {
         label: 'Schema: {{schema}}',
         parent: 'home'
+      }
+    })
+    .state('attributeOverview', {
+      url: '/schema/:schema/:attribute',
+      templateUrl: '/partials/attributeOverview.html',
+      controller: 'AttributeOverviewCtrl',
+      resolve: attributeOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Attribute: {{attribute}}',
+        parent: 'schemaOverview'
       }
     })
     .state('translations', {
