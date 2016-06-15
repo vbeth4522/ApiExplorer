@@ -91,8 +91,17 @@ angular.module(
         parent: 'home'
       }
     })
+    .state('attributeCreator', {
+      url: '/schema/:schema/createAttribute',
+      templateUrl: '/partials/attributeCreator.html',
+      controller: 'AttributeCreatorCtrl',
+      ncyBreadcrumb: {
+        label: 'Create Attribute',
+        parent: 'schemaOverview'
+      }
+    })
     .state('attributeOverview', {
-      url: '/schema/:schema/:attribute',
+      url: '/schema/:schema/attribute/:attribute',
       templateUrl: '/partials/attributeOverview.html',
       controller: 'AttributeOverviewCtrl',
       resolve: attributeOverviewResolvers,
