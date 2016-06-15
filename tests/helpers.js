@@ -76,6 +76,7 @@ exports.makeSchemaSvcStub = function($q) {
     get: apiStub($q, schemaAttributes),
     set: apiStub($q),
     getAttribute: apiStub($q),
+    addAttribute: apiStub($q),
     deleteAttribute: apiStub($q)
   }
 }
