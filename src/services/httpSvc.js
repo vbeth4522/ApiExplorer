@@ -6,14 +6,17 @@ var partial = require('lodash/function/partial');
 module.exports = function($http, CredentialSvc, UtilSvc, RegionSvc) {
   'ngInject';
 
-  var creds = CredentialSvc.get()
-  $http.defaults.headers.common.Authorization = UtilSvc.makeAuthHeader(creds)
+  function setHeaders() {
+    var creds = CredentialSvc.get();
+    $http.defaults.headers.common.Authorization = UtilSvc.makeAuthHeader(creds);
+  }
 
   function toUrl(path) {
     return UtilSvc.urlize([RegionSvc.url()].concat(path))
   }
 
   function sendDataVia(method, path, data) {
+    setHeaders();
     return $http[method](toUrl(path), data)
   }
 
@@ -36,8 +39,18 @@ module.exports = function($http, CredentialSvc, UtilSvc, RegionSvc) {
     }
   }
 
-  this.get = flow(toUrl, $http.get)
-  this.delete = flow(toUrl, $http.delete)
+  function httpGet() {
+    setHeaders();
+    return $http.get.apply(null, arguments);
+  }
+
+  function httpDelete() {
+    setHeaders();
+    return $http.get.apply(null, arguments);
+  }
+
+  this.get = flow(toUrl, httpGet)
+  this.delete = flow(toUrl, httpDelete)
   this.post = partial(sendDataVia, 'post')
   this.put = partial(sendDataVia, 'put')
   this.patch = partial(sendDataVia, 'patch')
