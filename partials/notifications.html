@@ -1,0 +1,6 @@
+<div ng-controller="NotificationsCtrl">
+  <div ng-repeat="notification in notifications" class="alert alert-{{notification.type}} fade-animation" role="alert">
+    <button type="button" class="close" data-ng-click="remove(notification)" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    {{notification.message}}
+  </div>
+</div>
