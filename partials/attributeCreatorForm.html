@@ -1,26 +1,21 @@
 <div>
-  <div class="col-md-12">
+  <div class="col-md-12" ng-form="form" novalidate>
     <div class="col-md-4">
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" class="form-control" ng-model="model.name">
-      </div>
-      <div class="form-group">
-        <label>Type</label>
-        <select class="form-control" ng-model="model.type" ng-options="type for type in types"></select>
-      </div>
-      <div class="form-group">
-        <label>Description</label>
-        <input type="text" class="form-control" ng-model="model.description">
-      </div>
-      <div class="form-group">
-        <label>Length</label>
-        <input type="number" min="0" class="form-control" ng-model="model.length">
-      </div>
-      <div class="form-group">
-        <label>Case Sensitive</label>
-        <input type="checkbox" ng-model="model.case_sensitive">
-      </div>
+      <form-group label="Name" name="name">
+        <input type="text" name="name" class="form-control" ng-model="model.name" ng-required="true">
+      </form-group>
+      <form-group label="Type" name="type">
+        <select name="type" class="form-control" ng-model="model.type" ng-options="type for type in types" ng-required="true"></select>
+      </form-group>
+      <form-group label="Description" name="description">
+        <input name="description" type="text" class="form-control" ng-model="model.description">
+      </form-group>
+      <form-group label="Length" name="length">
+        <input name="length" type="number" min="0" class="form-control" ng-model="model.length">
+      </form-group>
+      <form-group label="Case Sensitive" name="case_sensitive">
+        <input name="case_senstive" type="checkbox" ng-model="model.case_sensitive">
+      </form-group>
     </div>
     <div class="col-md-4">
       <div class="panel panel-default add-option">

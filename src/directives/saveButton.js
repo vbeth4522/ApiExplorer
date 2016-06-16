@@ -6,7 +6,8 @@ module.exports = function() {
     controller: 'SaveButtonCtrl',
     scope: {
       saveFn: '&',
-      idleText: '@'
+      idleText: '@',
+      disabled: '=?'
     },
     templateUrl: '/partials/saveButton.html'
   }
