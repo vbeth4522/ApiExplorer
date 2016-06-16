@@ -10,7 +10,7 @@
       <form-group label="Description" name="description">
         <input name="description" type="text" class="form-control" ng-model="model.description">
       </form-group>
-      <form-group label="Length" name="length">
+      <form-group label="Length" name="length" ng-if="hasLength()">
         <input name="length" type="number" min="0" class="form-control" ng-model="model.length">
       </form-group>
       <form-group label="Case Sensitive" name="case_sensitive">

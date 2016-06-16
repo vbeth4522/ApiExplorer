@@ -103,6 +103,26 @@ describe('AttributeCreatorFormCtrl', function() {
       assert.isFalse(locals.$scope.hasNested("x"))
     });
   });
+  describe('hasLength', function() {
+    it('should be true when $scope.model.type is "string"', function() {
+      locals.$scope.model = { type: "string" }
+      assert.isTrue(locals.$scope.hasLength())
+    });
+    it('should be false when $scope.model.type is anything else', function() {
+      locals.$scope.model = { type: "x" }
+      assert.isFalse(locals.$scope.hasLength())
+    });
+    it('should be false when $scope.model does not contain type', function() {
+      locals.$scope.model = {}
+      assert.isFalse(locals.$scope.hasLength())
+    });
+    it('should be true when passed "string"', function() {
+      assert.isTrue(locals.$scope.hasLength("string"))
+    });
+    it('should be false when passed anything else', function() {
+      assert.isFalse(locals.$scope.hasLength("x"))
+    });
+  });
   describe('addNested', function() {
     it('should add empty object when called', function() {
       locals.$scope.model = { attr_defs: [] }
@@ -160,6 +180,23 @@ describe('AttributeCreatorFormCtrl', function() {
         locals.$scope.model = { type: "string" }
         locals.$scope.$digest();
         assert.isUndefined(locals.$scope.model.attr_defs)
+      });
+    });
+    describe('model.length', function() {
+      it('should delete length when null', function() {
+        locals.$scope.model = { length: null }
+        locals.$scope.$digest();
+        assert.isUndefined(locals.$scope.model.length)
+      });
+      it('should delete length when null', function() {
+        locals.$scope.model = { length: undefined }
+        locals.$scope.$digest();
+        assert.isUndefined(locals.$scope.model.length)
+      });
+      it('should delete length when null', function() {
+        locals.$scope.model = { length: 0 }
+        locals.$scope.$digest();
+        assert.isDefined(locals.$scope.model.length)
       });
     });
   });

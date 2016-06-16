@@ -4,6 +4,8 @@ var get = require('lodash/object/get');
 var set = require('lodash/object/set');
 var defaults = require('lodash/object/defaults');
 var includes = require('lodash/collection/includes');
+var isNull = require('lodash/lang/isNull');
+var isUndefined = require('lodash/lang/isUndefined');
 
 var types = [
   "boolean",
@@ -69,6 +71,10 @@ module.exports = function($scope) {
     return includes(["plural", "object"], (type || $scope.model.type));
   }
 
+  $scope.hasLength = function(type) {
+    return includes(["string"], (type || $scope.model.type));
+  }
+
   $scope.pathName = function() {
     var parentName = $scope.parentName;
     var name = $scope.model.name
@@ -81,6 +87,12 @@ module.exports = function($scope) {
     } else {
       $scope.saved_attr_defs = $scope.model.attr_defs;
       delete $scope.model.attr_defs
+    }
+  })
+
+  $scope.$watch('model.length', function(newValue) {
+    if (isNull(newValue) || isUndefined(newValue)) {
+      delete $scope.model.length
     }
   })
 
