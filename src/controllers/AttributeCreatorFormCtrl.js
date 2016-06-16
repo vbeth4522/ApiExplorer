@@ -3,6 +3,7 @@ var partialRight = require('lodash/function/partialRight');
 var get = require('lodash/object/get');
 var set = require('lodash/object/set');
 var defaults = require('lodash/object/defaults');
+var includes = require('lodash/collection/includes');
 
 var types = [
   "boolean",
@@ -55,6 +56,33 @@ module.exports = function($scope) {
       }
     }
   }
+
+  $scope.addNested = function(nested) {
+    $scope.model.attr_defs.push(nested || {});
+  }
+
+  $scope.removeNested = function(index) {
+    return $scope.model.attr_defs.splice(index, 1);
+  }
+
+  $scope.hasNested = function(type) {
+    return includes(["plural", "object"], (type || $scope.model.type));
+  }
+
+  $scope.pathName = function() {
+    var parentName = $scope.parentName;
+    var name = $scope.model.name
+    return (parentName ? parentName + '.' :  '') + (name || "");
+  }
+
+  $scope.$watch('model.type', function(newValue) {
+    if ($scope.hasNested(newValue)) {
+      $scope.model.attr_defs = [{}]
+    } else {
+      $scope.saved_attr_defs = $scope.model.attr_defs;
+      delete $scope.model.attr_defs
+    }
+  })
 
   $scope.addConstraint = partialRight($scope.move, 'addableConstraints', 'model.constraints');
   $scope.removeConstraint = partialRight($scope.move, 'model.constraints', 'addableConstraints');
