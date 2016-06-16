@@ -124,6 +124,14 @@ exports.makeRegionSvcStub = function() {
   }
 }
 
+exports.makeNotificationsSvcStub = function() {
+  return {
+    get: stub(),
+    add: stub(),
+    remove: stub()
+  }
+}
+
 exports.make$StateStub = function() {
   return {
     go: stub()
