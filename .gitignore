@@ -4,3 +4,4 @@ bundle.js
 bundle-min.js
 styles.css
 docs/*
+dist/*
