@@ -25,7 +25,7 @@ module.exports = function(CredentialSvc, HttpSvc) {
   }
 
   this.addAttribute = function(schema, attribute, attribute_def) {
-    return HttpSvc.post(basePath().concat([schema, attribute]), attribute_def)
+    return HttpSvc.put(basePath().concat([schema, attribute]), attribute_def)
   }
 
   this.deleteAttribute = function(schema, attribute) {
