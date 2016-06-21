@@ -85,7 +85,6 @@ module.exports = function($scope) {
     if ($scope.hasNested(newValue)) {
       $scope.model.attr_defs = [{}]
     } else {
-      $scope.saved_attr_defs = $scope.model.attr_defs;
       delete $scope.model.attr_defs
     }
     if ($scope.hasCaseSensitive()){
