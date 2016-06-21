@@ -26,11 +26,7 @@ var types = [
 var constraints = [
   "locally-unique",
   "unique",
-  "required",
-  "default",
-  "ignore-update",
-  "to-lower",
-  "to-upper",
+  "required"
 ];
 
 var features = [
