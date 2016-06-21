@@ -71,6 +71,10 @@ module.exports = function($scope) {
     return includes(["string"], (type || $scope.model.type));
   }
 
+  $scope.hasCaseSensitive = function(type) {
+    return includes(["string"], (type || $scope.model.type));
+  }
+
   $scope.pathName = function() {
     var parentName = $scope.parentName;
     var name = $scope.model.name
@@ -83,6 +87,11 @@ module.exports = function($scope) {
     } else {
       $scope.saved_attr_defs = $scope.model.attr_defs;
       delete $scope.model.attr_defs
+    }
+    if ($scope.hasCaseSensitive()){
+      $scope.model.case_sensitive = true;
+    } else {
+      delete $scope.model.case_sensitive;
     }
   })
 
