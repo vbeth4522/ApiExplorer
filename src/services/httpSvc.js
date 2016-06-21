@@ -46,7 +46,7 @@ module.exports = function($http, CredentialSvc, UtilSvc, RegionSvc) {
 
   function httpDelete() {
     setHeaders();
-    return $http.get.apply(null, arguments);
+    return $http.delete.apply(null, arguments);
   }
 
   this.get = flow(toUrl, httpGet)
