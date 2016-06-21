@@ -35,7 +35,7 @@ describe('AttributeCreatorCtrl', function() {
     });
   });
   describe('create', function() {
-    it('should user SchemaSvc to create the Schema Attribute', function() {
+    it('should use SchemaSvc to create the Schema Attribute', function() {
       locals.$scope.attribute.name = attributeName;
       locals.$scope.create();
       locals.$scope.$digest();
