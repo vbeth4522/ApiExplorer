@@ -21,7 +21,7 @@ describe('AttributeCreatorFormCtrl', function() {
 
   describe('initial state', function() {
     it('should initilize the scope', function() {
-      assert.lengthOf(locals.$scope.addableConstraints, 7);
+      assert.lengthOf(locals.$scope.addableConstraints, 3);
       assert.lengthOf(locals.$scope.addableFeatures, 2);
     });
   });
