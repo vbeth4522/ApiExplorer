@@ -103,6 +103,26 @@ describe('AttributeCreatorFormCtrl', function() {
       assert.isFalse(locals.$scope.hasNested("x"))
     });
   });
+  describe('hasCaseSensitive', function() {
+    it('should be true when $scope.model.type is "string"', function() {
+      locals.$scope.model = { type: "string" }
+      assert.isTrue(locals.$scope.hasCaseSensitive())
+    });
+    it('should be false when $scope.model.type is anything else', function() {
+      locals.$scope.model = { type: "x" }
+      assert.isFalse(locals.$scope.hasCaseSensitive())
+    });
+    it('should be false when $scope.model does not contain type', function() {
+      locals.$scope.model = {}
+      assert.isFalse(locals.$scope.hasCaseSensitive())
+    });
+    it('should be true when passed "string"', function() {
+      assert.isTrue(locals.$scope.hasCaseSensitive("string"))
+    });
+    it('should be false when passed anything else', function() {
+      assert.isFalse(locals.$scope.hasCaseSensitive("x"))
+    });
+  });
   describe('hasLength', function() {
     it('should be true when $scope.model.type is "string"', function() {
       locals.$scope.model = { type: "string" }
@@ -180,6 +200,16 @@ describe('AttributeCreatorFormCtrl', function() {
         locals.$scope.model = { type: "string" }
         locals.$scope.$digest();
         assert.isUndefined(locals.$scope.model.attr_defs)
+      });
+      it('should add case_sensitive when type becomes "string"', function() {
+        locals.$scope.model = { type: "string" }
+        locals.$scope.$digest();
+        assert.isTrue(locals.$scope.model.case_sensitive)
+      });
+      it('should remove case_sensitive when type becomes anything other than "string"', function() {
+        locals.$scope.model = { type: "object" }
+        locals.$scope.$digest();
+        assert.isUndefined(locals.$scope.model.case_sensitive)
       });
     });
     describe('model.length', function() {
