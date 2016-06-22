@@ -1,0 +1,76 @@
+<div>
+  <div class="col-md-12" ng-form="form" novalidate>
+    <div class="col-md-4">
+      <form-group label="Name" name="name">
+        <input type="text" name="name" class="form-control" ng-model="model.name" ng-required="true">
+      </form-group>
+      <form-group label="Type" name="type">
+        <select name="type" class="form-control" ng-model="model.type" ng-options="type for type in types" ng-required="true"></select>
+      </form-group>
+      <form-group label="Description" name="description">
+        <input name="description" type="text" class="form-control" ng-model="model.description">
+      </form-group>
+      <form-group label="Length" name="length" ng-if="hasLength()">
+        <input name="length" type="number" min="0" class="form-control" ng-model="model.length">
+      </form-group>
+      <form-group label="Case Sensitive" name="case_sensitive" ng-if="hasCaseSensitive()">
+        <input name="case_senstive" type="checkbox" ng-model="model.case_sensitive">
+      </form-group>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default add-option">
+        <div class="panel-heading">
+          <h4 class="panel-title">Add Constraint</h4>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>Constraint</label>
+            <select class="form-control" ng-model="constraintToAdd" ng-options="index as constraint for (index, constraint) in addableConstraints" ng-disabled="!addableConstraints.length"></select>
+          </div>
+          <button class="btn btn-primary btn-xs btn-block" ng-click="addConstraint(constraintToAdd)" ng-disabled="!constraintToAdd">Add</button>
+        </div>
+      </div>
+      <ul class="form-fields">
+        <li ng-repeat="constraint in model.constraints">
+          {{constraint}}
+          <span ng-click="removeConstraint($index)" class="glyphicon glyphicon-remove pull-right remove" title="Remove"></span>
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-4">
+      <div class="panel panel-default add-option">
+        <div class="panel-heading">
+          <h4 class="panel-title">Add Feature</h4>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label>Feature</label>
+            <select class="form-control" ng-model="featureToAdd" ng-options="index as feature for (index, feature) in addableFeatures" ng-disabled="!addableFeatures.length"></select>
+          </div>
+          <button class="btn btn-primary btn-xs btn-block" ng-click="addFeature(featureToAdd)" ng-disabled="!featureToAdd">Add</button>
+        </div>
+      </div>
+      <ul class="form-fields">
+        <li ng-repeat="feature in model.features">
+          {{feature}}
+          <span ng-click="removeFeature($index)" class="glyphicon glyphicon-remove pull-right remove" title="Remove"></span>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <button class="btn btn-primary btn-xs btn-block" ng-if="hasNested()" ng-click="addNested()">Add Attribute</button>
+  </div>
+  <div class="col-md-12">
+    <div ng-if="model.attr_defs" ng-repeat="attr_def in model.attr_defs">
+      <hr />
+      <div class="col-xs-10">
+        <h4>{{$index}}<span class="glyphicon glyphicon-chevron-right"></span>{{pathName()}}</h4>
+      </div>
+      <div class="col-xs-2">
+        <button class="btn btn-danger btn-xs pull-right" ng-if="$index > 0" ng-click="removeNested($index)">Remove Attribute</button>
+      </div>
+      <attribute-creator-form model="attr_def" parent-name="{{pathName()}}"></attribute-creator-form>
+    <div>
+  </div>
+</div>

@@ -74,7 +74,10 @@ exports.makeSchemaSvcStub = function($q) {
   return {
     clear: apiStub($q),
     get: apiStub($q, schemaAttributes),
-    set: apiStub($q)
+    set: apiStub($q),
+    getAttribute: apiStub($q),
+    addAttribute: apiStub($q),
+    deleteAttribute: apiStub($q)
   }
 }
 
@@ -118,6 +121,14 @@ exports.makeRegionSvcStub = function() {
     url: stub(defaultRegionUrl),
     regions: stub(regions),
     set: stub()
+  }
+}
+
+exports.makeNotificationsSvcStub = function() {
+  return {
+    get: stub(),
+    add: stub(),
+    remove: stub()
   }
 }
 

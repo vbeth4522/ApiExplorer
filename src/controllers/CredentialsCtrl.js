@@ -16,7 +16,7 @@ module.exports = function($scope, $state, CredentialSvc) {
 
   $scope.load = function() {
     CredentialSvc.set($scope.appId, $scope.clientId, $scope.clientSecret)
-    $state.go('flows', {}, { reload: true })
+    $state.go('home', {}, { reload: true })
   }
 
   $scope.clear = function() {

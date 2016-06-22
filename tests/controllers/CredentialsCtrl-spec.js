@@ -43,7 +43,7 @@ describe('CredentialsCtrl', function() {
       )
       sinon.assert.calledWithExactly(
         locals.$state.go,
-        'flows',
+        'home',
         {},
         { reload: true }
       )

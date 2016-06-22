@@ -1,5 +1,8 @@
 var angular = require('angular');
 var flowOverviewResolvers = require('./resolvers/FlowOverviewResolvers')
+var homeResolvers = require('./resolvers/HomeResolvers')
+var schemaOverviewResolvers = require('./resolvers/SchemaOverviewResolvers')
+var attributeOverviewResolvers = require('./resolvers/AttributeOverviewResolvers')
 window.jQuery = require('jquery')
 require('bootstrap')
 require('angular-breadcrumb');
@@ -26,18 +29,19 @@ angular.module(
     // future.
     .state('auth', {
       url: '',
-      templateUrl: '/partials/home.html',
+      templateUrl: '/partials/login.html',
       controller: function() {},
       ncyBreadcrumb: {
         label: 'Welcome'
       }
     })
-    .state('flows', {
-      url: '/flows',
-      templateUrl: '/partials/flowList.html',
-      controller: 'FlowListCtrl',
+    .state('home', {
+      url: '/home',
+      templateUrl: '/partials/home.html',
+      controller: 'HomeCtrl',
+      resolve: homeResolvers,
       ncyBreadcrumb: {
-        label: 'Flows'
+        label: 'Home'
       }
     })
     .state('flowOverview', {
@@ -47,7 +51,7 @@ angular.module(
       resolve: flowOverviewResolvers,
       ncyBreadcrumb: {
         label: 'Flow Overview',
-        parent: 'flows'
+        parent: 'home'
       }
     })
     .state('fieldOverview', {
@@ -75,6 +79,35 @@ angular.module(
       ncyBreadcrumb: {
         label: 'Field: {{fieldName}}',
         parent: 'formOverview'
+      }
+    })
+    .state('schemaOverview', {
+      url: '/schema/:schema',
+      templateUrl: '/partials/schemaOverview.html',
+      controller: 'SchemaOverviewCtrl',
+      resolve: schemaOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Schema: {{schema}}',
+        parent: 'home'
+      }
+    })
+    .state('attributeCreator', {
+      url: '/schema/:schema/createAttribute',
+      templateUrl: '/partials/attributeCreator.html',
+      controller: 'AttributeCreatorCtrl',
+      ncyBreadcrumb: {
+        label: 'Create Attribute',
+        parent: 'schemaOverview'
+      }
+    })
+    .state('attributeOverview', {
+      url: '/schema/:schema/attribute/:attribute',
+      templateUrl: '/partials/attributeOverview.html',
+      controller: 'AttributeOverviewCtrl',
+      resolve: attributeOverviewResolvers,
+      ncyBreadcrumb: {
+        label: 'Attribute: {{attribute}}',
+        parent: 'schemaOverview'
       }
     })
     .state('translations', {
