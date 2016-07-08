@@ -2,8 +2,10 @@
 
 var _ = require('lodash');
 
-module.exports = function($scope, $state, $stateParams, FormSvc) {
+module.exports = function($scope, $state, $stateParams, FormSvc, UtilSvc) {
   'ngInject';
+
+  var sFn = UtilSvc.scopeHelpers($scope)
 
   function init() {
     $scope.flow = $stateParams.flow;
@@ -17,6 +19,7 @@ module.exports = function($scope, $state, $stateParams, FormSvc) {
             return _.get(each, 'name');
           });
       })
+      .catch(sFn.notifyErrorsAndReject)
   }
 
   $scope.save = function(flow, form) {
@@ -32,8 +35,10 @@ module.exports = function($scope, $state, $stateParams, FormSvc) {
         if (!_.includes(formFields, form)) {
           return FormSvc
             .save(flow, form, { fields: formFields.concat([{ name: $scope.field }]) })
+            .catch(sFn.notifyErrorsAndReject)
         }
       })
+      .catch(sFn.notifyErrorsAndReject)
       .then(function() {
         $state.go('flowOverview', { flow: flow });
       })

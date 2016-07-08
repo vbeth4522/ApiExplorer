@@ -23,7 +23,7 @@ function unpackTranslations(locale, field) {
   return copy;
 }
 
-module.exports = function($q) {
+module.exports = function($q, NotificationsSvc) {
   'ngInject';
 
   this.makeAuthHeader = function(creds) {
@@ -49,6 +49,15 @@ module.exports = function($q) {
     h.grabErrorsAndReject = function(resp) {
       $scope.errors = resp.data.errors;
       return $q.reject(resp);
+    }
+
+    h.notifyErrorsAndReject = function(resp) {
+        var errorMessage = getPath(resp, 'data.errors', "Unknown Error");
+        NotificationsSvc.add({
+          "type": "danger",
+          "message": errorMessage
+        });
+        return $q.reject(resp);
     }
 
     h.assignTo = function(prop) {

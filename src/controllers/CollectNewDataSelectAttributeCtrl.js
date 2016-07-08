@@ -2,8 +2,10 @@
 
 var _ = require('lodash');
 
-module.exports = function($scope, $state, $stateParams, $q, Schemas, SchemaSvc, FlowSvc) {
+module.exports = function($scope, $state, $stateParams, $q, Schemas, SchemaSvc, FlowSvc, UtilSvc) {
   'ngInject';
+
+  var sFn = UtilSvc.scopeHelpers($scope)
 
   function init() {
     $scope.schemas = Schemas;
@@ -35,6 +37,7 @@ module.exports = function($scope, $state, $stateParams, $q, Schemas, SchemaSvc, 
       var schemas = $scope.flowSchemas.concat(schema);
       return FlowSvc
         .save(flow, { schemas: schemas })
+        .catch(sFn.notifyErrorsAndReject)
         .then(function() {
           return changeState(flow, schema, attribute);
         })
@@ -53,12 +56,15 @@ module.exports = function($scope, $state, $stateParams, $q, Schemas, SchemaSvc, 
       $scope.attribute = undefined;
       FlowSvc
         .get($scope.flow)
+        .catch(sFn.notifyErrorsAndReject)
         .then(function(result) {
           $scope.flowSchemas = _(result).get('data.schemas', ['user']);
           $scope.schemaActive = _($scope.flowSchemas).includes(newValue);
         })
         .then(function() {
-          return SchemaSvc.get(newValue);
+          return SchemaSvc
+            .get(newValue)
+            .catch(sFn.notifyErrorsAndReject);
         })
         .then(function(result) {
           $scope.attributes = _(result.data)

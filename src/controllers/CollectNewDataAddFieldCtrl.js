@@ -26,6 +26,6 @@ module.exports = function($controller, $scope, $state, $stateParams, FieldSvc, U
       .then(function(result) {
           return $state.go('collectNewData.addToForm', { flow: flow, field: result.data.name })
       })
-      .catch(sFn.grabErrorsAndReject)
+      .catch(sFn.notifyErrorsAndReject)
   }
 };

@@ -1,8 +1,10 @@
 'use strict';
 var omit = require('lodash/object/omit');
 
-module.exports = function($scope, $state, $stateParams, SchemaSvc, NotificationsSvc) {
+module.exports = function($scope, $state, $stateParams, SchemaSvc, UtilSvc) {
   'ngInject';
+
+  var sFn = UtilSvc.scopeHelpers($scope)
 
   $scope.schema = $stateParams.schema;
   $scope.attribute = {}
@@ -13,13 +15,6 @@ module.exports = function($scope, $state, $stateParams, SchemaSvc, Notifications
       .then(function() {
         $state.go('schemaOverview', { schema: $scope.schema })
       })
-      .catch(function(response) {
-        var errorMessage = response.data.errors || "Unkown Error";
-        NotificationsSvc.add({
-          "type": "danger",
-          "message": errorMessage
-        });
-        throw new Exception;
-      })
+      .catch(sFn.notifyErrorsAndReject)
   }
 }
