@@ -12,6 +12,11 @@
   </head>
   <body>
     <ng-include src="'/partials/navbar.html'"></ng-include>
-    <div class="container" ui-view></div>
+    <div class="container">
+      <ng-include src="'/partials/notifications.html'"></ng-include>
+      <div class="col-md-12">
+        <div ui-view></div>
+      </div>
+    </div>
   </body>
 </html>

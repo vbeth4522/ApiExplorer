@@ -3,6 +3,7 @@ var flowOverviewResolvers = require('./resolvers/FlowOverviewResolvers')
 var homeResolvers = require('./resolvers/HomeResolvers')
 var schemaOverviewResolvers = require('./resolvers/SchemaOverviewResolvers')
 var attributeOverviewResolvers = require('./resolvers/AttributeOverviewResolvers')
+var selectSchemaResolvers = require('./resolvers/SelectSchemaResolvers')
 window.jQuery = require('jquery')
 require('bootstrap')
 require('angular-breadcrumb');
@@ -155,6 +156,57 @@ angular.module(
       ncyBreadcrumb: {
         label: 'Add Field',
         parent: 'flowOverview'
+      }
+    })
+    .state('collectNewData', {
+      url: '/flows/:flow/collectNewData',
+      templateUrl: '/partials/collectNewData.html',
+      controller: 'CollectNewDataCtrl',
+      ncyBreadcrumb: {
+        label: 'Collect New Data',
+        parent: 'flowOverview'
+      }
+    })
+    .state('collectNewData.selectAttribute', {
+      templateUrl: '/partials/collectNewData-selectAttribute.html',
+      controller: 'CollectNewDataSelectAttributeCtrl',
+      resolve: selectSchemaResolvers,
+      ncyBreadcrumb: {
+        label: 'Select Attribute',
+        parent: 'collectNewData'
+      }
+    })
+    .state('collectNewData.addAttribute', {
+      templateUrl: '/partials/collectNewData-addAttribute.html',
+      controller: 'CollectNewDataAttributeCreatorCtrl',
+      ncyBreadcrumb: {
+        label: 'Add Attribute',
+        parent: 'collectNewData'
+      },
+      params: {
+        schema: null
+      }
+    })
+    .state('collectNewData.addField', {
+      templateUrl: '/partials/fieldOverview.html',
+      controller: 'CollectNewDataAddFieldCtrl',
+      ncyBreadcrumb: {
+        label: 'Add Field',
+        parent: 'collectNewData'
+      },
+      params: {
+        attribute: null
+      }
+    })
+    .state('collectNewData.addToForm', {
+      templateUrl: '/partials/collectNewData-addToForm.html',
+      controller: 'CollectNewDataAddToFormCtrl',
+      ncyBreadcrumb: {
+        label: 'Add Field to Form',
+        parent: 'collectNewData'
+      },
+      params: {
+        field: null
       }
     })
 

@@ -13,7 +13,7 @@
         <label>Name</label>
         <input class="form-control" ng-model="field.name">
       </div>
-      <div ng-if="fieldSupports('schemaAttribute')" ng-class="['form-group', {'has-error': errors.schemaAttribute}]">
+      <div ng-if="fieldSupports('schemaAttribute')" ng-hide="hideSchemaAttribute" ng-class="['form-group', {'has-error': errors.schemaAttribute}]">
         <label for="schemaAttr">Schema Attribute</label>
         <select ng-model="field.schemaAttribute" ng-options="x for x in schemaAttributes" class="form-control"></select>
       </div>

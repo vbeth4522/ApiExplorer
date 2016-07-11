@@ -6,6 +6,7 @@ module.exports = function($scope, $state, $stateParams, SchemaSvc, UtilSvc) {
 
   var sFn = UtilSvc.scopeHelpers($scope)
 
+  $scope.flow = $stateParams.flow;
   $scope.schema = $stateParams.schema;
   $scope.attribute = {}
 
@@ -13,7 +14,11 @@ module.exports = function($scope, $state, $stateParams, SchemaSvc, UtilSvc) {
     return SchemaSvc
       .addAttribute($scope.schema, $scope.attribute.name, $scope.attribute)
       .then(function() {
-        $state.go('schemaOverview', { schema: $scope.schema })
+        $state.go('collectNewData.addField', {
+          flow: $scope.flow,
+          schema: $scope.schema,
+          attribute: $scope.attribute
+        })
       })
       .catch(sFn.notifyErrorsAndReject)
   }
