@@ -6,25 +6,25 @@ var sinon = require('sinon');
 
 function assertIdleState($scope) {
   assert.strictEqual($scope.text, $scope.idleText)
-  assert.isFalse($scope.disabled)
+  assert.isFalse($scope.internalDisabled)
   assert.sameMembers($scope.classes, ['btn', 'btn-lg', 'btn-block', 'btn-primary'])
 }
 
 function assertWorkingState($scope) {
   assert.strictEqual($scope.text, 'Saving...')
-  assert.isTrue($scope.disabled)
+  assert.isTrue($scope.internalDisabled)
   assert.sameMembers($scope.classes, ['btn', 'btn-lg', 'btn-block', 'btn-primary'])
 }
 
 function assertSuccessState($scope) {
   assert.strictEqual($scope.text, 'Success!')
-  assert.isFalse($scope.disabled)
+  assert.isFalse($scope.internalDisabled)
   assert.sameMembers($scope.classes, ['btn', 'btn-lg', 'btn-block', 'btn-success'])
 }
 
 function assertErrorState($scope) {
   assert.strictEqual($scope.text, 'Error')
-  assert.isTrue($scope.disabled)
+  assert.isTrue($scope.internalDisabled)
   assert.sameMembers($scope.classes, ['btn', 'btn-lg', 'btn-block', 'btn-danger'])
 }
 
