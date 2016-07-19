@@ -10,7 +10,7 @@ module.exports = function($scope, $timeout) {
 
   function state(text, disabled, klass) {
     $scope.text = text
-    $scope.disabled = disabled;
+    $scope.internalDisabled = disabled;
     $scope.classes = commonClasses().concat([klass])
   }
 

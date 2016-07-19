@@ -30,7 +30,7 @@ module.exports = function($scope, $state, $stateParams, FormSvc, UtilSvc) {
         var formFields = _(formData)
           .get('fields', [])
           .map(function(each) {
-            return _.get(each, 'name');
+            return _.pick(each, ['name']);
           });
         if (!_.includes(formFields, form)) {
           return FormSvc
