@@ -173,7 +173,8 @@ angular.module(
       resolve: selectSchemaResolvers,
       ncyBreadcrumb: {
         label: 'Select Attribute',
-        parent: 'collectNewData'
+        parent: 'collectNewData',
+        skip: true
       }
     })
     .state('collectNewData.addAttribute', {
@@ -181,7 +182,8 @@ angular.module(
       controller: 'CollectNewDataAttributeCreatorCtrl',
       ncyBreadcrumb: {
         label: 'Add Attribute',
-        parent: 'collectNewData'
+        parent: 'collectNewData',
+        skip: true
       },
       params: {
         schema: null
@@ -192,7 +194,8 @@ angular.module(
       controller: 'CollectNewDataAddFieldCtrl',
       ncyBreadcrumb: {
         label: 'Add Field',
-        parent: 'collectNewData'
+        parent: 'collectNewData',
+        skip: true
       },
       params: {
         attribute: null
@@ -203,7 +206,8 @@ angular.module(
       controller: 'CollectNewDataAddToFormCtrl',
       ncyBreadcrumb: {
         label: 'Add Field to Form',
-        parent: 'collectNewData'
+        parent: 'collectNewData',
+        skip: true
       },
       params: {
         field: null
