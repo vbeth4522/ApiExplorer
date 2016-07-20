@@ -11,7 +11,7 @@ module.exports = function($controller, $scope, $state, $stateParams, FieldSvc, U
   var sFn = UtilSvc.scopeHelpers($scope)
   var flow = $stateParams.flow;
 
-  $scope.field.schemaAttribute = $stateParams.attribute;
+  $scope.field.schemaAttribute = $stateParams.attribute.name;
 
   $scope.hideSchemaAttribute = true;
 
