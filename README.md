@@ -7,3 +7,7 @@
 * `npm run build`
 * `npm start`
 
+## Deployments
+
+Staging: http://apiexplorer-staging.janrain.com.s3-website-us-west-2.amazonaws.com/
+Internal: http://apiexplorer.janrain.com.s3-website-us-west-2.amazonaws.com/
