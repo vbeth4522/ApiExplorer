@@ -28,11 +28,11 @@ module.exports = function($http, $state, CredentialSvc, UtilSvc, RegionSvc, Noti
   }
 
   function send(method, path, data) {
-    creds = CredentialSvc.get();
-    headers = {
+    var creds = CredentialSvc.get();
+    var headers = {
       'Authorization': UtilSvc.makeAuthHeader(creds)
     };
-    config = {
+    var config = {
       method: method,
       url: toUrl(path),
       data: data,
