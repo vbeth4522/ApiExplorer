@@ -1,23 +1,44 @@
 'use strict';
 var extend = require('lodash/object/extend');
-var flow = require('lodash/function/flow');
+var getPath = require('lodash/object/get');
 var partial = require('lodash/function/partial');
 
-module.exports = function($http, CredentialSvc, UtilSvc, RegionSvc) {
+module.exports = function($http, $state, CredentialSvc, UtilSvc, RegionSvc, NotificationsSvc) {
   'ngInject';
-
-  function setHeaders() {
-    var creds = CredentialSvc.get();
-    $http.defaults.headers.common.Authorization = UtilSvc.makeAuthHeader(creds);
-  }
 
   function toUrl(path) {
     return UtilSvc.urlize([RegionSvc.url()].concat(path))
   }
 
-  function sendDataVia(method, path, data) {
-    setHeaders();
-    return $http[method](toUrl(path), data)
+  function successCallback(response) {
+    return response
+  }
+
+  function errorCallback(response) {
+    if (response.status == 401 || response.status == 403) {
+      err = {
+        type: 'danger',
+        message: getPath(response, 'data.errors', "Unauthorized")
+      };
+      NotificationsSvc.remove(err);  // remove duplicate message if any
+      NotificationsSvc.add(err);
+      $state.go('auth');
+    }
+    return response;
+  }
+
+  function send(method, path, data) {
+    creds = CredentialSvc.get();
+    headers = {
+      'Authorization': UtilSvc.makeAuthHeader(creds)
+    };
+    config = {
+      method: method,
+      url: toUrl(path),
+      data: data,
+      headers: headers
+    };
+    return $http(config).then(successCallback, errorCallback);
   }
 
   var promise = null;
@@ -39,21 +60,11 @@ module.exports = function($http, CredentialSvc, UtilSvc, RegionSvc) {
     }
   }
 
-  function httpGet() {
-    setHeaders();
-    return $http.get.apply(null, arguments);
-  }
-
-  function httpDelete() {
-    setHeaders();
-    return $http.delete.apply(null, arguments);
-  }
-
-  this.get = flow(toUrl, httpGet)
-  this.delete = flow(toUrl, httpDelete)
-  this.post = partial(sendDataVia, 'post')
-  this.put = partial(sendDataVia, 'put')
-  this.patch = partial(sendDataVia, 'patch')
+  this.get = partial(send, 'get')
+  this.delete = partial(send, 'delete')
+  this.post = partial(send, 'post')
+  this.put = partial(send, 'put')
+  this.patch = partial(send, 'patch')
 
   this.serialGet = runAsSerialize(this.get)
   this.serialDelete = runAsSerialize(this.delete)
