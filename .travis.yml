@@ -3,6 +3,9 @@ node_js:
 - '4'
 - '0.11'
 - '0.10'
+script:
+- npm run test
+- npm run build
 after_success:
 - cat coverage/*/text-summary.txt
 - cat coverage/*/text.txt
@@ -10,4 +13,28 @@ after_success:
 env:
   global:
     - COVERALLS_SERVICE_NAME=travis-pro
+    - STAGING_BUCKET="apiexplorer-staging.janrain.com"
+    - INTERNAL_BUCKET="apiexplorer.janrain.com"
+    - BUILD_DIR="${TRAVIS_BUILD_DIR}/public"
     - secure: KkZbHRlVFMmFJnOMNyhDNPwjos+dyfpgaDGf9mU8Gx0LJ2TzSq1pdvzBmSLsqUvVMjhoBMgI319BhTsNYjYP/t+QVwDaWHvKZ8IvkUQsvmhegP8fMrbxOV8OBdzkzcE1ddpMDAbGfuKUcz/zAspyje6uZLgSZFTWuljVxlEOVX6TVIuVhQpAvZ3O8LY4hXTTHfTjna8sas9wg+BUGfYrK03d6p7kH0Fy92+niR/JxfNzJK6LdI7xX8gWHiAz0Ks7atG+4aNnu3IeUdFm/XXMu4kEODjhLKArVMn2cEEOAppG9h+n6BjQxWjF5LuYmfF9aaUqOxQnlRdJumVS1j5i+gHkwc9tLeH91h8mwnOdCSUcojHh4AdG3sD00zVt7sn6pAMmbbsSYw9kLriyDkPuQx9jQp4duh0fvkJoIg93Fq38QL1LTPfbtO/w9reJpmoRAfKExrueE9Gm5jH61XpEUXd1dTTTTQE2WwWJAx1xr4HiTFso0FI1vCkW1qOqQHrBu8c/ddaxiin11FpDgLm0oLD/GWT5bZVVoQbjz5SEf5HElCdTAUyLKkIBZ5Ls0y9YCfYB6V5uYdw6UzhsHBKiqzki5wT/W3d921jlwAJUNn7Go9OWQgn7BGXo2ulh8UY0A0ofH1G+AlWcQPLatqYE1R0fc7u/WNP4QWFg+ClMwxg=
+deploy:
+  - provider: s3
+    local-dir: $BUILD_DIR
+    bucket: $STAGING_BUCKET
+    region: us-west-2
+    access_key_id: $DEV_AWS_ACCESS_KEY_ID
+    secret_access_key: $DEV_AWS_SECRET_ACCESS_KEY
+    skip_cleanup: true
+    acl: public_read
+    on:
+      branch: staging
+  - provider: s3
+    local-dir: $BUILD_DIR
+    bucket: $INTERNAL_BUCKET
+    region: us-west-2
+    access_key_id: $DEV_AWS_ACCESS_KEY_ID
+    secret_access_key: $DEV_AWS_SECRET_ACCESS_KEY
+    skip_cleanup: true
+    acl: public_read
+    on:
+      branch: master

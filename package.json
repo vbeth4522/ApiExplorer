@@ -1,16 +1,16 @@
 {
-  "name": "capi-ui",
+  "name": "ApiExplorer",
   "version": "1.0.0",
   "description": "UI for CAPI.",
   "main": "index.js",
   "scripts": {
     "watchtest": "karma start --browsers PhantomJS",
     "test": "karma start --browsers PhantomJS --singleRun true",
-    "buildjs": "browserify -t [ browserify-ngannotate --add ] src/main.js | sed \"s/[\\\"']ngInject[\\\"'];*//g\" > bundle.js",
-    "compilejs": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js bundle.js --js_output_file bundle-min.js --jscomp_off=misplacedTypeAnnotation",
-    "buildcss": "node-sass --recursive --output styles --output-style compressed styles/*.sass",
+    "buildjs": "browserify -t [ browserify-ngannotate --add ] src/main.js | sed \"s/[\\\"']ngInject[\\\"'];*//g\" > public/bundle.js",
+    "compilejs": "java -jar ./node_modules/google-closure-compiler/compiler.jar --js public/bundle.js --js_output_file public/bundle-min.js --jscomp_off=misplacedTypeAnnotation",
+    "buildcss": "node-sass --recursive --output public --output-style compressed styles/*.sass",
     "build": "npm run buildjs && npm run compilejs && npm run buildcss",
-    "start": "http-server -p 8033 -o"
+    "start": "http-server public -p 8033 -o"
   },
   "author": "",
   "license": "MIT",
