@@ -41,7 +41,7 @@ describe('ZipSvc', function() {
   describe('dump', function() {
     it('should call generateAsync', function() {
       ZipSvc.dump(zip);
-      sinon.assert.called(zip.generateAsync, { type: "blob" })
+      sinon.assert.calledWith(zip.generateAsync, { type: "blob" })
     });
   });
   describe('load', function() {
