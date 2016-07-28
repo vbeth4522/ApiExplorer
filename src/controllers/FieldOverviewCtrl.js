@@ -98,8 +98,8 @@ module.exports = function(
   // This will have to get more sophisticated once we know what schemas the flow
   // is compatible with.
   SchemaSvc
-    .get('user')
-    .then(sFn.pluckPropToScope('schemaAttribute', 'schemaAttributes'))
+    .getAllIntersect()
+    .then(sFn.pluckPropToScope('schemaAttribute', 'schemaAttributes'));
   LocaleSvc
     .getAll(flow)
     .then(sFn.pluckNameToScope('locales'));
