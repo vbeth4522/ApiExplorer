@@ -2,18 +2,25 @@
 
 require('angular-mocks')
 var angular = require('angular')
+var sinon = require('sinon')
 
 describe('HttpSvc', function() {
   var HttpSvc
+  var NotificationsSvc
   var $httpBackend
 
   beforeEach(function() {
     angular.mock.module('capi-ui');
     angular.mock.module(function($provide) {
-      $provide.value('$state', {})
+      $provide.value('$state', {
+          go: function() {}
+        }
+      );
     });
-    angular.mock.inject(function(_HttpSvc_, _$httpBackend_) {
+    angular.mock.inject(function(_HttpSvc_, _NotificationsSvc_, _$httpBackend_) {
       HttpSvc = _HttpSvc_;
+      NotificationsSvc = _NotificationsSvc_;
+      sinon.stub(NotificationsSvc, 'add')
       $httpBackend = _$httpBackend_;
     });
   });
@@ -32,6 +39,19 @@ describe('HttpSvc', function() {
         .then(function(r) { response = r});
       $httpBackend.flush();
       assert.equal(response.data, 'ok');
+    });
+    it('should add a notification if unauthorized', function() {
+      $httpBackend
+        .whenGET('https://v1.api.us.janrain.com/foo')
+        .respond(401, 'Unauthorized')
+      HttpSvc.get('foo')
+        .then(function() {});
+      $httpBackend.flush();
+      var expected = {
+        message: "Unauthorized",
+        type: "danger"
+      };
+      sinon.assert.calledWith(NotificationsSvc.add, expected);
     });
   });
   describe('post', function() {

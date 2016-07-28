@@ -16,7 +16,7 @@ module.exports = function($http, $state, CredentialSvc, UtilSvc, RegionSvc, Noti
 
   function errorCallback(response) {
     if (response.status == 401 || response.status == 403) {
-      err = {
+      var err = {
         type: 'danger',
         message: getPath(response, 'data.errors', "Unauthorized")
       };
