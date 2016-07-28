@@ -73,7 +73,7 @@ angular.module(
         parent: 'flowOverview'
       }
     })
-    .state('fieldOverveiwFromForm', {
+    .state('fieldOverviewFromForm', {
       url: '/flows/:flow/forms/:form/fields/:field',
       templateUrl: '/partials/fieldOverview.html',
       controller: 'FieldOverviewCtrl',
