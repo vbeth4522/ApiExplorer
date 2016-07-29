@@ -1,5 +1,7 @@
 'use strict';
 
+var intersect = require('lodash/array/intersection');
+
 module.exports = function(CredentialSvc, HttpSvc, $q) {
   'ngInject';
 
@@ -23,23 +25,20 @@ module.exports = function(CredentialSvc, HttpSvc, $q) {
   }
 
   this.getAllIntersect = function() {
-    return this.getAll()
+    return self.getAll()
       .then(function(result) {
         return $q.all(
           result.data.map(function(schema_obj) {
-            return self.get(schema_obj.name);
+            return self.get(schema_obj);
         }));
       })
       .then(function(results) {
-        var schemas = results.map(function(result) {
-          return result.data.map(function(attribute) {
-            return attribute.schemaAttribute;
-          });
-        });
-        for(var i = 1; i < schemas.length; i++) {
-          schemas[0] = schemas[0].filter(function(n) { return schemas[i].indexOf(n) != -1; });
-        }
-        return { data: schemas[0].map(function(value) { return {schemaAttribute:value}; }) };
+        return {
+          data: intersect.apply(this,
+            results.map(function(result) {
+              return result.data;
+          }))
+        };
       });
   }
 
