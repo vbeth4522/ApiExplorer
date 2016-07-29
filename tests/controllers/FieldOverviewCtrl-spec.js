@@ -5,6 +5,8 @@ var angular = require('angular');
 var sinon = require('sinon');
 var fieldDef = require('../fixtures/fieldDefinition')
 var helpers = require('../helpers')
+var pluck = require('lodash/collection/pluck');
+var schemaAttributes = require('../fixtures/schemaAttributes');
 
 function stub(returnVal) {
   return sinon.stub().returns(returnVal)
@@ -67,7 +69,7 @@ describe('FieldOverviewCtrl', function() {
       assert.deepEqual(locals.$scope.newOption, { label: '', value: '' })
       locals.$scope.$apply()
       assert.deepEqual(locals.$scope.field, fieldDef)
-      assert.sameMembers(locals.$scope.schemaAttributes, ['birthday', 'primaryAddress.mobile'])
+      assert.sameMembers(locals.$scope.schemaAttributes, pluck(schemaAttributes, "schemaAttribute"))
       assert.sameMembers(locals.$scope.fieldAttributes, ['foo', 'bar'])
       assert.sameMembers(locals.$scope.locales, ['en-US', 'it-IT'])
       assert.sameMembers(locals.$scope.allFields, ['signInEmailAddress', 'currentPassword'])

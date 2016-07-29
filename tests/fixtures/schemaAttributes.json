@@ -1,7 +1,27 @@
 [
   {
+    "schemaAttribute": "aboutMe",
+    "type": "string"
+  },
+  {
     "schemaAttribute": "birthday",
     "type": "dateTime"
+  },
+  {
+    "schemaAttribute": "gender",
+    "type": "string"
+  },
+  {
+    "schemaAttribute": "lastUpdated",
+    "type": "dateTime"
+  },
+  {
+    "schemaAttribute": "display",
+    "type": "string"
+  },
+  {
+    "schemaAttribute": "number",
+    "type": "integer"
   },
   {
     "schemaAttribute": "primaryAddress.mobile",
