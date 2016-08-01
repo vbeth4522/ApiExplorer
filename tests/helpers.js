@@ -1,25 +1,25 @@
 'use strict';
 
-require('angular-mocks')
+require('angular-mocks');
 var angular = require('angular');
 var sinon = require('sinon');
-var fieldsList = require('./fixtures/fieldCollection')
-var fieldDef = require('./fixtures/fieldDefinition')
-var flowOverview = require('./fixtures/flowOverview')
-var formsList = require('./fixtures/formCollection')
-var mailTemplatesList = require('./fixtures/mailTemplateCollection')
-var localesList = require('./fixtures/localeCollection')
-var schemaAttributes = require('./fixtures/schemaAttributes')
-var emptyCreds = require('./fixtures/credsEmpty')
-var defaultRegion = require('./fixtures/defaultRegion')
-var defaultRegionUrl = require('./fixtures/defaultRegionUrl')
-var regions = require('./fixtures/regions')
-// var $q
+var fieldsList = require('./fixtures/fieldCollection');
+var fieldDef = require('./fixtures/fieldDefinition');
+var flowOverview = require('./fixtures/flowOverview');
+var formsList = require('./fixtures/formCollection');
+var mailTemplatesList = require('./fixtures/mailTemplateCollection');
+var localesList = require('./fixtures/localeCollection');
+var schemaAttributes = require('./fixtures/schemaAttributes');
+var emptyCreds = require('./fixtures/credsEmpty');
+var defaultRegion = require('./fixtures/defaultRegion');
+var defaultRegionUrl = require('./fixtures/defaultRegionUrl');
+var regions = require('./fixtures/regions');
 
-// function gimmeQ() {
-//   if (!$q) angular.mock.inject(function(_$q_) { $q = _$q_ });
-//   return $q
-// }
+var restorer = exports.restorer = function(object, methods) {
+  methods.forEach(function(method) {
+    object[method].restore();
+  });
+}
 
 var apiStub = exports.apiStub = function($q, response) {
   return sinon.stub().returns(($q.when({ data: response })))
@@ -174,20 +174,24 @@ exports.make$StateStub = function() {
 }
 
 exports.restoreCredentialSvc = function(CredentialSvc) {
-  CredentialSvc.clear.restore();
-  CredentialSvc.get.restore();
-  CredentialSvc.set.restore();
+  restorer(CredentialSvc, [
+    "clear",
+    "get",
+    "set"
+  ]);
 }
 
 exports.restoreHttpSvc = function(HttpSvc) {
-  HttpSvc.get.restore();
-  HttpSvc.delete.restore();
-  HttpSvc.post.restore();
-  HttpSvc.put.restore();
-  HttpSvc.patch.restore();
-  HttpSvc.serialGet.restore();
-  HttpSvc.serialDelete.restore();
-  HttpSvc.serialPost.restore();
-  HttpSvc.serialPut.restore();
-  HttpSvc.serialPatch.restore();
+  restorer(HttpSvc, [
+    "get",
+    "delete",
+    "post",
+    "put",
+    "patch",
+    "serialGet",
+    "serialDelete",
+    "serialPost",
+    "serialPut",
+    "serialPatch"
+  ]);
 }
