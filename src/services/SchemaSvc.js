@@ -27,10 +27,7 @@ module.exports = function(CredentialSvc, HttpSvc, $q) {
   this.getAllIntersect = function() {
     return self.getAll()
       .then(function(result) {
-        return $q.all(
-          result.data.map(function(schema_obj) {
-            return self.get(schema_obj);
-        }));
+        return $q.all(result.data.map(self.get));
       })
       .then(function(results) {
         return {
