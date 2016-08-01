@@ -23,7 +23,7 @@ describe('schemasSvc', function() {
       CredentialSvc.get.returns(defaultCreds);
       HttpSvc = helpers.makeHttpSvcStub(_$q_, _HttpSvc_);
       $q = _$q_;
-      $rootScope = _$rootScope_;
+      $rootScope = _$rootScope_.$new();
     });
     angular.mock.inject(function(_SchemaSvc_) {
       SchemaSvc = _SchemaSvc_;
