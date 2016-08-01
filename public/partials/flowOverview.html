@@ -15,7 +15,7 @@
 <div class="col-md-3">
   <h4>Fields<a ui-sref="addField({ flow: flow.name })" class="pull-right">Add Field</a></h4>
   <ul>
-    <li ng-repeat="field in flowFields">
+    <li ng-repeat="field in flowFields | orderBy:'toString()'">
       <a ui-sref="fieldOverview({ flow: flow.name, field: field })">{{field}}</a>
     </li>
   </ul>
@@ -23,7 +23,7 @@
 <div class="col-md-3">
   <h4>Forms</h4>
   <ul>
-    <li ng-repeat="form in flowForms">
+    <li ng-repeat="form in flowForms | orderBy:'toString()'">
       <a ui-sref="formOverview({ flow: flow.name, form: form })">{{form}}</a>
     </li>
   </ul>
@@ -31,7 +31,7 @@
 <div class="col-md-3">
   <h4>Mail Templates<a ui-sref="mailTemplatesImport({ flow: flow.name })" class="pull-right">Import</a><span class="pull-right">/</span><a ui-sref="mailTemplatesExport({ flow: flow.name })" class="pull-right">Export</a></h4>
   <ul>
-    <li ng-repeat="template in mailTemplates">
+    <li ng-repeat="template in mailTemplates | orderBy:'toString()'">
       <a ui-sref="mailTemplateOverview({ flow: flow.name, template: template })">{{template}}</a>
     </li>
   </ul>
@@ -40,6 +40,6 @@
   <h4><a ui-sref="translations({ flow: flow.name })">Translations</a></h4>
   <h5>Locales:</h5>
   <ul>
-    <li ng-repeat="locale in flowLocales">{{locale}}</li>
+    <li ng-repeat="locale in flowLocales | orderBy:'toString()'">{{locale}}</li>
   </ul>
 </div>
