@@ -1,25 +1,25 @@
 'use strict';
 
-require('angular-mocks')
+require('angular-mocks');
 var angular = require('angular');
 var sinon = require('sinon');
-var fieldsList = require('./fixtures/fieldCollection')
-var fieldDef = require('./fixtures/fieldDefinition')
-var flowOverview = require('./fixtures/flowOverview')
-var formsList = require('./fixtures/formCollection')
-var mailTemplatesList = require('./fixtures/mailTemplateCollection')
-var localesList = require('./fixtures/localeCollection')
-var schemaAttributes = require('./fixtures/schemaAttributes')
-var emptyCreds = require('./fixtures/emptyCreds')
-var defaultRegion = require('./fixtures/defaultRegion')
-var defaultRegionUrl = require('./fixtures/defaultRegionUrl')
-var regions = require('./fixtures/regions')
-// var $q
+var fieldsList = require('./fixtures/fieldCollection');
+var fieldDef = require('./fixtures/fieldDefinition');
+var flowOverview = require('./fixtures/flowOverview');
+var formsList = require('./fixtures/formCollection');
+var mailTemplatesList = require('./fixtures/mailTemplateCollection');
+var localesList = require('./fixtures/localeCollection');
+var schemaAttributes = require('./fixtures/schemaAttributes');
+var emptyCreds = require('./fixtures/credsEmpty');
+var defaultRegion = require('./fixtures/defaultRegion');
+var defaultRegionUrl = require('./fixtures/defaultRegionUrl');
+var regions = require('./fixtures/regions');
 
-// function gimmeQ() {
-//   if (!$q) angular.mock.inject(function(_$q_) { $q = _$q_ });
-//   return $q
-// }
+var restorer = exports.restorer = function(object, methods) {
+  methods.forEach(function(method) {
+    object[method].restore();
+  });
+}
 
 var apiStub = exports.apiStub = function($q, response) {
   return sinon.stub().returns(($q.when({ data: response })))
@@ -57,6 +57,34 @@ exports.makeFormSvcStub = function($q) {
   }
 }
 
+exports.makeHttpSvcStub = function($q, HttpSvc) {
+  if(!HttpSvc) {
+    return {
+      get: apiStub($q),
+      delete: apiStub($q),
+      post: apiStub($q),
+      put: apiStub($q),
+      patch: apiStub($q),
+      serialGet: apiStub($q),
+      serialDelete: apiStub($q),
+      serialPost: apiStub($q),
+      serialPut: apiStub($q),
+      serialPatch: apiStub($q)
+    };
+  }
+  sinon.stub(HttpSvc, 'get');
+  sinon.stub(HttpSvc, 'delete');
+  sinon.stub(HttpSvc, 'post');
+  sinon.stub(HttpSvc, 'put');
+  sinon.stub(HttpSvc, 'patch');
+  sinon.stub(HttpSvc, 'serialGet');
+  sinon.stub(HttpSvc, 'serialDelete');
+  sinon.stub(HttpSvc, 'serialPost');
+  sinon.stub(HttpSvc, 'serialPut');
+  sinon.stub(HttpSvc, 'serialPatch');
+  return HttpSvc;
+}
+
 exports.makeMailTemplateSvcStub = function($q) {
   return {
     get: apiStub($q),
@@ -75,18 +103,25 @@ exports.makeSchemaSvcStub = function($q) {
     clear: apiStub($q),
     get: apiStub($q, schemaAttributes),
     set: apiStub($q),
+    getAllIntersect: apiStub($q, schemaAttributes),
     getAttribute: apiStub($q),
     addAttribute: apiStub($q),
     deleteAttribute: apiStub($q)
   }
 }
 
-exports.makeCredentialSvcStub = function() {
-  return {
-    clear: stub(),
-    get: stub(emptyCreds),
-    set: stub()
+exports.makeCredentialSvcStub = function(CredentialSvc) {
+  if(!CredentialSvc) {
+    return {
+      clear: stub(),
+      get: stub(emptyCreds),
+      set: stub()
+    };
   }
+  sinon.stub(CredentialSvc, 'clear');
+  sinon.stub(CredentialSvc, 'get').returns(emptyCreds);
+  sinon.stub(CredentialSvc, 'set');
+  return CredentialSvc;
 }
 
 exports.makeUtilSvcStub = function(sFn) {
@@ -136,4 +171,27 @@ exports.make$StateStub = function() {
   return {
     go: stub()
   }
+}
+
+exports.restoreCredentialSvc = function(CredentialSvc) {
+  restorer(CredentialSvc, [
+    "clear",
+    "get",
+    "set"
+  ]);
+}
+
+exports.restoreHttpSvc = function(HttpSvc) {
+  restorer(HttpSvc, [
+    "get",
+    "delete",
+    "post",
+    "put",
+    "patch",
+    "serialGet",
+    "serialDelete",
+    "serialPost",
+    "serialPut",
+    "serialPatch"
+  ]);
 }

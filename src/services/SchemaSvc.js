@@ -1,7 +1,11 @@
 'use strict';
 
-module.exports = function(CredentialSvc, HttpSvc) {
+var intersect = require('lodash/array/intersection');
+
+module.exports = function(CredentialSvc, HttpSvc, $q) {
   'ngInject';
+
+  var self = this;
 
   function basePath() {
     var creds = CredentialSvc.get()
@@ -18,6 +22,21 @@ module.exports = function(CredentialSvc, HttpSvc) {
 
   this.get = function(schema) {
     return HttpSvc.get(basePath().concat([schema]))
+  }
+
+  this.getAllIntersect = function() {
+    return self.getAll()
+      .then(function(result) {
+        return $q.all(result.data.map(self.get));
+      })
+      .then(function(results) {
+        return {
+          data: intersect.apply(this,
+            results.map(function(result) {
+              return result.data;
+          }))
+        };
+      });
   }
 
   this.getAttribute = function(schema, attribute) {
