@@ -1,5 +1,6 @@
 'use strict';
 
+var pluck = require('lodash/collection/pluck');
 var intersect = require('lodash/array/intersection');
 
 module.exports = function(CredentialSvc, HttpSvc, $q) {
@@ -27,7 +28,9 @@ module.exports = function(CredentialSvc, HttpSvc, $q) {
   this.getAllIntersect = function() {
     return self.getAll()
       .then(function(result) {
-        return $q.all(result.data.map(self.get));
+        return $q.all(
+          pluck(result.data, "name")
+          .map(self.get));
       })
       .then(function(results) {
         return {
