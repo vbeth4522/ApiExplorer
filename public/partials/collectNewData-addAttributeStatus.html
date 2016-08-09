@@ -1,0 +1,13 @@
+<div>
+  <ng-include src="'/partials/notifications.html'"></ng-include>
+  <h3>Add Attribute Results</h3>
+    <ul class="list-group">
+      <li class="list-group-item" ng-repeat="result in report">
+        <span ng-if="result.success" class="badge badge-success"><span class="glyphicon glyphicon-ok-sign"></span></span>
+        <span ng-if="!result.success" class="badge badge-danger"><span class="glyphicon glyphicon-remove-sign"></span></span>
+        {{result.message}}
+      </li>
+    </ul>
+  <input ng-click="back()" type="submit" value="Back" class="btn btn-lg btn-primary">
+  <input ng-click="continue()" type="submit" value="Continue" class="btn btn-lg btn-primary">
+</div>

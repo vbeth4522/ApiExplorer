@@ -184,9 +184,19 @@ angular.module(
         label: 'Add Attribute',
         parent: 'collectNewData',
         skip: true
+      }
+    })
+    .state('collectNewData.addAttributeStatus', {
+      templateUrl: '/partials/collectNewData-addAttributeStatus',
+      controller: 'CollectNewDataAddAttributeStatusCtrl',
+      ncyBreadcrumb: {
+        label: 'Add Attribute Status',
+        parent: 'collectNewData',
+        skip: true
       },
       params: {
-        schema: null
+        attribute: null,
+        results: null
       }
     })
     .state('collectNewData.addField', {
