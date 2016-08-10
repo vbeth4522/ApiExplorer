@@ -16,7 +16,11 @@ module.exports = function($scope, $state, $stateParams, $q, SchemaSvc, UtilSvc) 
           return SchemaSvc
             .addAttribute(schema.name, $scope.attribute.name, $scope.attribute)
             .then(function(result) {
-              result.data.success = $scope.attribute.name + " successfully added to " + schema.name + ".";
+              if(!result.data) {
+                result.data = {
+                  success: $scope.attribute.name + " successfully added to " + schema.name + "."
+                };
+              }
               return result;
             });
         }))

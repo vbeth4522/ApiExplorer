@@ -18,9 +18,8 @@ describe('CollectNewDataAddAttributeStatus', function() {
           attribute: { name: "my-cool-attribute", type: "string" },
           results: [
             {
-              status: 200,
+              status: 204,
               data: {
-                errors: "This is an error message",
                 success: "This is a success!"
               }
             },
@@ -28,13 +27,11 @@ describe('CollectNewDataAddAttributeStatus', function() {
               status: 400,
               data: {
                 errors: "This is an error message",
-                success: "This is a success!"
               }
             },
             {
-              status: 200,
+              status: 204,
               data: {
-                errors: "This is an error message",
                 success: "This is a success!"
               }
             },

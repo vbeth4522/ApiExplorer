@@ -10,7 +10,7 @@ module.exports = function($scope, $state, $stateParams) {
     $scope.report = [];
     for (var i = 0; i < results.length; i++ ) {
         switch(results[i].status) {
-            case 200:
+            case 204:
                 $scope.report.push({
                     message: results[i].data.success,
                     success: true
