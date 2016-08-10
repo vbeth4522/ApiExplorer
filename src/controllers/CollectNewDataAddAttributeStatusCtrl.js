@@ -27,7 +27,7 @@ module.exports = function($scope, $state, $stateParams) {
 
   $scope.back = function() {
     $state.go('collectNewData.addAttribute', {
-        flow: $scope.flow
+        flow: $stateParams.flow
     });
   }
 
