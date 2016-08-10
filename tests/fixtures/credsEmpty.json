@@ -1,5 +1,5 @@
 {
-  appId: null,
-  clientId: null,
-  clientSecret: null
+  "appId": null,
+  "clientId": null,
+  "clientSecret": null
 }
