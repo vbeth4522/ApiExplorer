@@ -33,12 +33,31 @@ module.exports = function(CredentialSvc, HttpSvc, $q) {
           .map(self.get));
       })
       .then(function(results) {
+        // Remove this when we move to lodash 4.14.1+
+        var joined = intersect.apply(this,
+          results.map(function(result) {
+            return result.data.map(function(attr) {
+              return attr.schemaAttribute;
+            });
+        }));
+
+        if(joined.length == 0) return { data: [] };
+
+        var result = [];
+        var baseSchema = results[0].data;
+        for(var i = 0; i < baseSchema.length; i++) {
+          if(joined.indexOf(baseSchema[i].schemaAttribute) != -1) result = result.concat([baseSchema[i]]);
+        }
         return {
-          data: intersect.apply(this,
-            results.map(function(result) {
-              return result.data;
-          }))
+          data: result
         };
+        // Use this when we move to lodash 4.14.1+
+        // return {
+        //   data: intersectionBy.apply(this,
+        //     results.map(function(result) {
+        //       return result.data;
+        //   }).concat(["schemaAttribute",]))
+        // };
       });
   }
 
