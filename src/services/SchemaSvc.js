@@ -17,6 +17,30 @@ module.exports = function(CredentialSvc, HttpSvc, $q) {
     ];
   }
 
+  // Since lodash 3.10.1 doesn't have intersectionBy, we'll need to create our own
+  // Remove this when we move to lodash 4.14.1+
+  function intersectionBy(results, property) {
+    if(results.length <= 0) return [];
+    // pull a list of the specified property and intesect on those
+    var propIntersect = intersect.apply(this,
+      results.map(function(result) {
+        return result.data.map(function(attr) {
+          return attr[property];
+        });
+    }));
+
+    // Build an array of the matching objects
+    var result = [];
+    var baseSchema = results[0].data;
+    for(var i = 0; i < baseSchema.length; i++) {
+      if(propIntersect.indexOf(baseSchema[i][property]) != -1) {
+        result = result.concat([baseSchema[i]]);
+      }
+    }
+
+    return result;
+  }
+
   this.getAll = function() {
     return HttpSvc.get(basePath())
   }
@@ -33,31 +57,7 @@ module.exports = function(CredentialSvc, HttpSvc, $q) {
           .map(self.get));
       })
       .then(function(results) {
-        // Remove this when we move to lodash 4.14.1+
-        var joined = intersect.apply(this,
-          results.map(function(result) {
-            return result.data.map(function(attr) {
-              return attr.schemaAttribute;
-            });
-        }));
-
-        if(joined.length == 0) return { data: [] };
-
-        var result = [];
-        var baseSchema = results[0].data;
-        for(var i = 0; i < baseSchema.length; i++) {
-          if(joined.indexOf(baseSchema[i].schemaAttribute) != -1) result = result.concat([baseSchema[i]]);
-        }
-        return {
-          data: result
-        };
-        // Use this when we move to lodash 4.14.1+
-        // return {
-        //   data: intersectionBy.apply(this,
-        //     results.map(function(result) {
-        //       return result.data;
-        //   }).concat(["schemaAttribute",]))
-        // };
+        return { data: intersectionBy(results, 'schemaAttribute') };
       });
   }
 
