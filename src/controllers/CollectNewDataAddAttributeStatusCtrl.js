@@ -37,7 +37,6 @@ module.exports = function($scope, $state, $stateParams, $q, SchemaSvc, UtilSvc) 
   }
 
   $scope.retry = function() {
-    console.log($stateParams);
     return $q.all( $stateParams.schemas.map( function(schema) {
       return SchemaSvc
         .addAttribute(schema, $stateParams.attribute.name, $stateParams.attribute)
