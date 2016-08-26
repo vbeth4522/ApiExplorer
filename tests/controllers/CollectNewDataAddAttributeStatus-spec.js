@@ -21,19 +21,19 @@ describe('CollectNewDataAddAttributeStatus', function() {
             {
               status: 204,
               data: {
-                success: "This is a success!"
+                success: "my-cool-attribute successfully added to schema1."
               }
             },
             {
               status: 400,
               data: {
-                errors: "This is an error message",
+                errors: "/my-cool-attribute already exists in schema2",
               }
             },
             {
               status: 204,
               data: {
-                success: "This is a success!"
+                success: "my-cool-attribute successfully added to schema3."
               }
             },
           ],
@@ -69,9 +69,9 @@ describe('CollectNewDataAddAttributeStatus', function() {
   });
   describe('retry', function() {
     it('should redirect to itself after trying to add the attribute again', function() {
-      for(var i = 0; i < locals.$stateParams.results.length; i++) {
-        locals.SchemaSvc.addAttribute.onCall(i).returns(locals.$q.when(locals.$stateParams.results[i]));
-      }
+      locals.SchemaSvc.addAttribute.onCall(0).returns(locals.$q.when({status: 204}));
+      locals.SchemaSvc.addAttribute.onCall(1).returns(locals.$q.when(locals.$stateParams.results[1]));
+      locals.SchemaSvc.addAttribute.onCall(2).returns(locals.$q.when({status: 204}));
       locals.$scope.retry();
       locals.$scope.$digest();
       sinon.assert.callCount(locals.SchemaSvc.addAttribute, locals.$stateParams.schemas.length);
