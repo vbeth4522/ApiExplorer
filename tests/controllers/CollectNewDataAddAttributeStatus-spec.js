@@ -12,6 +12,7 @@ describe('CollectNewDataAddAttributeStatus', function() {
     angular.mock.module('capi-ui')
     angular.mock.inject(function($rootScope, $controller, $q) {
       locals = {
+        $q: $q,
         $scope: $rootScope.$new(),
         $stateParams: {
           flow: "flow_of_awesome",
@@ -20,24 +21,27 @@ describe('CollectNewDataAddAttributeStatus', function() {
             {
               status: 204,
               data: {
-                success: "This is a success!"
+                success: "my-cool-attribute successfully added to schema1."
               }
             },
             {
               status: 400,
               data: {
-                errors: "This is an error message",
+                errors: "/my-cool-attribute already exists in schema2",
               }
             },
             {
               status: 204,
               data: {
-                success: "This is a success!"
+                success: "my-cool-attribute successfully added to schema3."
               }
             },
-          ]
+          ],
+          schemas: ["schema1", "schema2", "schema3"],
         },
-        $state: helpers.make$StateStub($q)
+        $state: helpers.make$StateStub($q),
+        SchemaSvc: helpers.makeSchemaSvcStub($q),
+        UtilSvc: helpers.makeUtilSvcStub($q)
       }
       $controller('CollectNewDataAddAttributeStatusCtrl', locals);
     });
@@ -53,7 +57,7 @@ describe('CollectNewDataAddAttributeStatus', function() {
     it('should redirect back to the attribute creator', function() {
       locals.$scope.back();
       locals.$scope.$digest();
-      sinon.assert.calledWith(locals.$state.go, 'collectNewData.addAttribute', { flow: locals.$stateParams.flow });
+      sinon.assert.calledWith(locals.$state.go, 'collectNewData.addAttribute', { flow: locals.$stateParams.flow, schemas: locals.$stateParams.schemas });
     });
   });
   describe('continue', function() {
@@ -61,6 +65,20 @@ describe('CollectNewDataAddAttributeStatus', function() {
       locals.$scope.continue();
       locals.$scope.$digest();
       sinon.assert.calledWith(locals.$state.go, 'collectNewData.addField', { flow: locals.$stateParams.flow, attribute: locals.$stateParams.attribute });
+    });
+  });
+  describe('retry', function() {
+    it('should redirect to itself after trying to add the attribute again', function() {
+      locals.SchemaSvc.addAttribute.onCall(0).returns(locals.$q.when({status: 204}));
+      locals.SchemaSvc.addAttribute.onCall(1).returns(locals.$q.when(locals.$stateParams.results[1]));
+      locals.SchemaSvc.addAttribute.onCall(2).returns(locals.$q.when({status: 204}));
+      locals.$scope.retry();
+      locals.$scope.$digest();
+      sinon.assert.callCount(locals.SchemaSvc.addAttribute, locals.$stateParams.schemas.length);
+      for(var i = 0; i < locals.$stateParams.results.length; i++) {
+        sinon.assert.calledWith(locals.SchemaSvc.addAttribute, locals.$stateParams.schemas[i]);
+      }
+      sinon.assert.calledWith(locals.$state.go, 'collectNewData.addAttributeStatus', locals.$stateParams);
     });
   });
 });
