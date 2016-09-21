@@ -30,8 +30,10 @@ describe('RegionsCtrl', function() {
     it('should set the scope regions and region', function() {
       sinon.assert.called(locals.RegionSvc.regions)
       sinon.assert.called(locals.RegionSvc.get)
+      sinon.assert.called(locals.RegionSvc.url)
       assert.equal(locals.$scope.regions, regions);
       assert.equal(locals.$scope.region, defaultRegion);
+      assert.equal(locals.$scope.regionURL, defaultRegionUrl);
     });
   });
   describe('setRegion', function() {
@@ -44,8 +46,11 @@ describe('RegionsCtrl', function() {
   describe('updateScopeRegion', function() {
     it('should update the scope on regionUpdated event', function() {
       var newRegion = 'eu';
+      var newRegionURL = 'https://example.eu';
+      locals.RegionSvc.url.returns(newRegionURL);
       locals.$scope.$broadcast('regionUpdated', newRegion);
       assert.equal(locals.$scope.region, newRegion);
+      assert.equal(locals.$scope.regionURL, newRegionURL);
     });
   });
 });
