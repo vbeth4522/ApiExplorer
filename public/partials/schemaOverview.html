@@ -3,9 +3,12 @@
   <div class="col-md-3">
     <h4>Attributes<a ui-sref="attributeCreator({ schema: schema })" class="pull-right">Add Attribute</a></h4>
     <ul>
-      <li ng-repeat="attribute in attributes">
+      <li ng-repeat="attribute in attributes" ng-show="attributes.length">
         <a ui-sref="attributeOverview({ schema: schema, attribute: attribute })">{{attribute}}</a>
       </li>
+      <div ng-hide="attributes.length">
+        No Attributes
+      </div>
     </ul>
   </div>
 </div>

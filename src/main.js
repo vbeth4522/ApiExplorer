@@ -73,7 +73,7 @@ angular.module(
         parent: 'flowOverview'
       }
     })
-    .state('fieldOverveiwFromForm', {
+    .state('fieldOverviewFromForm', {
       url: '/flows/:flow/forms/:form/fields/:field',
       templateUrl: '/partials/fieldOverview.html',
       controller: 'FieldOverviewCtrl',
@@ -175,6 +175,9 @@ angular.module(
         label: 'Select Attribute',
         parent: 'collectNewData',
         skip: true
+      },
+      params: {
+        flow: null
       }
     })
     .state('collectNewData.addAttribute', {
@@ -186,7 +189,23 @@ angular.module(
         skip: true
       },
       params: {
-        schema: null
+        flow: null,
+        schemas: null
+      }
+    })
+    .state('collectNewData.addAttributeStatus', {
+      templateUrl: '/partials/collectNewData-addAttributeStatus',
+      controller: 'CollectNewDataAddAttributeStatusCtrl',
+      ncyBreadcrumb: {
+        label: 'Add Attribute Status',
+        parent: 'collectNewData',
+        skip: true
+      },
+      params: {
+        flow: null,
+        schemas: null,
+        attribute: null,
+        results: null
       }
     })
     .state('collectNewData.addField', {
@@ -198,6 +217,7 @@ angular.module(
         skip: true
       },
       params: {
+        flow: null,
         attribute: null
       }
     })
@@ -210,6 +230,7 @@ angular.module(
         skip: true
       },
       params: {
+        flow: null,
         field: null
       }
     })

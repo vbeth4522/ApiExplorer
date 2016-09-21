@@ -24,6 +24,7 @@ describe('FieldSvc', function() {
         }
       }
       $provide.value('CredentialSvc', CredentialSvc)
+      $provide.value('$state', {})
     });
     angular.mock.inject(function(_FieldSvc_, _$httpBackend_) {
       FieldSvc = _FieldSvc_

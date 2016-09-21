@@ -3,24 +3,28 @@
 var first = require('lodash/array/first');
 var includes = require('lodash/collection/includes');
 
-module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc) {
+module.exports = function($scope, $stateParams, UtilSvc, FieldSvc, FieldMetaSvc, LocaleSvc, SchemaSvc, FlowSvc) {
   'ngInject';
 
-  var sFn = UtilSvc.scopeHelpers($scope)
-  var flow = $stateParams.flow
+  var sFn = UtilSvc.scopeHelpers($scope);
+  var flow = $stateParams.flow;
 
-  $scope.locales = ['en-US']
-  $scope.selectedLocale = first($scope.locales)
-  $scope.adding = true
+  $scope.locales = ['en-US'];
+  $scope.selectedLocale = first($scope.locales);
+  $scope.adding = true;
   $scope.field = {
     type: 'text'
-  }
-  SchemaSvc
-    .get('user')
-    .then(sFn.pluckPropToScope('schemaAttribute', 'schemaAttributes'))
+  };
+  FlowSvc
+    .get(flow)
+    .then(function(result) {
+      $scope.schemas = result.data.schemas;
+      return SchemaSvc.getAllIntersect($scope.schemas);
+    })
+    .then(sFn.pluckPropToScope('schemaAttribute', 'schemaAttributes'));
   FieldMetaSvc
     .getFieldTypes()
-    .then(sFn.pluckNameToScope('fieldTypes'))
+    .then(sFn.pluckNameToScope('fieldTypes'));
   LocaleSvc
     .getAll(flow)
     .then(sFn.pluckNameToScope('locales'));

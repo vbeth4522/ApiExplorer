@@ -2,78 +2,44 @@
 
 var _ = require('lodash');
 
-module.exports = function($scope, $state, $stateParams, $q, Schemas, SchemaSvc, FlowSvc, UtilSvc) {
+module.exports = function($scope, $state, $stateParams, $q, SchemaSvc, FlowSvc, UtilSvc) {
   'ngInject';
 
   var sFn = UtilSvc.scopeHelpers($scope)
 
   function init() {
-    $scope.schemas = Schemas;
     $scope.flow = $stateParams.flow;
-    $scope.attributes = [];
-    $scope.schemaActive = true;
-    $scope.flowSchemas  = [];
+    $scope.schemaAttributes = [];
+    FlowSvc.get($scope.flow)
+      .then(function(result) {
+        $scope.schemas = result.data.schemas;
+        return SchemaSvc.getAllIntersect($scope.schemas);
+      })
+      .then(sFn.pluckPropToScope('schemaAttribute', 'schemaAttributes'));
   }
 
-  function changeState(flow, schema, attribute) {
+  function changeState(flow, attribute) {
     if (!attribute) {
-      // Attribute was not given. Redirect to addAtribute page.
+      // Attribute was not given. Redirect to addAttribute page.
       return $q.when(
-        $state.go('collectNewData.addAttribute', { flow: flow, schema: schema })
+        $state.go('collectNewData.addAttribute', { flow: flow, schemas: $scope.schemas })
       );
     } else {
-      // Attribute was given. Redirect to addFeild.
+      // Attribute was given. Redirect to addField.
       return $q.when(
-        $state.go('collectNewData.addField', { flow: flow, schema: schema, attribute: attribute })
+        $state.go('collectNewData.addField', { flow: flow, attribute: attribute, })
       );
     }
   }
 
-  $scope.select = function(flow, schema, attribute) {
+  $scope.select = function(flow, attribute) {
     if (!flow) { return $q.rejected("Invalid flow:", flow) }
-    if (!schema) { return $q.rejected("Invalid schema:", schema) }
-
-    if (!$scope.schemaActive) {
-      var schemas = $scope.flowSchemas.concat(schema);
-      return FlowSvc
-        .save(flow, { schemas: schemas })
-        .catch(sFn.notifyErrorsAndReject)
-        .then(function() {
-          return changeState(flow, schema, attribute);
-        })
-    } else {
-      return changeState(flow, schema, attribute);
-    }
+    return changeState(flow, attribute);
   }
 
   $scope.hasAttributes = function() {
-    return !!$scope.attributes.length;
+    return !!$scope.schemaAttributes.length;
   }
-
-  $scope.$watch('schema', function(newValue) {
-    if (newValue) {
-      $scope.attributes = [];
-      $scope.attribute = undefined;
-      FlowSvc
-        .get($scope.flow)
-        .catch(sFn.notifyErrorsAndReject)
-        .then(function(result) {
-          $scope.flowSchemas = _(result).get('data.schemas', ['user']);
-          $scope.schemaActive = _($scope.flowSchemas).includes(newValue);
-        })
-        .then(function() {
-          return SchemaSvc
-            .get(newValue)
-            .catch(sFn.notifyErrorsAndReject);
-        })
-        .then(function(result) {
-          $scope.attributes = _(result.data)
-            .map('schemaAttribute')
-            .filter(_.isString)
-            .value();
-        })
-    }
-  })
 
   init();
 }
