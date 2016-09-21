@@ -2,17 +2,23 @@
   <div class="col-md-6">
     <h3>Choose a flow:</h3>
     <ul>
-      <li ng-repeat="flow in flowNames| orderBy:'toString()'">
+      <li ng-repeat="flow in flowNames| orderBy:'toString()'" ng-show="flowNames.length">
         <a ui-sref="flowOverview({ flow: flow })">{{flow}}</a>
       </li>
+      <div ng-hide="flowNames.length">
+        No Flows
+      </div>
     </ul>
   </div>
   <div class="col-md-6">
     <h3>Choose a Schema:</h3>
     <ul>
-      <li ng-repeat="schema in schemas | orderBy:'toString()'">
+      <li ng-repeat="schema in schemas | orderBy:'toString()'" ng-show="schemas.length">
         <a ui-sref="schemaOverview({ schema: schema })">{{schema}}</a>
       </li>
+      <div ng-hide="schemas.length">
+        No Schemas
+      </div>
     </ul>
   </div>
 </div>
