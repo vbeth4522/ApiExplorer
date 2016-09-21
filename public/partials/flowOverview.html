@@ -15,31 +15,43 @@
 <div class="col-md-3">
   <h4>Fields<a ui-sref="addField({ flow: flow.name })" class="pull-right">Add Field</a></h4>
   <ul>
-    <li ng-repeat="field in flowFields | orderBy:'toString()'">
+    <li ng-repeat="field in flowFields | orderBy:'toString()'" ng-show="flowFields.length">
       <a ui-sref="fieldOverview({ flow: flow.name, field: field })">{{field}}</a>
     </li>
+    <div ng-hide="flowFields.length">
+      No Fields
+    </div>
   </ul>
 </div>
 <div class="col-md-3">
   <h4>Forms</h4>
   <ul>
-    <li ng-repeat="form in flowForms | orderBy:'toString()'">
+    <li ng-repeat="form in flowForms | orderBy:'toString()'" ng-show="flowForms.length">
       <a ui-sref="formOverview({ flow: flow.name, form: form })">{{form}}</a>
     </li>
+    <div ng-hide="flowForms.length">
+      No Forms
+    </div>
   </ul>
 </div>
 <div class="col-md-3">
   <h4>Mail Templates<a ui-sref="mailTemplatesImport({ flow: flow.name })" class="pull-right">Import</a><span class="pull-right">/</span><a ui-sref="mailTemplatesExport({ flow: flow.name })" class="pull-right">Export</a></h4>
   <ul>
-    <li ng-repeat="template in mailTemplates | orderBy:'toString()'">
+    <li ng-repeat="template in mailTemplates | orderBy:'toString()'" ng-show="mailTemplates.length">
       <a ui-sref="mailTemplateOverview({ flow: flow.name, template: template })">{{template}}</a>
     </li>
+    <div ng-hide="mailTemplates.length">
+      No Mail Templates
+    </div>
   </ul>
 </div>
 <div class="col-md-3">
   <h4><a ui-sref="translations({ flow: flow.name })">Translations</a></h4>
   <h5>Locales:</h5>
   <ul>
-    <li ng-repeat="locale in flowLocales | orderBy:'toString()'">{{locale}}</li>
+    <li ng-repeat="locale in flowLocales | orderBy:'toString()'" ng-show="flowLocales.length">{{locale}}</li>
+    <div ng-hide="flowLocales.length">
+      No Locales
+    </div>
   </ul>
 </div>
