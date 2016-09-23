@@ -10,6 +10,7 @@ module.exports = function($scope, $state, RegionSvc) {
 
   function updateScopeRegion(event, region) {
     $scope.region = region
+    $scope.regionURL = RegionSvc.url()
   }
 
   $scope.setRegion = function(region) {
