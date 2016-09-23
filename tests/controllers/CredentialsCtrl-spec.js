@@ -4,7 +4,6 @@ require('angular-mocks')
 var angular = require('angular');
 var sinon = require('sinon');
 var helpers = require('../helpers')
-var emptyCreds = require('../fixtures/credsEmpty')
 
 describe('CredentialsCtrl', function() {
   var locals
