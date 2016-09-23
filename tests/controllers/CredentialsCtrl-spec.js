@@ -62,11 +62,9 @@ describe('CredentialsCtrl', function() {
   });
   describe('hasCreds', function() {
     it('should return false unless all credentials exist', function() {
-      assert.notOk(locals.$scope.hasCreds())
-      locals.CredentialSvc.get.returns({ appId: 'someappid', clientId: null, clientSecret: null })
-      assert.notOk(locals.$scope.hasCreds())
-      locals.CredentialSvc.get.returns({ appId: 'someappid', clientId: 'someclientid', clientSecret: null })
-      assert.notOk(locals.$scope.hasCreds())
+      assert.isFalse(locals.$scope.hasCreds());
+      locals.CredentialSvc.hasAnyCreds.returns(true);
+      assert.isTrue(locals.$scope.hasCreds());
     });
   });
 });
