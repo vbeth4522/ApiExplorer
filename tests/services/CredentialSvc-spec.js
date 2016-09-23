@@ -6,6 +6,7 @@ var sinon = require('sinon')
 
 var emptyCreds = { appId: null, clientId: null, clientSecret: null }
 var setCreds = { appId: 'foo', clientId: 'bar', clientSecret: 'baz' }
+var incompleteCreds = { appId: 'foo', clientId: null, clientSecret: 'baz' }
 
 describe('CredentialSvc', function() {
   var CredentialSvc
@@ -24,6 +25,11 @@ describe('CredentialSvc', function() {
     window.sessionStorage.removeItem('capi-creds')
   });
 
+  describe('hasAnyCreds', function() {
+    it('should return false when no credentials exist', function() {
+      assert.deepEqual(CredentialSvc.hasAnyCreds(), false);
+    });
+  });
   describe('get', function() {
     it('should return the credentials', function() {
       var expected = emptyCreds
@@ -46,7 +52,7 @@ describe('CredentialSvc', function() {
       var expected = emptyCreds
       window.sessionStorage.setItem(
         'capi-creds',
-        JSON.stringify(setCreds)
+        JSON.stringify({ "us": setCreds })
       )
       CredentialSvc.clear()
       sinon.assert.calledWith($rootScope.$broadcast, 'credentialsUpdated', expected)
@@ -76,6 +82,15 @@ describe('CredentialSvc with state', function() {
     window.sessionStorage.removeItem('capi-creds')
   });
 
+  describe('hasAnyCreds', function() {
+    it('should return true when credentials exist', function() {
+      assert.isTrue(CredentialSvc.hasAnyCreds());
+    });
+    it('but false if those credentials are incomplete', function() {
+      CredentialSvc.set('someAppId', 'someClientId', null);
+      assert.isFalse(CredentialSvc.hasAnyCreds());
+    });
+  });
   describe('get', function() {
     it('should broadcast on init and return the credentials', function() {
       var expected = setCreds

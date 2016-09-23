@@ -25,8 +25,7 @@ module.exports = function($scope, $state, CredentialSvc) {
   };
 
   $scope.hasCreds = function() {
-    var creds = CredentialSvc.get()
-    return creds.appId && creds.clientId && creds.clientSecret
+     return CredentialSvc.hasAnyCreds();
   };
 
   $scope.$on('credentialsUpdated', updateScopeCredentials);

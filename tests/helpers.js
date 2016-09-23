@@ -115,12 +115,14 @@ exports.makeCredentialSvcStub = function(CredentialSvc) {
     return {
       clear: stub(),
       get: stub(emptyCreds),
-      set: stub()
+      set: stub(),
+      hasAnyCreds: stub(false)
     };
   }
   sinon.stub(CredentialSvc, 'clear');
   sinon.stub(CredentialSvc, 'get').returns(emptyCreds);
   sinon.stub(CredentialSvc, 'set');
+  sinon.stub(CredentialSvc, 'hasAnyCreds').returns(false);
   return CredentialSvc;
 }
 

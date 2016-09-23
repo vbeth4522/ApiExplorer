@@ -4,7 +4,6 @@ require('angular-mocks')
 var angular = require('angular');
 var sinon = require('sinon');
 var helpers = require('../helpers')
-var emptyCreds = require('../fixtures/credsEmpty')
 
 describe('CredentialsCtrl', function() {
   var locals
@@ -63,11 +62,9 @@ describe('CredentialsCtrl', function() {
   });
   describe('hasCreds', function() {
     it('should return false unless all credentials exist', function() {
-      assert.notOk(locals.$scope.hasCreds())
-      locals.CredentialSvc.get.returns({ appId: 'someappid', clientId: null, clientSecret: null })
-      assert.notOk(locals.$scope.hasCreds())
-      locals.CredentialSvc.get.returns({ appId: 'someappid', clientId: 'someclientid', clientSecret: null })
-      assert.notOk(locals.$scope.hasCreds())
+      assert.isFalse(locals.$scope.hasCreds());
+      locals.CredentialSvc.hasAnyCreds.returns(true);
+      assert.isTrue(locals.$scope.hasCreds());
     });
   });
 });
