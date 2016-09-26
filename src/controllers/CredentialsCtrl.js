@@ -1,26 +1,25 @@
 'use strict';
-var isEmpty = require('lodash/lang/isEmpty');
 
 module.exports = function($scope, $state, CredentialSvc) {
   'ngInject';
 
   function updateScopeCredentials() {
-    if (!$scope.hasCreds()) {
+    var creds = CredentialSvc.get();
+    if (!(creds.appId && creds.clientId && creds.clientSecret)) {
       $state.go('auth', {}, { reload: false })
     }
-    var credentials = CredentialSvc.get();
-    $scope.appId = credentials.appId;
-    $scope.clientId = credentials.clientId;
-    $scope.clientSecret = credentials.clientSecret;
+    $scope.appId = creds.appId;
+    $scope.clientId = creds.clientId;
+    $scope.clientSecret = creds.clientSecret;
   }
 
   $scope.load = function() {
-    CredentialSvc.set($scope.appId, $scope.clientId, $scope.clientSecret)
+    CredentialSvc.set($scope.appId, $scope.clientId, $scope.clientSecret);
     $state.go('home', {}, { reload: true })
-  }
+  };
 
   $scope.clear = function() {
-    CredentialSvc.clear()
+    CredentialSvc.clear();
     $state.go('auth', {}, { reload: true })
   };
 
