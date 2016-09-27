@@ -32,7 +32,7 @@ module.exports = function($rootScope, $window, RegionSvc) {
     }
   }
 
-  function hasCredsForRegion(region) {
+  function getCredsForRegion(region) {
     if (isEmpty(credentials[region])) {
       credentials[region] = blankCred();
     }
@@ -41,14 +41,14 @@ module.exports = function($rootScope, $window, RegionSvc) {
 
   this.hasAnyCreds = function() {
     return some(RegionSvc.regions(), function(region) {
-        var creds = hasCredsForRegion(region);
+        var creds = getCredsForRegion(region);
         return creds.appId && creds.clientId && creds.clientSecret
     });
   };
 
   this.get = function() {
     var region = RegionSvc.get();
-    return hasCredsForRegion(region);
+    return getCredsForRegion(region);
   };
 
   this.set = function(appId, clientId, clientSecret) {
