@@ -2,6 +2,11 @@
   "name": "ApiExplorer",
   "version": "0.1.0",
   "description": "UI for CAPI.",
+  "repository" :
+  {
+    "type" : "git",
+    "url" : "https://github.com/janrain/ApiExplorer.git"
+  },
   "main": "index.js",
   "scripts": {
     "watchtest": "karma start --browsers PhantomJS",
